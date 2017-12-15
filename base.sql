@@ -1,4 +1,5 @@
 SET FOREIGN_KEY_CHECKS=0;
+DROP table tipo_doc, pedido, usuario;
   CREATE TABLE `tipo_doc` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
