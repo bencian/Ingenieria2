@@ -28,37 +28,57 @@ class AppController {
     }
 
     public function validarLogin($post){
-        if(($post["nomUsr"] == "") || ($post["psw"] == "")){
-            $view = new Home();
-            $view -> errorLogin("true");
-        }elseif (AppModel::getInstance()->validateLogin($post)){
-            self::getInstance()->menu();
-        }else {
-            $view = new Home();
-            $view -> errorLogin("true");
-        }
-
+            if(($post["nomUsr"] == "") || ($post["psw"] == "")){
+                $view = new Home();
+                $view -> errorLogin("true");
+            }elseif (AppModel::getInstance()->validateLogin($post)){
+                session_start();
+                $_SESSION["nombreUsr"] = $post["nomUsr"];
+                $view = new Home();
+                $view->show("menu.html.twig");
+            }else {
+                $view = new Home();
+                $view -> errorLogin("true");
+            }
     }
 
     public function menu(){
+        if(self::getInstance()->checkPermission()){
         $view = new Home();
-        $view->show("menu.html.twig");      
+        $view->show("menu.html.twig");
+        }      
     }
     
     public function cargarFormPN(){
+        if(self::getInstance()->checkPermission()){
         $view = new Home();
-        $view->show("formPN.html.twig"); 
+        $view->show("formPN.html.twig");
+        } 
     }
 
     public function validarPN($post){
-        if(($post["nomYape"] == "") || ($post["direccion"] == "") || ($post["numero"] == "") || ($post["carta"] == "") || (isNan($post["tipoDoc"]))){
+        if(self::getInstance()->checkPermission()){
+        if(($post["nombrePN"] == "") || ($post["direccion"] == "") || ($post["numero"] == "") || ($post["carta"] == "") || (is_nan($post["tipoDoc"]))){
             $view = new Home();
             $view->errorForm("true"); 
-            //falta la revalidacion del dni
-        }elseif(AppModel::getInstance()->insertarPedido($post)){
+        }else{
+            AppModel::getInstance()->insertarPedido($post);
             alert("su pedido fue realizado con exito");
             self::getInstance()->menu();
         }
+    }
+    }
+
+    public function checkPermission (){
+        if(!isset($_SESSION["nombreUsr"])){
+            $view = new Home();
+            $view->show("login.html.twig");
         }
     }
+    public function listarPedidos (){
+        if(self::getInstance()->checkPermission()){
+        AppModel::getInstance()->traerPedidos();
+    }
+    
+}
 }

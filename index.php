@@ -17,6 +17,8 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()-> cargarFormPN(); 
 }elseif ($_GET["action"] == "validarFormPN"){
 	AppController::getInstance()-> validarPN($_POST);
+}elseif ($_GET["action"] == "listarTodos"){
+	AppController::getInstance()-> listarPedidos();
 }
 
 

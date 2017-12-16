@@ -28,7 +28,13 @@ class AppModel extends PDORepository {
     }
 
     public function insertarPedido($datos){
-        $answer = $this->queryList("INSERT into pedido (nomre_apellido, tipo_doc_id, numero, direccion, carta) VALUES (?, ?, ?, ?, ?);" , [ $datos["nomYape"], [ $datos["tipoDoc"], [ $datos["numero"], [ $datos["direccion"], [ $datos["carta"]]);
+        $answer = $this->queryList("INSERT into pedido (nombre_apellido, tipo_doc_id, numero, direccion, carta) VALUES (?, ?, ?, ?, ?)" , [ $datos["nombrePN"], $datos["tipoDoc"], $datos["numero"],  $datos["direccion"], $datos["carta"]]);
+        return $answer;
+    }
+
+    public function traerPedidos (){
+        $answer = $this->queryList("SELECT * FROM pedido");
+        var_dump($answer);
         return $answer;
     }
 }
