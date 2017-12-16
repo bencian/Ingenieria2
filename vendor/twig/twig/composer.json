@@ -14,7 +14,7 @@
         },
         {
             "name": "Twig Team",
-            "homepage": "http://twig.sensiolabs.org/contributors",
+            "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
             "role": "Contributors"
         },
         {
@@ -27,24 +27,16 @@
         "forum": "https://groups.google.com/forum/#!forum/twig-users"
     },
     "require": {
-        "php": ">=5.3.3"
-    },
-    "require-dev": {
-        "symfony/phpunit-bridge": "~3.3@dev",
-        "symfony/debug": "~2.7",
-        "psr/container": "^1.0"
+        "php": ">=5.2.4"
     },
     "autoload": {
         "psr-0" : {
             "Twig_" : "lib/"
-        },
-        "psr-4" : {
-            "Twig\\" : "src/"
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.35-dev"
+            "dev-master": "1.16-dev"
         }
     }
 }

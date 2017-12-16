@@ -1,41 +1,33 @@
 [
     {
         "name": "twig/twig",
-        "version": "v1.35.0",
-        "version_normalized": "1.35.0.0",
+        "version": "v1.16.0",
+        "version_normalized": "1.16.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/twigphp/Twig.git",
-            "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f"
+            "url": "https://github.com/fabpot/Twig.git",
+            "reference": "8ce37115802e257a984a82d38254884085060024"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/daa657073e55b0a78cce8fdd22682fddecc6385f",
-            "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f",
+            "url": "https://api.github.com/repos/fabpot/Twig/zipball/8ce37115802e257a984a82d38254884085060024",
+            "reference": "8ce37115802e257a984a82d38254884085060024",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.3"
+            "php": ">=5.2.4"
         },
-        "require-dev": {
-            "psr/container": "^1.0",
-            "symfony/debug": "~2.7",
-            "symfony/phpunit-bridge": "~3.3@dev"
-        },
-        "time": "2017-09-27T18:06:46+00:00",
+        "time": "2014-07-05 12:19:05",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.35-dev"
+                "dev-master": "1.16-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Twig_": "lib/"
-            },
-            "psr-4": {
-                "Twig\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -56,7 +48,7 @@
             },
             {
                 "name": "Twig Team",
-                "homepage": "http://twig.sensiolabs.org/contributors",
+                "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
                 "role": "Contributors"
             }
         ],

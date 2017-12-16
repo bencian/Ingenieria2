@@ -1,0 +1,11 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+{% if errorTipo is defined %} <h3> ocurrio error validando </h3> {% endif %} 
+    <form method="POST" action="./?action=validarLog">
+        <label>username</label>
+        <input type="text" name="nomUsr" required><br>
+        <label>password</label>
+        <input type="password" name="psw" required><br>
+        <input type="submit" name="ingresar">
+    </form>
+{% endblock %}

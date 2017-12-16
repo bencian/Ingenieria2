@@ -3,7 +3,7 @@
 /*
  * This file is part of Twig.
  *
- * (c) Fabien Potencier
+ * (c) 2009 Fabien Potencier
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,8 +11,6 @@
 
 /**
  * Represents a security policy which need to be enforced when sandbox mode is enabled.
- *
- * @final
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
@@ -65,19 +63,19 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
     {
         foreach ($tags as $tag) {
             if (!in_array($tag, $this->allowedTags)) {
-                throw new Twig_Sandbox_SecurityNotAllowedTagError(sprintf('Tag "%s" is not allowed.', $tag), $tag);
+                throw new Twig_Sandbox_SecurityError(sprintf('Tag "%s" is not allowed.', $tag));
             }
         }
 
         foreach ($filters as $filter) {
             if (!in_array($filter, $this->allowedFilters)) {
-                throw new Twig_Sandbox_SecurityNotAllowedFilterError(sprintf('Filter "%s" is not allowed.', $filter), $filter);
+                throw new Twig_Sandbox_SecurityError(sprintf('Filter "%s" is not allowed.', $filter));
             }
         }
 
         foreach ($functions as $function) {
             if (!in_array($function, $this->allowedFunctions)) {
-                throw new Twig_Sandbox_SecurityNotAllowedFunctionError(sprintf('Function "%s" is not allowed.', $function), $function);
+                throw new Twig_Sandbox_SecurityError(sprintf('Function "%s" is not allowed.', $function));
             }
         }
     }
@@ -99,8 +97,7 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
         }
 
         if (!$allowed) {
-            $class = get_class($obj);
-            throw new Twig_Sandbox_SecurityNotAllowedMethodError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, $class), $class, $method);
+            throw new Twig_Sandbox_SecurityError(sprintf('Calling "%s" method on a "%s" object is not allowed.', $method, get_class($obj)));
         }
     }
 
@@ -116,10 +113,7 @@ class Twig_Sandbox_SecurityPolicy implements Twig_Sandbox_SecurityPolicyInterfac
         }
 
         if (!$allowed) {
-            $class = get_class($obj);
-            throw new Twig_Sandbox_SecurityNotAllowedPropertyError(sprintf('Calling "%s" property on a "%s" object is not allowed.', $property, $class), $class, $property);
+            throw new Twig_Sandbox_SecurityError(sprintf('Calling "%s" property on a "%s" object is not allowed.', $property, get_class($obj)));
         }
     }
 }
-
-class_alias('Twig_Sandbox_SecurityPolicy', 'Twig\Sandbox\SecurityPolicy', false);
