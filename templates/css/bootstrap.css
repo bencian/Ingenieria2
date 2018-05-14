@@ -3118,6 +3118,11 @@ fieldset[disabled] .btn-default.focus {
   background-color: #337ab7;
   border-color: #2e6da4;
 }
+.btn-primaryPink{
+  color: #fff;
+  background-color: #F35D5D;
+  border-color: #FA8484;
+}
 .btn-primary:focus,
 .btn-primary.focus {
   color: #fff;
