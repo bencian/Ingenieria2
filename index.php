@@ -9,16 +9,15 @@ require_once('model/AppModel.php');
 require_once('view/TwigView.php');
 require_once('view/Home.php');
 
+//SI se agrega un controller o un model debe "registrarse" con el required once como se muestra ahi arriba (los templates no).
+
+
 if(!isset($_GET["action"])){
-	AppController::getInstance()->login();
-}elseif ($_GET["action"] == "validarLog"){
-	AppController::getInstance()->validarLogin($_POST);
-}elseif ($_GET["action"] == "formPN"){
-	AppController::getInstance()-> cargarFormPN(); 
-}elseif ($_GET["action"] == "validarFormPN"){
-	AppController::getInstance()-> validarPN($_POST);
-}elseif ($_GET["action"] == "listarTodos"){
-	AppController::getInstance()-> listarPedidos();
-}
+	AppController::getInstance()->index();
+} //elseif ($_GET["action"] == "validarLog"){
+	//AppController::getInstance()->validarLogin($_POST);
+//}
+
+	// EJEMPLO De como continuar el index
 
 

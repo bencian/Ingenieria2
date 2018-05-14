@@ -18,7 +18,9 @@ abstract class PDORepository {
 	const HOST ="localhost";
 	const DB = "prueba";
     
-    
+//poner ahi arriba los datos de la BD para que quede linkeada
+
+
     private function getConnection(){
         $u=self::USERNAME;
         $p=self::PASSWORD;
@@ -34,5 +36,8 @@ abstract class PDORepository {
         $stmt->execute($args);
         return $stmt->fetchAll();
     }
+
+    //funcion para a la que se le envian las consultas... parametros (sql= consulta , args= parametros)
+    // hay ejemplos en el MODEL
     
 }

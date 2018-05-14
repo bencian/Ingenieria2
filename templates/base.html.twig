@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" /> 
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap-theme.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap-theme.min.css">
+    {% block stylesheets %}
+        
+    {% endblock %}
+	<style type="text/css">
+		
+		#logo{
+			width: 16%;
+			height: auto;
+			position: relative;
+			left: 42%;
+		}
+
+		#navbar{
+			background-color: #FF7479; /*#FF353B #FF4653*/
+			/*height: 4em;*/
+			margin-bottom: 1em;
+		}
+
+		#register{
+			float: right;
+		}
+
+		#footer{
+			background-color: #FF7479;
+			margin-top: 1em;
+		}
+
+		a{
+			color: black;
+			/*background-color: #FF4653;*/
+		}
+
+		body{
+			background-color: pink;
+		}
+
+		#cabecera{
+			background-color: #FFFFFF;
+		}
+
+	</style>
+</head>
+<body>
+<div id="cabecera">
+	<a href="index.php"><img id="logo" src="./templates/img/logo.jpg"></a>
+</div>
+<nav class="nav" id="navbar">
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link active" href="index.php">Inicio</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="login.php">Login</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="registrar_vehiculo.php">Registrar vehiculo</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">LALALA</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Disabled</a>
+  </li>
+  <li class="nav-item" id="register">
+    <a class="nav-link disabled" href="registrarse.php">Registrarse</a>
+  </li>
+
+</ul>
+</nav>
+
+{% block container %}
+	
+{% endblock %}
+
+<footer id="footer">
+	<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">CONTCTO</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">FACEBOOK</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">TWITTER</a>
+  </li>
+	</ul>
+
+</footer>
+</body>
+</html>

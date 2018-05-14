@@ -1,0 +1,13 @@
+.Git, los composer y el vendor NO TOCAR. Andan bien asi y no son para nada entendibles
+ (ademas de que no los vamos a usar directamente, capaz lo use algua funcion interna)
+
+
+Deje notas en la mayoria de los archivos que hay.
+Deje un esqueleto de Layout para hacerlo y que quede fijo.
+Hice un Login que no tiene forma. simplemente funciona(asi ven como labura en conjunto con el Layout), hay que darle con bootstrap.
+
+{% %} abrir y cerrar twig, NO DAR BOLA. Simplemente llaman a layout (como se muestra en login) 
+y usan los {%blockcontent%} para escribir html y quedara "adentro"del layout gracias a esto
+
+Dudas pregunten al grupooo.
+Saludos.
