@@ -11,22 +11,20 @@
 
 
 
-
 class AppModel extends PDORepository {
 
     private static $instance;
 
-    public static function getInstance() {
+       private function __construct() {
+        
+    }
 
+	public static function getInstance() {
         if (!isset(self::$instance)) {
             self::$instance = new self();
         }
 
         return self::$instance;
-    }
-
-    private function __construct() {
-        
     }
 
     public function validateLogin($datos) {
@@ -38,6 +36,12 @@ class AppModel extends PDORepository {
         $answer = $this->queryList("INSERT into pedido (nombre_apellido, tipo_doc_id, numero, direccion, carta) VALUES (?, ?, ?, ?, ?)" , [ $datos["nombrePN"], $datos["tipoDoc"], $datos["numero"],  $datos["direccion"], $datos["carta"]]);
         return $answer;
     }
+	
+	public function registrar($datos){
+        $answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
+		return $answer;
+    }
+
 
     public function traerPedidos (){
         $answer = $this->queryList("SELECT * FROM pedido");

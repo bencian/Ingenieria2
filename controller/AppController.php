@@ -43,7 +43,7 @@ class AppController {
 			$bd = AppModel::getInstance();
 			var_dump($bd instanceof AppModel);
 			var_dump($datos);
-			$bd = registrar($datos);
+			$bd->registrar($datos);
 		}
 	}
 
