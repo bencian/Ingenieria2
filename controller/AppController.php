@@ -5,6 +5,7 @@
  *
  * @author fede
  */
+ 
 class AppController {
     
     private static $instance;
@@ -33,9 +34,18 @@ class AppController {
     }
     
     public function registrarse(){
-        $view = new Home();
+		$view = new Home();
         $view->show("registrarse.html.twig");
     }
+	
+	public function crear_usuario($datos){
+		if(isset($datos)){
+			$bd = AppModel::getInstance();
+			var_dump($bd instanceof AppModel);
+			var_dump($datos);
+			$bd = registrar($datos);
+		}
+	}
 
     public function registrar_vehiculo(){
         $view = new Home();
