@@ -42,7 +42,11 @@ class AppModel extends PDORepository {
 		return $answer;
     }
 
-
+	public function existeMail($datos){
+		$answer = $this->queryList("SELECT nombre FROM usuario where email=?;", [ $datos ]);
+		return $answer;
+	}
+	
     public function traerPedidos (){
         $answer = $this->queryList("SELECT * FROM pedido");
         var_dump($answer);

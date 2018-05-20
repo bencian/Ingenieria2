@@ -39,12 +39,18 @@ class AppController {
     }
 	
 	public function crear_usuario($datos){
+		$bd = AppModel::getInstance();
+		$view = new Home();
 		if(isset($datos)){
-			$bd = AppModel::getInstance();
-			var_dump($bd instanceof AppModel);
-			var_dump($datos);
-			$bd->registrar($datos);
-		}
+			$test = $this->validacion($datos);
+			if(!($bd->existeMail($datos["email"]))&&($test)){
+				$bd->registrar($datos);
+				$view->show("index.html.twig");
+			} else {
+				echo "Error en la registracion";
+				$view->show("registrarse.html.twig");
+			}
+		}			
 	}
 
     public function registrar_vehiculo(){
@@ -52,5 +58,17 @@ class AppController {
         $view->show("registrar_vehiculo.html.twig");
     }
 
+	public function containsNumbers($String){
+		return preg_match('/\\d/', $String) > 0;
+	}
+	
+	public function mayorDeEdad($String){
+		return true;
+	}
+	
+	public function validacion($datos){
+		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&(preg_match("#\W+#", $datos["pass"]))&&($this->containsNumbers($datos["pass"]))&&($this->mayorDeEdad($datos["nacimiento"])));
+		return $valor;
+	}
 }
 
