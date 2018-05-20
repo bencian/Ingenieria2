@@ -47,7 +47,9 @@ class AppController {
 				$bd->registrar($datos);
 				$view->show("index.html.twig");
 			} else {
-				echo "Error en la registracion";
+				if ($bd->existeMail($datos["email"])){
+					echo "Ya existe el mail en la base de datos ";
+				}
 				$view->show("registrarse.html.twig");
 			}
 		}			
@@ -69,10 +71,14 @@ class AppController {
 		$dia = (int) date('d');
 		$bool = false;
 		if($anio-$tempArray[0]>14){
-			if($mes-$tempArray[1]>-1){
-				if($dia-$tempArray[2]>-1){
-					$bool = true;
+			if($anio-$tempArray[0]==15){
+				if ($mes-$tempArray[1]>-1){
+					if($dia-$tempArray[2]>-1){
+						$bool = true;
+					}
 				}
+			} else {
+				$bool = true;
 			}			
 		}
 		return $bool;
@@ -80,6 +86,21 @@ class AppController {
 	
 	public function validacion($datos){
 		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&(preg_match("#\W+#", $datos["pass"]))&&($this->containsNumbers($datos["pass"]))&&($this->mayorDeEdad($datos["nacimiento"])));
+		if(!($datos["pass"]==$datos["pass1"])){
+			echo "Las contraseñas no coinciden ";
+		}
+		if(!(strlen($datos["pass"])>7)){
+			echo "La contraseña es muy corta ";
+		}
+		if(!(preg_match("#\W+#", $datos["pass"]))){
+			echo "La contraseña no contiene un simbolo ";
+		}
+		if(!($this->containsNumbers($datos["pass"]))){
+			echo "La contraseña no tiene un numero ";
+		}
+		if(!($this->mayorDeEdad($datos["nacimiento"]))){
+			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+		}
 		return $valor;
 	}
 }
