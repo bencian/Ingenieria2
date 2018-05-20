@@ -63,7 +63,19 @@ class AppController {
 	}
 	
 	public function mayorDeEdad($String){
-		return true;
+		$tempArray = explode('-',$String);
+		$anio = (int) date('y')+2000;
+		$mes = (int) date('m');
+		$dia = (int) date('d');
+		$bool = false;
+		if($anio-$tempArray[0]>14){
+			if($mes-$tempArray[1]>-1){
+				if($dia-$tempArray[2]>-1){
+					$bool = true;
+				}
+			}			
+		}
+		return $bool;
 	}
 	
 	public function validacion($datos){
