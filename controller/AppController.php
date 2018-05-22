@@ -37,7 +37,7 @@ class AppController {
 		$view = new Home();
         $view->show("registrarse.html.twig");
     }
-	
+
 	public function crear_usuario($datos){
 		$bd = AppModel::getInstance();
 		$view = new Home();
@@ -103,5 +103,20 @@ class AppController {
 		}
 		return $valor;
 	}
-}
 
+	public function validar_Inicio_Sesion(){
+		if(isset($_POST['usr'])&&isset($_POST['contraseña'])){   
+           	$datos['nombre_usuario'] = $_POST['usr'];
+            $datos['contraseña_usuario'] = $_POST['contraseña'];
+            $usuario = AppModel::getInstance()->existeUsuario($datos['nombre_usuario'],$datos['contraseña_usuario']);
+                if (count($usuario) == 0){
+                    //Aviso que no existe usuario o que no corresponde con su psw
+                    $view = new Home();
+        			$view->errorLogin("el usr no corresponde con la contraseña");
+                }else{
+                	$view = new Home();
+            		$view->show("login.html.twig"); //insertar pagina principal
+        	}
+    	}
+    }
+}
