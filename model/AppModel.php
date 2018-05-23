@@ -29,13 +29,13 @@ class AppModel extends PDORepository {
 
     public function validateLogin($datos) {
         $answer = $this->queryList("SELECT * FROM usuario where usuario=? and clave=? ;", [ $datos["nomUsr"], $datos["psw"]]);
-        return $answer;
+		return $answer;
     }
 
-    public function insertarPedido($datos){
-        $answer = $this->queryList("INSERT into pedido (nombre_apellido, tipo_doc_id, numero, direccion, carta) VALUES (?, ?, ?, ?, ?)" , [ $datos["nombrePN"], $datos["tipoDoc"], $datos["numero"],  $datos["direccion"], $datos["carta"]]);
+    /*public function insertarPedido($datos){n, carta) VALUES (?, ?, ?, ?, ?)" , [ $datos["nombrePN"]
+        $answer = $this->queryList("INSERT into pedido (nombre_apellido, tipo_doc_id, numero, direccio, $datos["tipoDoc"], $datos["numero"],  $datos["direccion"], $datos["carta"]]);
         return $answer;
-    }
+    }*/
 	
 	public function registrar($datos){
         $answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
@@ -47,7 +47,12 @@ class AppModel extends PDORepository {
 		return $answer;
 	}
 	
-    public function traerPedidos (){
+    public function getPerfil($datos){
+		$answer = $this->queryList("SELECT * FROM usuario where id=?;", [ $datos ]);
+		return $answer;
+	}
+	
+	public function traerPedidos (){
         $answer = $this->queryList("SELECT * FROM pedido");
         var_dump($answer);
         return $answer;

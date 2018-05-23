@@ -25,6 +25,8 @@ class AppController {
     
    public function index(){
         $view = new Home();
+		$bd = AppModel::getInstance();
+		$bd->getPerfil(23);
         $view->show("index.html.twig");
     }
 
@@ -42,7 +44,7 @@ class AppController {
 		$bd = AppModel::getInstance();
 		$view = new Home();
 		if(isset($datos)){
-			$test = $this->validacion($datos);
+			$test = $this->validacionUsuario($datos);
 			if(!($bd->existeMail($datos["email"]))&&($test)){
 				$bd->registrar($datos);
 				$view->show("index.html.twig");
@@ -84,19 +86,16 @@ class AppController {
 		return $bool;
 	}
 	
-	public function validacion($datos){
-		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&(preg_match("#\W+#", $datos["pass"]))&&($this->containsNumbers($datos["pass"]))&&($this->mayorDeEdad($datos["nacimiento"])));
+	public function validacionUsuario($datos){
+		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))&&($this->mayorDeEdad($datos["nacimiento"])));
 		if(!($datos["pass"]==$datos["pass1"])){
 			echo "Las contraseñas no coinciden ";
 		}
 		if(!(strlen($datos["pass"])>7)){
 			echo "La contraseña es muy corta ";
 		}
-		if(!(preg_match("#\W+#", $datos["pass"]))){
-			echo "La contraseña no contiene un simbolo ";
-		}
-		if(!($this->containsNumbers($datos["pass"]))){
-			echo "La contraseña no tiene un numero ";
+		if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
+			echo "La contraseña no contiene un simbolo o un numero ";			
 		}
 		if(!($this->mayorDeEdad($datos["nacimiento"]))){
 			echo "Necesitas tener al menos 15 años para registrarte al sitio ";

@@ -1339,6 +1339,9 @@ mark,
 .text-primary {
   color: #337ab7;
 }
+/*.text-dark{
+	color:#000000;
+}*/
 a.text-primary:hover,
 a.text-primary:focus {
   color: #286090;
