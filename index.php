@@ -22,7 +22,8 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->registrar_vehiculo($_POST);
 } elseif ($_GET["action"] == "crear_usuario"){
 	AppController::getInstance()->crear_usuario($_POST);
+} elseif ($_GET["action"] == "nueva_Sesion"){
+	AppController::getInstance()->validar_Inicio_Sesion($_POST);
 }
-	// EJEMPLO De como continuar el index
 
 

@@ -5,10 +5,11 @@
 {% endblock %}
 
 {% block container %}
+{% if errorTipo is defined %} <h3 style="text-align:center; color:red;"> El usuario no corresponde con la contraseña </h3> {% endif %}
     <div class="container">
         <div class="row">
             <div class="col-sm-4 col-sm-offset-4 text-center well">
-                <form method= "POST" action="./?action=nuevaSesion">
+                <form method= "POST" action="./?action=nueva_Sesion">
                     <h1><label> Iniciar Sesion</label></h1><br>
                     <div class="form-group">
                         <h3><label>Email</label></h3>

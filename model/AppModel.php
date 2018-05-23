@@ -57,4 +57,10 @@ class AppModel extends PDORepository {
         var_dump($answer);
         return $answer;
     }
+    public function existeUsuario($mail,$contraseña){
+        //Busca en la bd el usuario con mail y contraseña ingresado
+        $answer = $this->queryList("SELECT id FROM usuario WHERE email=:mail AND password=:contra", ['mail'=>$mail,'contra'=>$contraseña]);
+        return $answer;
+    }
+
 }

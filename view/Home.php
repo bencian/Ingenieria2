@@ -19,8 +19,4 @@ class Home extends TwigView {
     public function errorLogin($dato){
     	echo self::getTwig()->render("login.html.twig", array("errorTipo" => $dato));
     }
-
-    public function errorForm($dato){
-    	echo self::getTwig()->render("formPN.html.twig", array("errorTipo" => $dato));
-    }
 }
