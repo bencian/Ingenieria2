@@ -118,4 +118,13 @@ class AppController {
         	}
     	}
     }
+
+    public function cerrarSesion(){
+        //Cierra sesion y accede al index
+        if(!isset($_SESSION)){session_start();}
+        session_destroy();
+        if(isset($_SESSION['id_usuario'])){
+            session_unset();
+        }
+    }
 }
