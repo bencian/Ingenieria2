@@ -24,6 +24,8 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->crear_usuario($_POST);
 } elseif ($_GET["action"] == "nueva_Sesion"){
 	AppController::getInstance()->validar_Inicio_Sesion($_POST);
+} elseif ($_GET["action"] == "cerrar_sesion"){
+	AppController::getInstance()->cerrarSesion($_POST);
 }
 
 
