@@ -150,9 +150,9 @@ class AppController {
 		//busca los datos a mostrar para el perfil del usuario
 		if(isset($_SESSION)){
 			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
-			$tag = "<h1>";
-			$stringCompleto = $tag.$datosUsuario;
-			echo " $stringCompleto \n"; 
+			$nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
+			$view = new Home();
+			$view->show("perfil.html.twig");
 		}
 	}
 }
