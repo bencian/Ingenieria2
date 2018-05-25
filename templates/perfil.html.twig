@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block container %}
+<nav class="nav" id="navbar">
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link active" href="index.php">Inicio</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="index.php?action=mostrar_perfil">Mostrar Perfil</a>
+  </li>
+  <li class="nav-item" id="register">
+    <a class="nav-link disabled" href="index.php?action=cerrar_sesion">Cerrar Sesion</a>
+  </li>
+
+</ul>
+</nav>
+
+
+{% endblock %}

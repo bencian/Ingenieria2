@@ -27,15 +27,20 @@ class AppController {
     }
     
    public function index(){
-        $view = new Home();
-        $view->show("index.html.twig");
-    }
+        if(!isset($_SESSION['id'])){
+			$view = new Home();
+			$view->show("index.html.twig");
+		} else {
+			$view = new Home();
+			$view->show("sesion.html.twig");
+		}
+	}
 
     public function login(){
         $view = new Home();
         $view->show("login.html.twig");
     }
-    
+	
     public function registrarse(){
 		$view = new Home();
         $view->show("registrarse.html.twig");
@@ -66,10 +71,12 @@ class AppController {
     }
 
 	public function containsNumbers($String){
+		//devuelve true si el string recibido tiene numeros, y false si no tiene
 		return preg_match('/\\d/', $String) > 0;
 	}
 	
 	public function mayorDeEdad($String){
+		//devuelve true si la fecha recibida tiene mas de 15 años, caso contrario devuelve false
 		$tempArray = explode('-',$String);
 		$anio = (int) date('y')+2000;
 		$mes = (int) date('m');
@@ -143,7 +150,7 @@ class AppController {
 		}
 	}
 
-    public function mostrarPerfil(){
+	public function mostrarPerfil(){
 		//busca los datos a mostrar para el perfil del usuario
 		if(isset($_SESSION)){
 			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
@@ -152,7 +159,6 @@ class AppController {
 			$view->show("perfil.html.twig");
 		}
 	}
-
 
 	public function crear_vehiculo($datos){
 		$bd = AppModel::getInstance();
@@ -173,6 +179,5 @@ class AppController {
 		$valor = ((preg_match("[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
 		return $valor;
 	}
-
 
 }

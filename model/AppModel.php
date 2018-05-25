@@ -29,7 +29,7 @@ class AppModel extends PDORepository {
 
     public function validateLogin($datos) {
         $answer = $this->queryList("SELECT * FROM usuario where usuario=? and clave=? ;", [ $datos["nomUsr"], $datos["psw"]]);
-        return $answer;
+		return $answer;
     }
 
 	
@@ -43,22 +43,17 @@ class AppModel extends PDORepository {
 		return $answer;
 	}
 	
-
-    public function insertarPedido($datos){
-        $answer = $this->queryList("INSERT into pedido (nombre_apellido, tipo_doc_id, numero, direccion, carta) VALUES (?, ?, ?, ?, ?)" , [ $datos["nombrePN"], $datos["tipoDoc"], $datos["numero"],  $datos["direccion"], $datos["carta"]]);
-        return $answer;
-    }
-    public function traerPedidos (){
-        $answer = $this->queryList("SELECT * FROM pedido");
-        var_dump($answer);
-        return $answer;
-    }
+	
+    public function getPerfil($datos){
+		$answer = $this->queryList("SELECT * FROM usuario where id=?;", [ $datos ]);
+		return $answer;
+	}
+	
     public function existeUsuario($mail,$contraseña){
         //Busca en la bd el usuario con mail y contraseña ingresado
         $answer = $this->queryList("SELECT id FROM usuario WHERE email=:mail AND password=:contra", ['mail'=>$mail,'contra'=>$contraseña]);
         return $answer;
     }
-
 
 
     public function tipos(){
