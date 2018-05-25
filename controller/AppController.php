@@ -24,23 +24,27 @@ class AppController {
     }
     
    public function index(){
-        $view = new Home();
-		$bd = AppModel::getInstance();
-		$bd->getPerfil(23);
-        $view->show("index.html.twig");
-    }
+        if(!isset($_SESSION['id'])){
+			$view = new Home();
+			$view->show("index.html.twig");
+		} else {
+			$view = new Home();
+			$view->show("sesion.html.twig");
+		}
+	}
 
     public function login(){
         $view = new Home();
         $view->show("login.html.twig");
     }
-    
+	
     public function registrarse(){
 		$view = new Home();
         $view->show("registrarse.html.twig");
     }
 
 	public function crear_usuario($datos){
+		//agrega el usuario en la bd
 		$bd = AppModel::getInstance();
 		$view = new Home();
 		if(isset($datos)){
@@ -63,10 +67,12 @@ class AppController {
     }
 
 	public function containsNumbers($String){
+		//devuelve true si el string recibido tiene numeros, y false si no tiene
 		return preg_match('/\\d/', $String) > 0;
 	}
 	
 	public function mayorDeEdad($String){
+		//devuelve true si la fecha recibida tiene mas de 15 años, caso contrario devuelve false
 		$tempArray = explode('-',$String);
 		$anio = (int) date('y')+2000;
 		$mes = (int) date('m');
@@ -87,6 +93,7 @@ class AppController {
 	}
 	
 	public function validacionUsuario($datos){
+		//valida los datos desde servidor
 		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))&&($this->mayorDeEdad($datos["nacimiento"])));
 		if(!($datos["pass"]==$datos["pass1"])){
 			echo "Las contraseñas no coinciden ";
@@ -113,18 +120,39 @@ class AppController {
                     $view = new Home();
         			$view->errorLogin("el usr no corresponde con la contraseña");
                 }else{
-                	$view = new Home();
-            		$view->show("login.html.twig"); //insertar pagina principal
+                	$vector_usuario = AppModel::getInstance()->getId($datos['nombre_usuario']);
+					$usuario_id = (int)$vector_usuario[0][0];
+					$_SESSION["id"]= $usuario_id;
+					$view = new Home();
+            		$view->show("sesion.html.twig"); //insertar pagina principal
         	}
     	}
     }
 
     public function cerrarSesion(){
         //Cierra sesion y accede al index
-        if(!isset($_SESSION)){session_start();}
+        /*if(!isset($_SESSION)){
+			session_start();
+		}
         session_destroy();
-        if(isset($_SESSION['id_usuario'])){
+        if(isset($_SESSION['id'])){
             session_unset();
-        }
-    }
+        }*/
+		if(isset($_SESSION)){
+			session_unset();
+			session_destroy();
+			$view = new Home();
+			$view->show("index.html.twig");
+		}
+	}
+	
+	public function mostrarPerfil(){
+		//busca los datos a mostrar para el perfil del usuario
+		if(isset($_SESSION)){
+			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
+			$tag = "<h1>";
+			$stringCompleto = $tag.$datosUsuario;
+			echo " $stringCompleto \n"; 
+		}
+	}
 }

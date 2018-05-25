@@ -47,6 +47,11 @@ class AppModel extends PDORepository {
 		return $answer;
 	}
 	
+	public function getId($datos){
+		$answer = $this->queryList("SELECT id FROM usuario where email=?;", [ $datos ]);
+		return $answer;
+	}
+	
     public function getPerfil($datos){
 		$answer = $this->queryList("SELECT * FROM usuario where id=?;", [ $datos ]);
 		return $answer;

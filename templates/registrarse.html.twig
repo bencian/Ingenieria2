@@ -7,7 +7,7 @@
 {% block container %}
 	<div class="container">
 
-<form class="col-lg-4" method="post" action="./?action=crear_usuario">
+<form class="col-lg-4" method="post" action="./?action=crear_usuario" onsubmit="return validarRegistro()">
   <div class="form-group">
     <label for="exampleInputEmail1">Email</label>
     <input type="email" required class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Ingresa tu email!">
@@ -40,8 +40,7 @@
 	<input type="checkbox" required class="form-check-input" id="exampleCheck1" name="check" value="1">
     <label class="form-check-label" for="exampleCheck1">Acepto los terminos y condiciones</label>
   </div>
-
-  <button type="submit" class="btn btn-primaryPink" onsubmit="return validarRegistro(this)">Registrarme</button>
+  <input type="submit" class="btn btn-primaryPink" value='Registrarme'>
 </form>
 </div>
 {% endblock %}
