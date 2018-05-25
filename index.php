@@ -25,7 +25,10 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "nueva_Sesion"){
 	AppController::getInstance()->validar_Inicio_Sesion($_POST);
 } elseif ($_GET["action"] == "cerrar_sesion"){
-	AppController::getInstance()->cerrarSesion($_POST);
+	AppController::getInstance()->cerrarSesion();
+} elseif ($_GET["action"] == "mostrar_perfil"){
+	AppController::getInstance()->mostrarPerfil();
+} elseif ($_GET["action"] == "crear_vehiculo"){
+	AppController::getInstance()->crear_vehiculo($_POST);
 }
-
 

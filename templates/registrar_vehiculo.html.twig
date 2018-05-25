@@ -6,35 +6,47 @@
 
 {% block container %}
 <div class="container">
-<form class="col-lg-4">
+<div class="row">
+<div class="col-sm-4 col-sm-offset-4 text-center well">
+<form class="col-lg-12" method="post" action="./?action=crear_vehiculo">
   <div class="form-group">
-    <label for="exampleInputEmail1">Marca</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Marca">
+    <label for="exampleInput">Marca</label>
+    <input type="text" class="form-control" id="marca" name="marca" placeholder="Marca" required>
   </div>
 
   <div class="form-group">
-    <label for="exampleInputPassword1">Modelo</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Modelo">
+    <label for="exampleInput">Modelo</label>
+    <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Modelo" required>
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Patente</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Patente">
+    <label for="exampleInput">Patente</label>
+    <input type="text" class="form-control" id="patente" name="patente" placeholder="Patente" required>
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Color</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Color">
+    <label for="exampleInput">Color</label>
+    <input type="text" class="form-control" id="color" name="color" placeholder="Color" required>
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Tipo</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Tipo de vehiculo">
+    <label for="exampleInput">Tipo</label>
+    <select class="form-control" id="tipo" name="tipo" placeholder="Tipo de vehiculo">
+
+{% if tiposVehiculos is defined %} 
+    {% for actual in tiposVehiculos %}
+      <option value="{{ actual['id'] }}">{{ actual['nombre'] }}</option>
+      <option value="{{ actual.id }}">{{ actual.nombre }}</option>
+    {% endfor %}
+{% endif %}
+
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput">Asientos</label>
+    <input type="text" class="form-control" id="asientos" name="asientos" placeholder="Cantidad de asientos a usar" required>
   </div>
 
-  <div class="form-group">
-    <label for="exampleInputPassword1">Asientos</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Cantidad de asientos a usar">
-  </div>
-
-  <button type="submit" class="btn btn-primary">Registrarme!!!</button>
+  <button type="submit" class="btn btn-primaryPink">Registrar</button>
 </form>
+</div>
+</div>
 </div>
 {% endblock %}
