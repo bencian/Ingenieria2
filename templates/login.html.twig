@@ -5,6 +5,17 @@
 {% endblock %}
 
 {% block container %}
+<nav class="nav" id="navbar">
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link active" href="index.php">Inicio</a>
+  </li>
+  <li class="nav-item" id="register">
+    <a class="nav-link disabled" href="index.php?action=registrarse">Registrarse</a>
+  </li>
+
+</ul>
+</nav>
 {% if errorTipo is defined %} <h3 style="text-align:center; color:red;"> El usuario no corresponde con la contraseña </h3> {% endif %}
     <div class="container">
         <div class="row">
