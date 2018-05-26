@@ -170,18 +170,16 @@ class AppController {
 		$view = new Home();
 		if(isset($datos)){
 			$test = $this->validar_vehiculo($datos);
-			if(!($bd->existeTipo($datos["tipo"]))&&($test)){
-				var_dump($test);
+			if(($bd->existeTipo($datos["tipo"]))&&($test)){
+				var_dump($datos);
 				$bd->registrar_vehiculo($datos);
 				$view->show("sesion.html.twig");
 			}
-			$view->show("sesion.html.twig");
 		}
-		$view->show("registrar_vehiculo.html.twig");
 	}
 
 	public function validar_vehiculo($datos){
-		$valor = ((preg_match("[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}", $datos["patente"])) && (preg_match("[1-2][0-9]{3}", $datos["modelo"])));
+		$valor = ((preg_match("#[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}#", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
 		return $valor;
 	}
 
