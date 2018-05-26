@@ -66,8 +66,7 @@ class AppController {
 
     public function registrar_vehiculo(){
         $view = new Home();
-        $view->show("registrar_vehiculo.html.twig");
-
+		$view->show("registrar_vehiculo.html.twig");
     }
 
 	public function containsNumbers($String){
@@ -122,7 +121,7 @@ class AppController {
                 if (count($usuario) == 0){
                     //Aviso que no existe usuario o que no corresponde con su psw
                     $view = new Home();
-        			$view->errorLogin("el usr no corresponde con la contraseña");
+        			$view->errorLogin("el usuario no corresponde con la contraseña");
                 }else{
                 	$vector_usuario = AppModel::getInstance()->getId($datos['nombre_usuario']);
 					$usuario_id = (int)$vector_usuario[0][0];
@@ -156,7 +155,7 @@ class AppController {
 			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
 			$nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
 			$view = new Home();
-			$view->show("perfil.html.twig");
+			$view->mostrarNombre($nombre);
 		}
 	}
 
@@ -168,9 +167,9 @@ class AppController {
 			if(!($bd->existeTipo($datos["tipo"]))&&($test)){
 				var_dump($test);
 				$bd->registrar_vehiculo($datos);
-				$view->show("index.html.twig");
+				$view->show("sesion.html.twig");
 			}
-			$view->show("index.html.twig");
+			$view->show("sesion.html.twig");
 		}
 		$view->show("registrar_vehiculo.html.twig");
 	}

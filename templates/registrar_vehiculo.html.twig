@@ -30,9 +30,8 @@
     <label for="exampleInput">Tipo</label>
     <select class="form-control" id="tipo" name="tipo" placeholder="Tipo de vehiculo">
 
-{% if tiposVehiculos is defined %} 
+{% if tipoVehiculos is defined %} 
     {% for actual in tiposVehiculos %}
-      <option value="{{ actual['id'] }}">{{ actual['nombre'] }}</option>
       <option value="{{ actual.id }}">{{ actual.nombre }}</option>
     {% endfor %}
 {% endif %}
