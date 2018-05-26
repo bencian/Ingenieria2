@@ -170,10 +170,11 @@ class AppController {
 		$view = new Home();
 		if(isset($datos)){
 			$test = $this->validar_vehiculo($datos);
-			if(($bd->existeTipo($datos["tipo"]))&&($test)){
-				var_dump($datos);
+			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]#",$datos["asientos"])){
 				$bd->registrar_vehiculo($datos);
 				$view->show("sesion.html.twig");
+			} else {
+				$view->show("registrar_vehiculo.html.twig");
 			}
 		}
 	}

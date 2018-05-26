@@ -71,7 +71,7 @@ class AppModel extends PDORepository {
     }
 
     public function registrar_vehiculo($datos){
-        $answer = $this->queryList("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo)" , [ "asientos"=> $datos["asientos"], "marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo_id" => $datos["tipo"]]);
+        $answer = $this->queryList("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
         return $answer;
     }
 
