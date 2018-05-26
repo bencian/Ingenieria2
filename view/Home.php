@@ -19,4 +19,8 @@ class Home extends TwigView {
     public function errorLogin($dato){
     	echo self::getTwig()->render("login.html.twig", array("errorTipo" => $dato));
     }
+
+    public function registrarVehiculo($dato){
+    	echo self::getTwig()->render("registrar_vehiculo.html.twig", array("tiposVehiculos" => $dato));
+    }
 }
