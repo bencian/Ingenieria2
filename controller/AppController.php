@@ -66,7 +66,13 @@ class AppController {
 
     public function registrar_vehiculo(){
         $view = new Home();
-		$view->show("registrar_vehiculo.html.twig");
+		$bd = AppModel::getInstance();
+		$tipos = $bd->tipos();
+		$vector = array();
+		for ($i=0;$i<count($tipos);$i++){
+			array_push($vector,$tipos[$i]["nombre"]);
+		}
+		$view->formularioTipoVehiculos($vector);
     }
 
 	public function containsNumbers($String){
@@ -175,7 +181,7 @@ class AppController {
 	}
 
 	public function validar_vehiculo($datos){
-		$valor = ((preg_match("[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
+		$valor = ((preg_match("[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}", $datos["patente"])) && (preg_match("[1-2][0-9]{3}", $datos["modelo"])));
 		return $valor;
 	}
 

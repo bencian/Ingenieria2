@@ -61,7 +61,7 @@ class AppModel extends PDORepository {
 
 
     public function tipos(){
-        $answer = $this->queryList("SELECT * FROM tipo");
+        $answer = $this->queryList("SELECT * FROM tipo", []);
         return $answer;
     }
 
