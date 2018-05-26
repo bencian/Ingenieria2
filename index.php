@@ -30,5 +30,7 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->mostrarPerfil();
 } elseif ($_GET["action"] == "crear_vehiculo"){
 	AppController::getInstance()->crear_vehiculo($_POST);
+} elseif ($_GET["action"] == "modificar_perfil"){
+	AppController::getInstance()->modificar_perfil();
 }
 
