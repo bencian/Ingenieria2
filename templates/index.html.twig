@@ -9,24 +9,24 @@ Inicio
 <div class="container">
 
   <div class="row row-list">
-    <div id="buscador" class="col-xs-4 col-md-4 col-lg-4">
+    <div id="seccion-buscador" class="col-xs-4 col-md-4 col-lg-4">
       <div class="row" >
         <div class="col-sm-12 col-sm-offset-12 pull-right well">
-          <form id="buscador">
+          <form id="buscador" action="./?action=buscando" method="POST">
             <div class="form-group">
               <label for="exampleInputPassword1">Origen</label>
-              <input type="text" class="form-control" id="origen" placeholder="Origen" required>
+              <input type="text" class="form-control" id="origen" name="origen" placeholder="Origen" required>
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Destino</label>
-              <input type="text" class="form-control" id="destino" placeholder="Donde quieres ir?">
+              <input type="text" class="form-control" id="destino" name="destino" placeholder="Donde quieres ir?">
             </div>
             <div class="form-check">
               <label for="exampleCheck1">Fecha de salida</label>
-              <input type="date" class="form-check-input" id="salida" required>
+              <input type="date" class="form-check-input" id="salida" name="salida" required>
             </div>  
             <br>
-            <button type="submit" class="btn btn-primaryPink">Submit</button>
+            <button type="submit" class="btn btn-primaryPink">Buscar</button>
           </form>
         </div>
       </div>

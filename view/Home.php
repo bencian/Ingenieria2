@@ -36,4 +36,8 @@ class Home extends TwigView {
 		echo self::getTwig()->render("modificar_perfil.html.twig", array("campoPerfil" => $datos));
 	}
 
+	public function listarViajes($datos){
+		echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => []));
+	}
+
 }
