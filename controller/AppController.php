@@ -316,13 +316,12 @@ class AppController {
 	
 	public function buscador($datos){
 		$view = new Home();
-		$viajes= AppModel::getInstance();
 		if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){
 			if(isset($datos["destino"]) && $datos["destino"]!=""){
-				$viajes->busqueda_completa($datos);
+				$viajes= AppModel::getInstance()->busqueda_completa($datos);
 				$view->listarViajes($viajes);
 			} else {
-				$viajes->busqueda_parcial($datos);
+				$viajes= AppModel::getInstance()->busqueda_parcial($datos);
 				$view->listarViajes($viajes);
 			}
 		} else {
