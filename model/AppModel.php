@@ -144,6 +144,21 @@ class AppModel extends PDORepository {
         $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND fecha=:fecha", ["origen"=>$origen[0]["id"], "fecha"=>$fecha]);
         return $answer;
     }
+
+    public function getTipoVehiculo($datos){
+        $answer= $this->queryList("SELECT nombre FROM tipo WHERE id=:id",["id"=>$datos]);
+        return $answer;
+    }
+
+    public function getVehiculos(){
+        $id=$_SESSION["id"];
+        $answer= $this->queryList("SELECT * FROM vehiculo v INNER JOIN usuario_has_vehiculo uhv ON v.id=uhv.vehiculo_id WHERE usuarios_id=:usuario", [ "usuario"=>$_SESSION["id"]]);
+        for ($i=0; $i < sizeof($answer) ; $i++) { 
+            $a=$this->getTipoVehiculo($answer[$i]["tipo_id"])[0][0];
+            $answer[$i]["tipo_id"]=$a;
+        }
+        return $answer;
+    }
 }
 
 /* SELECT * FROM viaje WHERE id_origen='1' AND fecha='2018-05-10' */

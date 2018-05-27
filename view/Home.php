@@ -42,4 +42,8 @@ class Home extends TwigView {
 		echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos));
 	}
 
+	public function listarVehiculosPropios($vehiculos){
+		echo self::getTwig()->render("ver_vehiculos.html.twig", array("vehiculos" => $vehiculos));
+	}
+
 }
