@@ -34,7 +34,7 @@ class AppModel extends PDORepository {
 
 	
 	public function registrar($datos){
-        $answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
+		$answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
 		return $answer;
     }
 
@@ -59,7 +59,6 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-
     public function tipos(){
         $answer = $this->queryList("SELECT * FROM tipo", []);
         return $answer;
@@ -75,4 +74,53 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
+	public function validarMail($datos){
+        if (isset($datos["email"])){
+            $answer = $this->existeMail($datos["email"]);
+            if ($answer) { 
+                return false; 
+            } else { 
+                return true;
+            }
+        } else {
+            return true;
+        }
+
+    }
+	public function actualizarUsuario($datos){
+		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
+		 return $answer;
+	}
+
+    /*public function actualizar_usuario($datos){
+
+        $consulta = "UPDATE usuario SET (";
+        $args=[];
+        if(isset($datos["email"])){
+            $consulta.= "email = ? ,";
+            $args["email"] = $datos["email"];
+        }
+        if(isset($datos["nombre"])){
+            $consulta.= "nombre = ? ,";
+            $args["nombre"] = $datos["nombre"];
+        }
+        if(isset($datos["apellido"])){
+            $consulta.= "apellido = ? ,";
+            $args["apellido"] = $datos["apellido"];
+        }
+        if(isset($datos["pass"])){
+            $consulta.= "password = ? ,";
+            $args["password"] = $datos["pass"];
+        }
+        if(isset($datos["nacimiento"])){
+            $consulta.= "fecha_nacimiento = ? ,";
+            $args["fecha_nacimiento"] = $datos["nacimiento"];
+        }
+        $args["id"] = $_SESSION["id"];
+        $consulta.= substr($consulta, 0, -1);
+        $consulta.=") WHERE id=?";
+
+        $answer = $this->queryList($consulta,[ $args] );
+        return $answer;
+    }*/ //cambio esto para tener los campos viejos y actualizar todo
 }

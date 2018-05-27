@@ -19,7 +19,7 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "registrarse"){
 	AppController::getInstance()->registrarse($_POST);
 } elseif ($_GET["action"] == "registrar_vehiculo"){
-	AppController::getInstance()->registrar_vehiculo($_POST);
+	AppController::getInstance()->registrar_vehiculo();
 } elseif ($_GET["action"] == "crear_usuario"){
 	AppController::getInstance()->crear_usuario($_POST);
 } elseif ($_GET["action"] == "nueva_Sesion"){
@@ -30,5 +30,9 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->mostrarPerfil();
 } elseif ($_GET["action"] == "crear_vehiculo"){
 	AppController::getInstance()->crear_vehiculo($_POST);
+} elseif ($_GET["action"] == "modificar_perfil"){
+	AppController::getInstance()->modificar_perfil();
+} elseif ($_GET["action"] == "actualizar_perfil"){
+	AppController::getInstance()->actualizar_perfil($_POST);
 }
 

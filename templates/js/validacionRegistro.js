@@ -7,11 +7,11 @@ function validarRegistro() {
     var passwrd1 = document.getElementById("pass1").value;
     /*var tyc= document.getElementById("");  terminos y condiciones*/ 
  
-    if (nombre == null || nombre.length == 0 || /^\s/.test(nombre)) { //NO TIENE QUE PERMITIR NUMEROS
+    if (nombre == null || nombre.length == 0 || !/^([^0-9]*)$/.test(nombre)) { //NO TIENE QUE PERMITIR NUMEROS
         alert("El nombre ingresado no es valido");
         return false;
     }
-    if (apellido == null || apellido.length == 0 || /^\s+$/.test(apellido)) {  //NO TIENE QUE PERMITIR NUMEROS
+    if (apellido == null || apellido.length == 0 || !/^([^0-9]*)$/.test(apellido)) {  //NO TIENE QUE PERMITIR NUMEROS
         alert("El apellido ingresado no es valido");
         return false;
     }
