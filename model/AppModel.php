@@ -122,13 +122,13 @@ class AppModel extends PDORepository {
     public function busqueda_completa($datos){
         $origen= $this->getCiudad($datos["origen"]);
         $destino= $this->getCiudad($datos["destino"]);
-        $fecha= "'".$datos["salida"]."'";
+        $fecha= $datos["salida"];
         /*$sql="SELECT * FROM viaje WHERE id_origen=".$origen[0]["id"]." AND id_destino=".$destino[0]["id"]." AND fecha=\'".$fecha. "';";
         $answer= $this->queryList($sql, []);
         var_dump($answer);*/
-
-        $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND id_destino=:destino AND fecha=`:fecha`", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
+        $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND id_destino=:destino AND fecha=:fecha", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
         var_dump($answer);
+		return $answer;
     }
 
     public function busqueda_parcial($datos){
