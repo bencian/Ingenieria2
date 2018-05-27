@@ -74,76 +74,12 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-<<<<<<< HEAD
-	/*public function validarMail($datos){
-=======
-
-	public function validarMail($datos){
->>>>>>> 0104d9eed6ec3c7286e0d31b1bf48a15897c6583
-        if (isset($datos["email"])){
-            $answer = $this->existeMail($datos["email"]);
-            if ($answer) { 
-                return false; 
-            } else { 
-                return true;
-            }
-        } else {
-            return true;
-        }
-<<<<<<< HEAD
-    }*/
-	
-=======
-
-    }
-
->>>>>>> 0104d9eed6ec3c7286e0d31b1bf48a15897c6583
 	public function actualizarUsuario($datos){
 		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
 		 return $answer;
 	}
 
-    /*public function actualizar_usuario($datos){
->>>>>>> a48e20ac1a25fa3a7f9e801751bd5f79bc3df098
-
-        $consulta = "UPDATE usuario SET (";
-        $args=[];
-        if(isset($datos["email"])){
-            $consulta.= "email = ? ,";
-            $args["email"] = $datos["email"];
-        }
-        if(isset($datos["nombre"])){
-            $consulta.= "nombre = ? ,";
-            $args["nombre"] = $datos["nombre"];
-        }
-        if(isset($datos["apellido"])){
-            $consulta.= "apellido = ? ,";
-            $args["apellido"] = $datos["apellido"];
-        }
-        if(isset($datos["pass"])){
-            $consulta.= "password = ? ,";
-            $args["password"] = $datos["pass"];
-        }
-        if(isset($datos["nacimiento"])){
-            $consulta.= "fecha_nacimiento = ? ,";
-            $args["fecha_nacimiento"] = $datos["nacimiento"];
-        }
-        $args["id"] = $_SESSION["id"];
-        $consulta.= substr($consulta, 0, -1);
-        $consulta.=") WHERE id=?";
-
-        $answer = $this->queryList($consulta,[ $args] );
-        return $answer;
-
-    }*/ //cambio esto para tener los campos viejos y actualizar todo
-<<<<<<< HEAD
-	
-	public function busqueta_completa($datos){
-=======
-
-
     public function busqueta_completa($datos){
->>>>>>> 0104d9eed6ec3c7286e0d31b1bf48a15897c6583
         $answer= $this->queryList("SELECT * FROM viajes WHERE id_origen=? AND id_destino=? AND fecha=?",[$datos["origen"], $datos["destino"], $datos["fecha"]]);
         return $answer;
     }
