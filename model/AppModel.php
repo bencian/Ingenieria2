@@ -79,13 +79,66 @@ class AppModel extends PDORepository {
 		 return $answer;
 	}
 
-    public function busqueta_completa($datos){
-        $answer= $this->queryList("SELECT * FROM viajes WHERE id_origen=? AND id_destino=? AND fecha=?",[$datos["origen"], $datos["destino"], $datos["fecha"]]);
+
+    /*public function actualizar_usuario($datos){
+
+
+        $consulta = "UPDATE usuario SET (";
+        $args=[];
+        if(isset($datos["email"])){
+            $consulta.= "email = ? ,";
+            $args["email"] = $datos["email"];
+        }
+        if(isset($datos["nombre"])){
+            $consulta.= "nombre = ? ,";
+            $args["nombre"] = $datos["nombre"];
+        }
+        if(isset($datos["apellido"])){
+            $consulta.= "apellido = ? ,";
+            $args["apellido"] = $datos["apellido"];
+        }
+        if(isset($datos["pass"])){
+            $consulta.= "password = ? ,";
+            $args["password"] = $datos["pass"];
+        }
+        if(isset($datos["nacimiento"])){
+            $consulta.= "fecha_nacimiento = ? ,";
+            $args["fecha_nacimiento"] = $datos["nacimiento"];
+        }
+        $args["id"] = $_SESSION["id"];
+        $consulta.= substr($consulta, 0, -1);
+        $consulta.=") WHERE id=?";
+
+        $answer = $this->queryList($consulta,[ $args] );
+        return $answer;
+
+    }*/ //cambio esto para tener los campos viejos y actualizar todo
+
+    public function getCiudad($datos){
+        $answer= $this->queryList("SELECT id FROM ciudad WHERE nombre=?",[$datos]);
         return $answer;
     }
 
-    public function busqueta_parcial($datos){
-        $answer= $this->queryList("SELECT * FROM viajes WHERE id_origen=? AND fecha=?",[$datos["origen"], $datos["fecha"]]);
+    public function busqueda_completa($datos){
+        $origen= $this->getCiudad($datos["origen"]);
+        $destino= $this->getCiudad($datos["destino"]);
+        $fecha= "'".$datos["salida"]."'";
+        /*$sql="SELECT * FROM viaje WHERE id_origen=".$origen[0]["id"]." AND id_destino=".$destino[0]["id"]." AND fecha=\'".$fecha. "';";
+        $answer= $this->queryList($sql, []);
+        var_dump($answer);*/
+
+        $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND id_destino=:destino AND fecha=`:fecha`", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
+        var_dump($answer);
+    }
+
+    public function busqueda_parcial($datos){
+        $origen= $this->getCiudad($datos["origen"]);
+        $fecha= "'".$datos["salida"]."'";
+
+        $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND fecha=`:fecha`", ["origen"=>$origen[0]["id"], "fecha"=>$fecha]);
         return $answer;
     }
 }
+
+/* SELECT * FROM viaje WHERE id_origen='1' AND fecha='2018-05-10' */
+

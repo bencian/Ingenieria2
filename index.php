@@ -39,4 +39,3 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "lista_vehiculos"){
 	AppController::getInstance()->listar_vehiculos($_GET);
 }
-

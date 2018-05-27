@@ -316,12 +316,14 @@ class AppController {
 	
 	public function buscador($datos){
 		$view = new Home();
-		$bd = AppModel::getInstance();
-		if(isset($datos["origen"]) && isset($datos["salida"])){
-			if(isset($datos["destino"])){
-				$bd->busqueda_completa($datos);
+		$viajes= AppModel::getInstance();
+		if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){
+			if(isset($datos["destino"]) && $datos["destino"]!=""){
+				$viajes->busqueda_completa($datos);
+				$view->listarViajes($viajes);
 			} else {
-				$bd->busqueda_parcial($datos);
+				$viajes->busqueda_parcial($datos);
+				$view->listarViajes($viajes);
 			}
 		} else {
 			echo "Faltan ingresar datos";
