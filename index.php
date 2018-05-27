@@ -34,7 +34,8 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->modificar_perfil();
 } elseif ($_GET["action"] == "actualizar_perfil"){
 	AppController::getInstance()->actualizar_perfil($_POST);
-}  elseif ($_GET["action"] == "buscando"){
-	AppController::getInstance()->buscador($_POST);
-} 
-
+} elseif ($_GET["action"] == "buscando"){
+	AppController::getInstance()->buscador($_GET);
+} elseif ($_GET["action"] == "lista_vehiculos"){
+	AppController::getInstance()->listar_vehiculos($_GET);
+}

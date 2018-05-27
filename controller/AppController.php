@@ -328,5 +328,12 @@ class AppController {
 			echo "Faltan ingresar datos";
 		}
 	}
+	
+	public function listar_vehiculos(){
+		$view = new Home();
+		$database = AppModel::getInstance();
+		$database->getVehiculos(); //falta un monton aca
+		$view->show("ver_vehiculos.html.twig");
+	}
 }
 
