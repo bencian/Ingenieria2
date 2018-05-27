@@ -34,7 +34,11 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->modificar_perfil();
 } elseif ($_GET["action"] == "actualizar_perfil"){
 	AppController::getInstance()->actualizar_perfil($_POST);
+<<<<<<< HEAD
 } elseif ($_GET["action"] == "buscando"){
+=======
+}  elseif ($_GET["action"] == "buscando"){
+>>>>>>> 0104d9eed6ec3c7286e0d31b1bf48a15897c6583
 	AppController::getInstance()->buscador($_GET);
 }
 

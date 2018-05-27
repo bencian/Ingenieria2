@@ -264,7 +264,26 @@ class AppController {
 		}
 		return $valor;
 	}*/
-
+/*
+	public function actualizar_perfil($datos){
+		$bd = AppModel::getInstance();
+		$view = new Home();
+		if(isset($datos)){
+			$test = $this->validacionModificacionUsuario($datos);
+			if($test){
+				$bd->actualizar_usuario($datos);
+				$view->show("index.html.twig");
+			} else {
+				if ($bd->existeMail($datos["email"])){
+					echo "Ya existe el mail en la base de datos ";
+				}
+				$view->show("registrarse.html.twig");
+			}
+		} else {
+		$view->show("registrarse.html.twig");
+		}			
+	}
+*/
 	public function validacionModificacionUsuario($datos){
 		//valida los datos desde servidor
 		$valor = true;
@@ -289,6 +308,33 @@ class AppController {
 			$valor = false;
 		}
 
+<<<<<<< HEAD
+	public function validacionModificacionUsuario($datos){
+		//valida los datos desde servidor
+		$valor = true;
+		var_dump($datos["pass"]);
+		if(isset($datos["pass"]) && $datos["pass"]!=""){
+			if(isset($datos["pass1"]) &&!($datos["pass"]==$datos["pass1"])){
+				echo "Las contraseñas no coinciden ";
+				$valor = false;
+			}
+			if(!(strlen($datos["pass"])>7)){
+				echo "La contraseña es muy corta ";
+				$valor = false;
+			}
+			if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
+				echo "La contraseña no contiene un simbolo o un numero ";
+				$valor = false;			
+			}
+
+		}
+		if(!($this->mayorDeEdad($datos["nacimiento"]))){
+			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+			$valor = false;
+		}
+
+=======
+>>>>>>> 0104d9eed6ec3c7286e0d31b1bf48a15897c6583
 		if(!((preg_match("#\W+#", $datos["oldPass"]))or($this->containsNumbers($datos["oldPass"])))){
 			echo "La contraseña no contiene un simbolo o un numero ";
 			$valor = false;			
@@ -309,3 +355,4 @@ class AppController {
 		}
 	}
 }
+

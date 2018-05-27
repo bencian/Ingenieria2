@@ -8,6 +8,7 @@ Inicio
 
 <div class="container">
 	<div class="row">
+<<<<<<< HEAD
 		<div class="col-sm-12 col-sm-offset-0 text-center well">
 			<div id="publicar_viaje" class="col-xs-4 col-md-4 col-lg-4">
 				<div class="row">
@@ -52,6 +53,74 @@ Inicio
 						</form>
 					</div>
 				</div>	
+=======
+    <div class="col-sm-12 col-sm-offset-0 text-center well">
+
+		<div id="publicar_viaje" class="col-xs-4 col-md-4 col-lg-4">
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-12 pull-right well">
+					<form id="buscador">
+						<div class="form-group">
+							<label for="">Fecha</label>
+							<input type="date" class="form-control" id="fecha" name="fecha" placeholder="Fecha" required>
+						</div>
+						<div class="form-group">
+							<label for="">Precio</label>
+							<input type="text" class="form-control" id="precio" name="precio" placeholder="precio" required>
+						</div>
+						<div class="form-group">
+							<label for="">Duracion</label>
+							<input type="text" class="form-control" id="duracion" name="durecion" placeholder="duracion" required>
+						</div>	
+						<div class="form-group">
+							<label for="">Origen</label>
+							<select class="form-control" id="origen" name="origen" required>
+								<option value=""> </option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="">Destino</label>
+							<select class="form-control" id="destino" name="destino">
+								<option value=""> </option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="">Vehiculo</label>
+							<select class="form-control" id="vehiculo" name="vehiculo" required>
+								<option value=""> </option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="">Comentarios</label>
+							<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios" required>
+						</div>
+						<cr>
+						<button type="submit" class="btn btn-primaryPink">Submit</button>
+					</form>
+				</div>
+			</div>	
+		</div>
+		<div id="buscador" class="col-xs-2 col-md-2 col-lg-2">
+			<div class="row" >
+				<div class="col-sm-11 col-sm-offset-11 pull-right well">
+					<form id="buscador" action="./?action=buscando">
+						<div class="form-group">
+							<label for="exampleInputPassword1">Origen</label>
+							<input type="text" class="form-control" id="origen" name="origen" placeholder="Origen" required>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputPassword1">Destino</label>
+							<input type="text" class="form-control" id="destino" name="destino" placeholder="Donde quieres ir?">
+						</div>
+						<div class="form-check">
+							<label for="exampleCheck1">Fecha de salida</label>
+							<input type="date" class="form-check-input" id="salida" name="salida" required>
+						</div>	
+						<br>
+						<button type="submit" class="btn btn-primaryPink">Submit</button>
+					</form>
+				</div>
+>>>>>>> 0104d9eed6ec3c7286e0d31b1bf48a15897c6583
 			</div>
 			<div id="buscador" class="col-xs-2 col-md-2 col-lg-2">
 				<div class="row" >
