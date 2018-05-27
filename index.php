@@ -19,7 +19,7 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "registrarse"){
 	AppController::getInstance()->registrarse($_POST);
 } elseif ($_GET["action"] == "registrar_vehiculo"){
-	AppController::getInstance()->registrar_vehiculo($_POST);
+	AppController::getInstance()->registrar_vehiculo();
 } elseif ($_GET["action"] == "crear_usuario"){
 	AppController::getInstance()->crear_usuario($_POST);
 } elseif ($_GET["action"] == "nueva_Sesion"){

@@ -34,7 +34,7 @@ class AppModel extends PDORepository {
 
 	
 	public function registrar($datos){
-        $answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
+		$answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
 		return $answer;
     }
 
@@ -59,7 +59,6 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-
     public function tipos(){
         $answer = $this->queryList("SELECT * FROM tipo", []);
         return $answer;
@@ -71,11 +70,12 @@ class AppModel extends PDORepository {
     }
 
     public function registrar_vehiculo($datos){
-        $answer = $this->queryList("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo)" , [ "asientos"=> $datos["asientos"], "marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo_id" => $datos["tipo"]]);
+        $answer = $this->queryList("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
         return $answer;
     }
 
-    public function validarMail($datos){
+
+	public function validarMail($datos){
         if (isset($datos["email"])){
             $answer = $this->existeMail($datos["email"]);
             if ($answer) { 
@@ -89,7 +89,13 @@ class AppModel extends PDORepository {
 
     }
 
-    public function actualizar_usuario($datos){
+	public function actualizarUsuario($datos){
+		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
+		 return $answer;
+	}
+
+    /*public function actualizar_usuario($datos){
+>>>>>>> a48e20ac1a25fa3a7f9e801751bd5f79bc3df098
 
         $consulta = "UPDATE usuario SET (";
         $args=[];
@@ -119,8 +125,8 @@ class AppModel extends PDORepository {
 
         $answer = $this->queryList($consulta,[ $args] );
         return $answer;
-    }
 
+    }*/ //cambio esto para tener los campos viejos y actualizar todo
 
 
     public function busqueta_completa($datos){

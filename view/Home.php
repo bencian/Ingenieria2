@@ -32,4 +32,8 @@ class Home extends TwigView {
 		echo self::getTwig()->render("registrar_vehiculo.html.twig", array("tipoVehiculo" => $datos));
 	}
 
+	public function camposModificarPerfil($datos){
+		echo self::getTwig()->render("modificar_perfil.html.twig", array("campoPerfil" => $datos));
+	}
+
 }
