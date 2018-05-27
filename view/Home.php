@@ -19,13 +19,15 @@ class Home extends TwigView {
     public function errorLogin($dato){
     	echo self::getTwig()->render("login.html.twig", array("errorTipo" => $dato));
     }
-
-    public function registrarVehiculo($dato){
+	
+	 public function registrarVehiculo($dato){
     	echo self::getTwig()->render("registrar_vehiculo.html.twig", array("tiposVehiculos" => $dato));
     }
-
+	
 	public function mostrarNombre($dato){
-		echo self::getTwig()->render("perfil.html.twig", array("nombre" => $dato));
+		$vector["nombre"] = $dato["nombre"];
+		$vector["email"] = $dato["email"];
+		echo self::getTwig()->render("perfil.html.twig", $vector );
 	}
 	
 	public function formularioTipoVehiculos($datos){

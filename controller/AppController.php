@@ -165,8 +165,10 @@ class AppController {
 		if(isset($_SESSION)){
 			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
 			$nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
+			$mostrarDatos["nombre"] = $nombre;
+			$mostrarDatos["email"] = $datosUsuario[0]["email"];
 			$view = new Home();
-			$view->mostrarNombre($nombre);
+			$view->mostrarNombre($mostrarDatos);
 		}
 	}
 
@@ -305,14 +307,13 @@ class AppController {
 			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
 			$valor = false;
 		}
-
 		if(!((preg_match("#\W+#", $datos["oldPass"]))or($this->containsNumbers($datos["oldPass"])))){
 			echo "La contraseña no contiene un simbolo o un numero ";
 			$valor = false;			
 		}
 		return $valor;
 	}
-
+	
 	public function buscador($datos){
 		$view = new Home();
 		if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){

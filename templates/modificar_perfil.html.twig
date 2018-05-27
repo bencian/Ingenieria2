@@ -11,63 +11,59 @@ Modificar perfil
 {% block container %}
 
 <div class="container">
-   <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 text-center well">
-
-<form class="col-lg-12" method="post" action="./?action=actualizar_perfil">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email</label>
-    <input type="email"  class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Ingresa tu email!" 
-	{% if campoPerfil is defined %} 
-		value="{{ campoPerfil.email }}"
-	{% endif %}>
-
-  </div>
-
-  <div class="form-group">
-    <label for="exampleInputPassword1">Nombre</label>
-
-    <input type="text"  class="form-control" id="nombre" name="nombre" placeholder="Nombre"
-	{% if campoPerfil is defined %} 
-		value="{{ campoPerfil.nombre }}"
-	{% endif %}>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Apellido</label>
-    <input type="text"  class="form-control" id="apellido" name="apellido" placeholder="Apellido"
-	{% if campoPerfil is defined %} 
-		value="{{ campoPerfil.apellido }}"
-	{% endif %}>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Fecha de nacimiento</label>
-    <input type="date"  class="form-control" id="nacimiento" name="nacimiento" placeholder="Fecha de nacimiento"
-	{% if campoPerfil is defined %} 
-		value="{{ campoPerfil.fecha_nacimiento }}"
-	{% endif %}>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Contraseña</label>
-    <input type="password"  class="form-control" id="pass" name="pass" placeholder="Contraseña nueva"
-	{% if campoPerfil is defined %} 
-		value="{{ campoPerfil.password }}"
-	{% endif %}>
-  </div>
-
-  <div class="form-group">
-    <label for="exampleInputPassword1">Repita la contraseña</label>
-
-    <input type="password"  class="form-control" id="pass1" name="pass1" placeholder="Repita la contraseña nueva">
-
-  </div>
-
-    <div class="form-group">
-    <label for="exampleInputPassword1">Ingresa la contraseña actual</label>
-    <input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
-  </div>
- 
-  <input type="submit" class="btn btn-primaryPink" value='Registrarme'>
-</form>
+	<div class="row">
+		<div class="col-sm-4 col-sm-offset-4 text-center well">
+			<form class="col-lg-12" method="post" action="./?action=actualizar_perfil">
+				<div class="form-group">
+					<label for="exampleInputEmail1">Email</label>
+					<input type="email"  class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Ingresa tu email!" 
+					{% if campoPerfil is defined %} 
+						value="{{ campoPerfil.email }}"
+					{% endif %}>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Nombre</label>
+					<input type="text"  class="form-control" id="nombre" name="nombre" placeholder="Nombre"
+					{% if campoPerfil is defined %} 
+						value="{{ campoPerfil.nombre }}"
+					{% endif %}>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Apellido</label>
+					<input type="text"  class="form-control" id="apellido" name="apellido" placeholder="Apellido"
+					{% if campoPerfil is defined %} 
+						value="{{ campoPerfil.apellido }}"
+					{% endif %}>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Fecha de nacimiento</label>
+					<input type="date"  class="form-control" id="nacimiento" name="nacimiento" placeholder="Fecha de nacimiento"
+					{% if campoPerfil is defined %} 
+					value="{{ campoPerfil.fecha_nacimiento }}"
+					{% endif %}>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Contraseña</label>
+					<input type="password"  class="form-control" id="pass" name="pass" placeholder="Contraseña nueva"
+					{% if campoPerfil is defined %} 
+						value="{{ campoPerfil.password }}"
+					{% endif %}>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Repita la contraseña</label>
+					<input type="password"  class="form-control" id="pass1" name="pass1" placeholder="Repita la contraseña nueva"
+					{% if campoPerfil is defined %} 
+						value="{{ campoPerfil.password }}"
+					{% endif %}>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Ingresa la contraseña actual</label>
+					<input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
+				</div>
+				<input type="submit" class="btn btn-primaryPink" value='Registrarme'>
+			</form>
+		</div>
+	</div>
 </div>
 
 </div>

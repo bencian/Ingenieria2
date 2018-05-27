@@ -10,13 +10,34 @@ Mi perfil
 
 {% block container %}
 
-
-
-<div class="container">
-{% if nombre is defined %} <h4 style="text-align:left; color:black;"> {{ nombre }} </h4> {% endif %}
+<div class="container well">
+	{% if nombre is defined %} <h3 style="text-align:center; color:black;"> {{ nombre }} </h3> {% endif %}
+	{% if email is defined %} <h4 style="text-align:center; color:black;"> {{ email }} </h4> {% endif %}
 </div>
-<div>
-	<button class="btn btn-primaryPink"><a class="nav-link active" href="index.php?action=registrar_vehiculo">Registrar Vehiculo</a></button>
+<div class="container">
+	<div class="row row-list">	
+		<div id="calificaciones" class="col-xs-3 col-md-3 col-lg-3">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion">Ver calificaciones detalladas</a>
+			<!--cuando este la funcion de calificar, agregar con else aca-->
+			{% if not calificacion_piloto is defined %} <p style="text-align: left; color:black;"> Calificacion como piloto = 0</p> {% endif %} 
+			{% if not calificacion_copiloto is defined %} <p style="text-align: left; color:black;"> Calificacion como copiloto = 0</p> {% endif %}
+		</div>
+		<div id="historialViajes" class="col-xs-3 col-md-3 col-lg-3">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_historial">Ver historial de viajes</a>
+		</div>
+		<div id="listaVehiculos" class="col-xs-3 col-md-3 col-lg-3">
+			<a class="btn btn-primaryPink" href="index.php?action=lista_vehiculos">Ver vehiculos</a>
+		</div>
+		<div id="registrarVehiculo" class="col-xs-3 col-md-3 col-lg-3">
+			<a class="btn btn-primaryPink" href="index.php?action=registrar_vehiculo">Registrar Vehiculo</a>
+		</div>
+	</div>		
+	<div class="container" id="viajes_futuros">
+		<h4 style="text-align:center; color:black;"> Viajes futuros</h4>
+		<div class="well">
+			<p>	No hay viajes disponibles	</p>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

@@ -74,28 +74,14 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-
-	public function validarMail($datos){
-        if (isset($datos["email"])){
-            $answer = $this->existeMail($datos["email"]);
-            if ($answer) { 
-                return false; 
-            } else { 
-                return true;
-            }
-        } else {
-            return true;
-        }
-
-    }
-
 	public function actualizarUsuario($datos){
 		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
 		 return $answer;
 	}
 
+
     /*public function actualizar_usuario($datos){
->>>>>>> a48e20ac1a25fa3a7f9e801751bd5f79bc3df098
+
 
         $consulta = "UPDATE usuario SET (";
         $args=[];
@@ -127,6 +113,7 @@ class AppModel extends PDORepository {
         return $answer;
 
     }*/ //cambio esto para tener los campos viejos y actualizar todo
+
     public function getCiudad($datos){
         $answer= $this->queryList("SELECT id FROM ciudad WHERE nombre=?",[$datos]);
         return $answer;
@@ -142,8 +129,6 @@ class AppModel extends PDORepository {
 
         $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND id_destino=:destino AND fecha=`:fecha`", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
         var_dump($answer);
-
-        return $answer;
     }
 
     public function busqueda_parcial($datos){
