@@ -1,24 +1,20 @@
 {% extends "base.html.twig" %}
 
+{% block title %}
+Registrate!
+{% endblock %}
+
 {% block stylesheets %}
 <script src="./templates/js/validacionRegistro.js"></script>
 {% endblock %}
 
 {% block container %}
-<nav class="nav" id="navbar">
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link active" href="index.php">Inicio</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="index.php?action=login">Login</a>
-  </li>
-  
-  </ul>
-</nav>
-  <div class="container">
 
-<form class="col-lg-4" method="post" action="./?action=crear_usuario" onsubmit="return validarRegistro()">
+  <div class="container">
+     <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 text-center well">
+
+<form class="col-lg-12" method="post" action="./?action=crear_usuario" onsubmit="return validarRegistro()">
   <div class="form-group">
     <label for="exampleInputEmail1">Email</label>
     <input type="email" required class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Ingresa tu email!">
@@ -53,5 +49,7 @@
   </div>
   <input type="submit" class="btn btn-primaryPink" value='Registrarme'>
 </form>
+</div>
+</div>
 </div>
 {% endblock %}

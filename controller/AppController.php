@@ -103,31 +103,32 @@ class AppController {
 	
 	public function validacionUsuario($datos){
 		//valida los datos desde servidor
+		$valor=true;	
 		if(!(preg_match("#^([^0-9]*)$#",$datos["nombre"]))){
 			echo "El nombre no puede tener numeros";
-			return false;
+			$valor= false;
 		}
 		if(!(preg_match("#^([^0-9]*)$#",$datos["apellido"]))){
 			echo "El apellido no puede tener numeros";
-			return false;
+			$valor= false;
 		}
 		if(!($datos["pass"]==$datos["pass1"])){
 			echo "Las contraseñas no coinciden ";
-			return false;
+			$valor= false;
 		}
 		if(!(strlen($datos["pass"])>7)){
 			echo "La contraseña es muy corta ";
-			return false;
+			$valor= false;
 		}
 		if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
 			echo "La contraseña no contiene un simbolo o un numero ";
-			return false;			
+			$valor= false;			
 		}
 		if(!($this->mayorDeEdad($datos["nacimiento"]))){
 			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
-			return false;
+			$valor= false;
 		}
-		return true;
+		return $valor;
 	}
 
 	public function validar_Inicio_Sesion(){
@@ -164,8 +165,10 @@ class AppController {
 		if(isset($_SESSION)){
 			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
 			$nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
+			$mostrarDatos["nombre"] = $nombre;
+			$mostrarDatos["email"] = $datosUsuario[0]["email"];
 			$view = new Home();
-			$view->mostrarNombre($nombre);
+			$view->mostrarNombre($mostrarDatos);
 		}
 	}
 
@@ -262,4 +265,47 @@ class AppController {
 		return $valor;
 	}*/
 
+	public function validacionModificacionUsuario($datos){
+		//valida los datos desde servidor
+		$valor = true;
+		var_dump($datos["pass"]);
+		if(isset($datos["pass"]) && $datos["pass"]!=""){
+			if(isset($datos["pass1"]) &&!($datos["pass"]==$datos["pass1"])){
+				echo "Las contraseñas no coinciden ";
+				$valor = false;
+			}
+			if(!(strlen($datos["pass"])>7)){
+				echo "La contraseña es muy corta ";
+				$valor = false;
+			}
+			if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
+				echo "La contraseña no contiene un simbolo o un numero ";
+				$valor = false;			
+			}
+
+		}
+		if(!($this->mayorDeEdad($datos["nacimiento"]))){
+			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+			$valor = false;
+		}
+
+		if(!((preg_match("#\W+#", $datos["oldPass"]))or($this->containsNumbers($datos["oldPass"])))){
+			echo "La contraseña no contiene un simbolo o un numero ";
+			$valor = false;			
+		}
+		return $valor;
+	}
+
+	public function buscador($datos){
+		$view = new Home();
+		if(isset($datos["origen"]) && isset($datos["salida"])){
+			if(isset($datos["destino"])){
+				$bd = AppModel::getInstance()->busqueda_completa($datos);
+			} else {
+				$bd = AppModel::getInstance()->busqueda_parcial($datos);
+			}
+		} else {
+			echo "Faltan ingresar datos";
+		}
+	}
 }

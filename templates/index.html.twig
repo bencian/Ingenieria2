@@ -1,52 +1,45 @@
 {% extends "base.html.twig" %}
 
-{% block container %}
-<nav class="nav" id="navbar">
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link active" href="index.php">Inicio</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="index.php?action=login">Login</a>
-  </li>
-  <li class="nav-item" id="register">
-    <a class="nav-link disabled" href="index.php?action=registrarse">Registrarse</a>
-  </li>
+{% block title %}
+Inicio
+{% endblock %}
 
-</ul>
-</nav>
+{% block container %}
 
 <div class="container">
-	<div class="row row-list">
-		<div id="buscador" class="col-xs-4 col-md-4 col-lg-4">
-			<div class="row" >
-				<div class="col-sm-12 col-sm-offset-12 pull-right well">
-					<form id="buscador">
-						<div class="form-group">
-							<label for="exampleInputPassword1">Origen</label>
-							<input type="text" class="form-control" id="origen" placeholder="Origen" required>
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1">Destino</label>
-							<input type="text" class="form-control" id="destino" placeholder="Donde quieres ir?">
-						</div>
-						<div class="form-check">
-							<label for="exampleCheck1">Fecha de salida</label>
-							<input type="date" class="form-check-input" id="salida" required>
-						</div>	
-						<br>
-						<button type="submit" class="btn btn-primaryPink">Submit</button>
-					</form>
+	<div class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center well">
+			<div id="buscador" class="col-xs-4 col-md-4 col-lg-4">
+				<div class="row" >
+					<div class="col-sm-12 col-sm-offset-12 pull-right well">
+						<form id="buscador">
+							<div class="form-group">
+								<label for="exampleInputPassword1">Origen</label>
+								<input type="text" class="form-control" id="origen" placeholder="Origen" required>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputPassword1">Destino</label>
+								<input type="text" class="form-control" id="destino" placeholder="Donde quieres ir?">
+							</div>
+							<div class="form-check">
+								<label for="exampleCheck1">Fecha de salida</label>
+								<input type="date" class="form-check-input" id="salida" required>
+							</div>	
+							<br>
+							<button type="submit" class="btn btn-primaryPink">Submit</button>
+						</form>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="viajes_actuales" class="col-xs-8 col-md-8 col-lg-8">
-			<div class="row">
-				<div class="col-sm-11 col-sm-offset-11 pull-right well">
-					<p>	No hay viajes disponibles	</p>
+			<div id="viajes_actuales" class="col-xs-8 col-md-8 col-lg-8">
+				<div class="row">
+					<div class="col-sm-11 col-sm-offset-11 pull-right well">
+						<p>	No hay viajes disponibles	</p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<br>
+</div>
 {% endblock %}

@@ -74,7 +74,7 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-	public function validarMail($datos){
+	/*public function validarMail($datos){
         if (isset($datos["email"])){
             $answer = $this->existeMail($datos["email"]);
             if ($answer) { 
@@ -85,8 +85,8 @@ class AppModel extends PDORepository {
         } else {
             return true;
         }
-
-    }
+    }*/
+	
 	public function actualizarUsuario($datos){
 		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
 		 return $answer;
@@ -123,4 +123,14 @@ class AppModel extends PDORepository {
         $answer = $this->queryList($consulta,[ $args] );
         return $answer;
     }*/ //cambio esto para tener los campos viejos y actualizar todo
+	
+	public function busqueta_completa($datos){
+        $answer= $this->queryList("SELECT * FROM viajes WHERE id_origen=? AND id_destino=? AND fecha=?",[$datos["origen"], $datos["destino"], $datos["fecha"]]);
+        return $answer;
+    }
+
+    public function busqueta_parcial($datos){
+        $answer= $this->queryList("SELECT * FROM viajes WHERE id_origen=? AND fecha=?",[$datos["origen"], $datos["fecha"]]);
+        return $answer;
+    }
 }
