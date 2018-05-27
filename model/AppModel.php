@@ -71,6 +71,10 @@ class AppModel extends PDORepository {
 
     public function registrar_vehiculo($datos){
         $answer = $this->queryList("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
+        /*var_dump($answer);
+        if ($answer){
+            $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$_SESSION["id"], "vehiculo"=>$answer[0]["id"]]);
+        }*/
         return $answer;
     }
 
@@ -126,16 +130,18 @@ class AppModel extends PDORepository {
         /*$sql="SELECT * FROM viaje WHERE id_origen=".$origen[0]["id"]." AND id_destino=".$destino[0]["id"]." AND fecha=\'".$fecha. "';";
         $answer= $this->queryList($sql, []);
         var_dump($answer);*/
+
         $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND id_destino=:destino AND fecha=:fecha", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
-        var_dump($answer);
-		return $answer;
+        array_push($answer[0], $origen, $destino);
+        var_dump($answer[0]);
+        return $answer;
     }
 
     public function busqueda_parcial($datos){
         $origen= $this->getCiudad($datos["origen"]);
-        $fecha= "'".$datos["salida"]."'";
+        $fecha= $datos["salida"];
 
-        $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND fecha=`:fecha`", ["origen"=>$origen[0]["id"], "fecha"=>$fecha]);
+        $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND fecha=:fecha", ["origen"=>$origen[0]["id"], "fecha"=>$fecha]);
         return $answer;
     }
 }
