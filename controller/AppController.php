@@ -316,15 +316,23 @@ class AppController {
 	
 	public function buscador($datos){
 		$view = new Home();
+		$bd = AppModel::getInstance();
 		if(isset($datos["origen"]) && isset($datos["salida"])){
 			if(isset($datos["destino"])){
-				$bd = AppModel::getInstance()->busqueda_completa($datos);
+				$bd->busqueda_completa($datos);
 			} else {
-				$bd = AppModel::getInstance()->busqueda_parcial($datos);
+				$bd->busqueda_parcial($datos);
 			}
 		} else {
 			echo "Faltan ingresar datos";
 		}
+	}
+	
+	public function listar_vehiculos(){
+		$view = new Home();
+		$database = AppModel::getInstance();
+		$database->getVehiculos(); //falta un monton aca
+		$view->show("ver_vehiculos.html.twig");
 	}
 }
 
