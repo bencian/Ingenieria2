@@ -39,7 +39,7 @@ class Home extends TwigView {
 	}
 
 	public function listarViajes($datos){
-		echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => []));
+		echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos));
 	}
 
 }
