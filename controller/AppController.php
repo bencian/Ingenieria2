@@ -66,8 +66,13 @@ class AppController {
 
     public function registrar_vehiculo(){
         $view = new Home();
-        $view->show("registrar_vehiculo.html.twig");
-
+		$bd = AppModel::getInstance();
+		$tipos = $bd->tipos();
+		$vector = array();
+		for ($i=0;$i<count($tipos);$i++){
+			array_push($vector,$tipos[$i]["nombre"]);
+		}
+		$view->formularioTipoVehiculos($vector);
     }
 
 	public function containsNumbers($String){
@@ -98,7 +103,7 @@ class AppController {
 	
 	public function validacionUsuario($datos){
 		//valida los datos desde servidor
-		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))&&($this->mayorDeEdad($datos["nacimiento"])));
+		$valor = (($datos["pass"]==$datos["pass1"])&&(strlen($datos["pass"])>7)&&((preg_match("#\W*#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))&&($this->mayorDeEdad($datos["nacimiento"])));
 		if(!($datos["pass"]==$datos["pass1"])){
 			echo "Las contraseñas no coinciden ";
 		}
@@ -122,7 +127,7 @@ class AppController {
                 if (count($usuario) == 0){
                     //Aviso que no existe usuario o que no corresponde con su psw
                     $view = new Home();
-        			$view->errorLogin("el usr no corresponde con la contraseña");
+        			$view->errorLogin("el usuario no corresponde con la contraseña");
                 }else{
                 	$vector_usuario = AppModel::getInstance()->getId($datos['nombre_usuario']);
 					$usuario_id = (int)$vector_usuario[0][0];
@@ -156,7 +161,7 @@ class AppController {
 			$datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']);
 			$nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
 			$view = new Home();
-			$view->show("perfil.html.twig");
+			$view->mostrarNombre($nombre);
 		}
 	}
 
@@ -165,19 +170,85 @@ class AppController {
 		$view = new Home();
 		if(isset($datos)){
 			$test = $this->validar_vehiculo($datos);
-			if(!($bd->existeTipo($datos["tipo"]))&&($test)){
-				var_dump($test);
+			if(($bd->existeTipo($datos["tipo"]))&&($test)){
+				var_dump($datos);
 				$bd->registrar_vehiculo($datos);
-				$view->show("index.html.twig");
+				$view->show("sesion.html.twig");
 			}
-			$view->show("index.html.twig");
 		}
-		$view->show("registrar_vehiculo.html.twig");
 	}
 
 	public function validar_vehiculo($datos){
-		$valor = ((preg_match("[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
+		$valor = ((preg_match("#[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}#", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
 		return $valor;
 	}
 
+	public function modificar_perfil(){
+		$view = new Home();
+        $view->show("modificar_perfil.html.twig");
+	}
+
+	public function actualizar_perfil($datos){
+		$bd = AppModel::getInstance();
+		$view = new Home();
+		if(isset($datos)){
+			$test = $this->validacionModificacionUsuario($datos);
+			if($test){
+				$bd->actualizar_usuario($datos);
+				$view->show("index.html.twig");
+			} else {
+				if ($bd->existeMail($datos["email"])){
+					echo "Ya existe el mail en la base de datos ";
+				}
+				$view->show("registrarse.html.twig");
+			}
+		} else {
+		$view->show("registrarse.html.twig");
+		}			
+	}
+
+	public function validacionModificacionUsuario($datos){
+		//valida los datos desde servidor
+		$valor = true;
+		var_dump($datos["pass"]);
+		if(isset($datos["pass"]) && $datos["pass"]!=""){
+			if(isset($datos["pass1"]) &&!($datos["pass"]==$datos["pass1"])){
+				echo "Las contraseñas no coinciden ";
+				$valor = false;
+			}
+			if(!(strlen($datos["pass"])>7)){
+				echo "La contraseña es muy corta ";
+				$valor = false;
+			}
+			if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
+				echo "La contraseña no contiene un simbolo o un numero ";
+				$valor = false;			
+			}
+
+		}
+		if(!($this->mayorDeEdad($datos["nacimiento"]))){
+			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+			$valor = false;
+		}
+
+		if(!((preg_match("#\W+#", $datos["oldPass"]))or($this->containsNumbers($datos["oldPass"])))){
+			echo "La contraseña no contiene un simbolo o un numero ";
+			$valor = false;			
+		}
+		return $valor;
+	}
+
+	public function buscador($datos){
+		$view = new Home();
+		if(isset($datos["origen"]) && isset($datos["salida"])){
+			if(isset($datos["destino"])){
+				$bd = AppModel::getInstance()->busqueda_completa($datos);
+			} else {
+				$bd = AppModel::getInstance()->busqueda_parcial($datos);
+			}
+		} else {
+			echo "Faltan ingresar datos";
+		}
+	}
 }
+

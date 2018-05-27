@@ -1,21 +1,13 @@
 {% extends "base.html.twig" %}
 
-{% block container %}
-<nav class="nav" id="navbar">
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link active" href="index.php">Inicio</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="index.php?action=login">Login</a>
-  </li>
-  <li class="nav-item" id="register">
-    <a class="nav-link disabled" href="index.php?action=registrarse">Registrarse</a>
+{% block title %}
+Inicio
+{% endblock %}
 
-</ul>
-</nav>
+{% block container %}
 
 <div class="container">
+
   <div class="row row-list">
     <div id="buscador" class="col-xs-4 col-md-4 col-lg-4">
       <div class="row" >
@@ -47,5 +39,7 @@
       </div>
     </div>
   </div>
+</div>
   <br>
+  
 {% endblock %}

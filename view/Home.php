@@ -23,4 +23,13 @@ class Home extends TwigView {
     public function registrarVehiculo($dato){
     	echo self::getTwig()->render("registrar_vehiculo.html.twig", array("tiposVehiculos" => $dato));
     }
+
+	public function mostrarNombre($dato){
+		echo self::getTwig()->render("perfil.html.twig", array("nombre" => $dato));
+	}
+	
+	public function formularioTipoVehiculos($datos){
+		echo self::getTwig()->render("registrar_vehiculo.html.twig", array("tipoVehiculo" => $datos));
+	}
+
 }
