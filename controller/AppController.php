@@ -330,11 +330,10 @@ class AppController {
 		}
 	}
 	
-	/*public function listar_vehiculos(){
+	public function listar_vehiculos(){
 		$view = new Home();
-		$database = AppModel::getInstance();
-		$database->getVehiculos(); //falta un monton aca
-		$view->show("ver_vehiculos.html.twig");
-	}*/
+		$vehiculos=AppModel::getInstance()->getVehiculos(); //falta un monton aca
+		$view->listarVehiculosPropios($vehiculos);
+	}
 }
 
