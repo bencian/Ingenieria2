@@ -163,7 +163,13 @@ class AppModel extends PDORepository {
         }
         return $answer;
     }
+
+    public function eliminarViaje($idViaje){
+        //Elimina el viaje con id pasado por parametro
+        $this->queryList("DELETE FROM viaje WHERE id=:id_viaje", ['id_viaje'=>$idViaje]);
+    }
 }
+
 
 /* SELECT * FROM viaje WHERE id_origen='1' AND fecha='2018-05-10' */
 
