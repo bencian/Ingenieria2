@@ -178,6 +178,7 @@ class AppController {
 		if(isset($datos)){
 			$test = $this->validar_vehiculo($datos);
 			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
+				$datos["id_usuario"] = $_SESSION['id'];
 				$bd->registrar_vehiculo($datos);
 				$view->show("sesion.html.twig");
 			} else {
