@@ -334,5 +334,19 @@ class AppController {
 		$vehiculos=AppModel::getInstance()->getVehiculos(); //falta un monton aca
 		$view->listarVehiculosPropios($vehiculos);
 	}
+
+	public function eliminarViaje($idViaje){
+		$today = date("Y/m/d")
+		$fechaViaje = ($_POST['fecha'])
+		if ( $today < $fechaViaje ){ 
+			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
+			$result = AppModel::getInstance()->eliminarViaje($idViaje);
+			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
+		} else { 
+			echo "el viaje ya se realizó";
+		}
+	}
+
+
 }
 

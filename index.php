@@ -38,4 +38,14 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->buscador($_GET);
 } elseif ($_GET["action"] == "lista_vehiculos"){
 	AppController::getInstance()->listar_vehiculos($_GET);
+} elseif($_GET['action'] == "eliminar_viaje"){
+    if(isset($_GET['id'])){
+        if(is_numeric($_GET['id'])){
+            AppController::getInstance()->eliminarViaje($_GET['id']);
+        } else {
+            AppController::getInstance()->mostrarPerfil();
+        }
+    } else {
+        AppController::getInstance()->mostrarPerfil();
+    }
 }
