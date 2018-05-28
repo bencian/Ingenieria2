@@ -70,8 +70,10 @@ class AppController {
 		$tipos = $bd->tipos();
 		$vector = array();
 		for ($i=0;$i<count($tipos);$i++){
-			array_push($vector,$tipos[$i]["nombre"]);
+			$vector[$i]["nombre"]= $tipos[$i]["nombre"];
+			$vector[$i]["id"]= $tipos[$i]["id"];
 		}
+		var_dump($vector);
 		$view->formularioTipoVehiculos($vector);
     }
 
@@ -288,7 +290,6 @@ class AppController {
 	public function validacionModificacionUsuario($datos){
 		//valida los datos desde servidor
 		$valor = true;
-		var_dump($datos["pass"]);
 		if(isset($datos["pass"]) && $datos["pass"]!=""){
 			if(isset($datos["pass1"]) &&!($datos["pass"]==$datos["pass1"])){
 				echo "Las contraseñas no coinciden ";
@@ -332,7 +333,7 @@ class AppController {
 	
 	public function listar_vehiculos(){
 		$view = new Home();
-		$vehiculos=AppModel::getInstance()->getVehiculos(); //falta un monton aca
+		$vehiculos=AppModel::getInstance()->getVehiculos(); 
 		$view->listarVehiculosPropios($vehiculos);
 	}
 }

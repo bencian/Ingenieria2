@@ -36,8 +36,8 @@
     <select class="form-control" id="tipo" name="tipo" placeholder="Tipo de vehiculo">
 
 {% if tipoVehiculo is defined %} 
-	{% for key,nombre in tipoVehiculo %}
-      <option value={{ key }}>{{ nombre }}</option>
+	{% for each in tipoVehiculo %}
+      <option value={{ each.id }}>{{ each.nombre }}</option>
     {% endfor %}
 {% endif %}
 
