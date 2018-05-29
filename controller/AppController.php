@@ -89,8 +89,8 @@ class AppController {
 		$mes = (int) date('m');
 		$dia = (int) date('d');
 		$bool = false;
-		if($anio-$tempArray[0]>14){
-			if($anio-$tempArray[0]==15){
+		if($anio-$tempArray[0]>15){
+			if($anio-$tempArray[0]==16){
 				if ($mes-$tempArray[1]>-1){
 					if($dia-$tempArray[2]>-1){
 						$bool = true;
@@ -127,7 +127,7 @@ class AppController {
 			$valor= false;			
 		}
 		if(!($this->mayorDeEdad($datos["nacimiento"]))){
-			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+			echo "Necesitas tener al menos 16 años para registrarte al sitio ";
 			$valor= false;
 		}
 		return $valor;
