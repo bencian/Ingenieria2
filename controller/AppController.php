@@ -337,19 +337,23 @@ class AppController {
 		$view->listarVehiculosPropios($vehiculos);
 	}
 
-
+/*
 	public function poseeViajes($datos){
 		return AppModel::getInstance()->poseeViajesEchos($datos);
 	}
-
+*/
 	public function eliminar_vehiculo($datos){
-		var_dump($datos);
-		$viajes=$this->poseeViajes($datos);
+		$viajes=AppModel::getInstance()->poseeViajesEchos($datos);
 		if($viajes){
 			/* borrar de usuarios_has_vehiculo */
+			AppModel::getInstance()->eliminarRelacionUsuarioVehiculo($datos);
 		} else {
 			/* borrar de usuarios_has_vehiculos y de vehiculos */
+			AppModel::getInstance()->eliminarRelacionUsuarioVehiculo($datos);
+			AppModel::getInstance()->borrarVehiculo($datos);
 		}
+		$view = new Home();
+		$view->show("sesion.html.twig");
 	}
 
 	public function eliminarViaje($idViaje){
