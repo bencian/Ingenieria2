@@ -49,8 +49,14 @@
 
 {% if vehiculo is defined %} 
 	{% for each in vehiculo %}
-      <option value={{ each.id }}>{{ each.nombre }}</option>
-    {% endfor %}
+    {% if each.nombre!=""%}
+      {% if vehiculo.0.tipo_id==each.id %}
+        <option selected="true" value={{ each.id }}>{{ each.nombre }}</option>
+      {% else %}
+        <option value={{ each.id }}>{{ each.nombre }}</option>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
 {% endif %}
 
     </select>

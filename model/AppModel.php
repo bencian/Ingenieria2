@@ -194,6 +194,15 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
+
+
+    public function getViajeOcasional($datos){
+        $answer = $this->queryList("SELECT * FROM viaje where id=?;", [ $datos ]);
+        $tmp = $this->queryList("SELECT * FROM viaje_ocacional where viaje_id=?;", [ $datos ]);
+        $answer["hora_salida"]=$tmp["hora_salida"];
+        return $answer;
+    }
+
 }
 
 

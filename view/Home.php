@@ -49,4 +49,9 @@ class Home extends TwigView {
 	public function modificarVehiculo($html,$datos){
 		echo self::getTwig()->render($html, array("vehiculo" => $datos));
 	}
+
+	public function modificarViajeOcacional($viaje){
+	/*"modificar_viaje_ocacional.html.twig";
+	*/
+	}
 }

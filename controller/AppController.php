@@ -400,6 +400,14 @@ class AppController {
 		}
 	}
 
+	public function modificar_viaje_ocasional($datos){
 
+		$view = new Home();
+		$bd = AppModel::getInstance();
+		$viaje = $bd->getViajeOcasional($datos["id"]);
+
+		
+		$view->modificarViajeOcasional($viaje);
+	}
 }
 
