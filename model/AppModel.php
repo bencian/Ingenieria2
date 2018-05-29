@@ -175,7 +175,7 @@ class AppModel extends PDORepository {
 	}
 	
 	public function actualizar_vehiculo($datos){
-		$answer = $this->queryList("UPDATE vehiculo SET marca=:marca, modelo=:modelo, patente=:patente, color=:color, tipo=:tipo, asientos=:asientos  WHERE id=:id", ["marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo" => $datos["tipo"],"asientos" => $datos["asientos"] , "id" => $datos["id"]]);
+		$answer = $this->queryList("UPDATE vehiculo SET marca=:marca, modelo=:modelo, patente=:patente, color=:color, tipo_id=:tipo_id, asientos=:asientos  WHERE id=:id", ["marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo_id" => $datos["tipo"],"asientos" => $datos["asientos"] , "id" => $datos["id"]]);
 		 return $answer;
 	}
 }
