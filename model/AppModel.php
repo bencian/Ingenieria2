@@ -165,7 +165,7 @@ class AppModel extends PDORepository {
     }
 
     public function poseeViajesEchos($datos){
-        $answer= $this->queryList("SELECT * FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo", [ "vehiculo"=>$datos["vehiculo"]]);
+        $answer= $this->queryList("SELECT * FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo", [ "vehiculo"=>$datos["id"]]);
         return $answer;
     }
 
@@ -187,6 +187,21 @@ class AppModel extends PDORepository {
 	public function actualizar_vehiculo($datos){
 		$answer = $this->queryList("UPDATE vehiculo SET marca=:marca, modelo=:modelo, patente=:patente, color=:color, tipo_id=:tipo_id, asientos=:asientos  WHERE id=:id", ["marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo_id" => $datos["tipo"],"asientos" => $datos["asientos"] , "id" => $datos["id"]]);
 		 return $answer;
+	}
+
+    public function eliminarRelacionUsuarioVehiculo($datos){
+        $answer= $this->queryList("DELETE FROM usuario_has_vehiculo WHERE vehiculo_id =:vehiculo", [ "vehiculo"=>$datos["id"]]);
+        return $answer;
+    }
+    
+    public function borrarVehiculo($datos){
+        $answer= $this->queryList("DELETE FROM vehiculo WHERE id =:vehiculo", [ "vehiculo"=>$datos["id"]]);
+        return $answer;
+    }
+	
+	public function getCiudades(){
+		$answer = $this->queryList("SELECT * FROM ciudad", []);
+		return $answer;
 	}
 
 }

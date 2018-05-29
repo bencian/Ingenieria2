@@ -32,7 +32,7 @@ class AppController {
 			$view->show("index.html.twig");
 		} else {
 			$view = new Home();
-			$view->show("sesion.html.twig");
+			$this->mostrarMenuPrincipalSesion();
 		}
 	}
 
@@ -89,8 +89,8 @@ class AppController {
 		$mes = (int) date('m');
 		$dia = (int) date('d');
 		$bool = false;
-		if($anio-$tempArray[0]>14){
-			if($anio-$tempArray[0]==15){
+		if($anio-$tempArray[0]>15){
+			if($anio-$tempArray[0]==16){
 				if ($mes-$tempArray[1]>-1){
 					if($dia-$tempArray[2]>-1){
 						$bool = true;
@@ -127,7 +127,7 @@ class AppController {
 			$valor= false;			
 		}
 		if(!($this->mayorDeEdad($datos["nacimiento"]))){
-			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+			echo "Necesitas tener al menos 16 años para registrarte al sitio ";
 			$valor= false;
 		}
 		return $valor;
@@ -147,7 +147,7 @@ class AppController {
 					$usuario_id = (int)$vector_usuario[0][0];
 					$_SESSION["id"]= $usuario_id;
 					$view = new Home();
-            		$view->show("sesion.html.twig"); //insertar pagina principal
+            		$this->mostrarMenuPrincipalSesion();
         	}
     	}
     }
@@ -182,7 +182,7 @@ class AppController {
 			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
 				$datos["id_usuario"] = $_SESSION['id'];
 				$bd->registrar_vehiculo($datos);
-				$view->show("sesion.html.twig");
+				$this->mostrarMenuPrincipalSesion();
 			} else {
 				$this->registrar_vehiculo();
 			}
@@ -337,19 +337,23 @@ class AppController {
 		$view->listarVehiculosPropios($vehiculos);
 	}
 
-
+/*
 	public function poseeViajes($datos){
 		return AppModel::getInstance()->poseeViajesEchos($datos);
 	}
-
+*/
 	public function eliminar_vehiculo($datos){
-		var_dump($datos);
-		$viajes=$this->poseeViajes($datos);
+		$viajes=AppModel::getInstance()->poseeViajesEchos($datos);
 		if($viajes){
 			/* borrar de usuarios_has_vehiculo */
+			AppModel::getInstance()->eliminarRelacionUsuarioVehiculo($datos);
 		} else {
 			/* borrar de usuarios_has_vehiculos y de vehiculos */
+			AppModel::getInstance()->eliminarRelacionUsuarioVehiculo($datos);
+			AppModel::getInstance()->borrarVehiculo($datos);
 		}
+		$view = new Home();
+		$this->mostrarMenuPrincipalSesion();
 	}
 
 	public function eliminarViaje($idViaje){
@@ -389,12 +393,22 @@ class AppController {
 				$datos["id"] = (int)$_POST["id"];
 				$datos["tipo"] = (int)$datos["tipo"];
 				$bd->actualizar_vehiculo($datos);
-				$view->show("sesion.html.twig");
+				$this->mostrarMenuPrincipalSesion();
 			} else {
 				$vehiculos=$bd->getVehiculos(); 
 				$view->$view->listarVehiculosPropios($vehiculos);
 			}
 		}
+	}
+	
+	public function mostrarMenuPrincipalSesion(){
+		$bd = AppModel::getInstance();
+		$view = new Home();
+		$ciudades = $bd->getCiudades();
+		$vectorFormulario["ciudades"] = $ciudades;
+		$vehiculosUsuario = $bd->getVehiculos();
+		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
+		$view->listarCiudadesMenuPrincipal($vectorFormulario);
 	}
 
 	public function listadoViajesGenerales(){

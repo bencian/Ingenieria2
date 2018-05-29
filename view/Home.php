@@ -50,7 +50,12 @@ class Home extends TwigView {
 		echo self::getTwig()->render($html, array("vehiculo" => $datos));
 	}
 
+
 	public function listarViajesGenerales($html,$datos){
 		echo self::getTwig()->render($html, array("datos" => $datos));
+
+	
+	public function listarCiudadesMenuPrincipal($datos){
+		echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos));
 	}
 }
