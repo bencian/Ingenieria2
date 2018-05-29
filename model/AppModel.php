@@ -168,6 +168,16 @@ class AppModel extends PDORepository {
         //Elimina el viaje con id pasado por parametro
         $this->queryList("DELETE FROM viaje WHERE id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
+	
+	public function getVehiculo($idVehiculo){
+		$answer = $this->queryList("SELECT * FROM vehiculo WHERE id=?", [$idVehiculo]);
+		return $answer;
+	}
+	
+	public function actualizar_vehiculo($datos){
+		$answer = $this->queryList("UPDATE vehiculo SET marca=:marca, modelo=:modelo, patente=:patente, color=:color, tipo=:tipo, asientos=:asientos  WHERE id=:id", ["marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo" => $datos["tipo"],"asientos" => $datos["asientos"] , "id" => $datos["id"]]);
+		 return $answer;
+	}
 }
 
 

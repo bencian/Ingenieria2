@@ -73,8 +73,8 @@ class AppController {
 			$vector[$i]["nombre"]= $tipos[$i]["nombre"];
 			$vector[$i]["id"]= $tipos[$i]["id"];
 		}
-		var_dump($vector);
-		$view->formularioTipoVehiculos($vector);
+		$string="registrar_vehiculo.html.twig";
+		$view->formularioTipoVehiculos($vector,$string);
     }
 
 	public function containsNumbers($String){
@@ -348,7 +348,38 @@ class AppController {
 			echo "el viaje ya se realizó";
 		}
 	}
+	
+	public function modificar_vehiculo($datos){
+		//datos tiene el id del vehiculo a modificar en un string
+		$view = new Home();
+		$bd = AppModel::getInstance();
+		$idVehiculo = (int)$datos["id"];
+		$vehiculo = $bd->getVehiculo($idVehiculo);
+		$tipos = $bd->tipos();
+		for ($i=1;$i<=count($tipos);$i++){
+			$vehiculo[$i]["nombre"]= $tipos[$i-1]["nombre"];
+			$vehiculo[$i]["id"]= $tipos[$i-1]["id"];
+		}
+		$string="modificar_vehiculo.html.twig";
+		$view->modificarVehiculo($string,$vehiculo);
+	}
 
+	public function actualizar_vehiculo($datos){
+		$bd = AppModel::getInstance();
+		$view = new Home();
+		if(isset($datos)){
+			$test = $this->validar_vehiculo($datos);
+			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
+				$datos["id"] = (int)$_POST["id"];
+				$datos["tipo"] = (int)$datos["tipo"];
+				$bd->actualizar_vehiculo($datos);
+				$view->show("sesion.html.twig");
+			} else {
+				$vehiculos=$bd->getVehiculos(); 
+				$view->$view->listarVehiculosPropios($vehiculos);
+			}
+		}
+	}
 
 }
 

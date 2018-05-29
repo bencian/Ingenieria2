@@ -48,4 +48,8 @@ if(!isset($_GET["action"])){
     } else {
         AppController::getInstance()->mostrarPerfil();
     }
+} elseif($_GET['action'] == "modificar_vehiculo"){
+	AppController::getInstance()->modificar_vehiculo($_POST);
+} elseif ($_GET["action"] == "actualizar_vehiculo"){
+	AppController::getInstance()->actualizar_vehiculo($_POST);
 }

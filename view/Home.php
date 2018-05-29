@@ -30,8 +30,8 @@ class Home extends TwigView {
 		echo self::getTwig()->render("perfil.html.twig", $vector );
 	}
 	
-	public function formularioTipoVehiculos($datos){
-		echo self::getTwig()->render("registrar_vehiculo.html.twig", array("tipoVehiculo" => $datos));
+	public function formularioTipoVehiculos($datos,$string){
+		echo self::getTwig()->render($string, array("tipoVehiculo" => $datos));
 	}
 
 	public function camposModificarPerfil($datos){
@@ -45,5 +45,8 @@ class Home extends TwigView {
 	public function listarVehiculosPropios($vehiculos){
 		echo self::getTwig()->render("ver_vehiculos.html.twig", array("vehiculos" => $vehiculos));
 	}
-
+	
+	public function modificarVehiculo($html,$datos){
+		echo self::getTwig()->render($html, array("vehiculo" => $datos));//funciona agregando el vector al vector>:
+	}
 }
