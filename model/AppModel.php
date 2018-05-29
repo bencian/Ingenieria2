@@ -70,13 +70,17 @@ class AppModel extends PDORepository {
     }
 
     public function registrar_vehiculo($datos){
-        $answer = $this->queryList("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
-        /*var_dump($answer);
-        if ($answer){
-            $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$_SESSION["id"], "vehiculo"=>$answer[0]["id"]]);
-        }*/
-        return $answer;
+        $answer = $this->queryDevuelveId("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
+		$datos2["usuario"] = $datos["id_usuario"];
+		$datos2["vehiculo"] = $answer;
+		$this->asociar_vehiculo($datos2);
+		return $answer;
     }
+	
+	public function asociar_vehiculo($datos){
+		$answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
+		return $answer;
+	}
 
 	public function actualizarUsuario($datos){
 		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
@@ -164,7 +168,24 @@ class AppModel extends PDORepository {
         $answer= $this->queryList("SELECT * FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo", [ "vehiculo"=>$datos["vehiculo"]]);
         return $answer;
     }
+
+    public function eliminarViaje($idViaje){
+        //Elimina el viaje con id pasado por parametro
+        $this->queryList("DELETE FROM viaje WHERE id=:id_viaje", ['id_viaje'=>$idViaje]);
+    }
+	
+	public function getVehiculo($idVehiculo){
+		$answer = $this->queryList("SELECT * FROM vehiculo WHERE id=?", [$idVehiculo]);
+		return $answer;
+	}
+	
+	public function actualizar_vehiculo($datos){
+		$answer = $this->queryList("UPDATE vehiculo SET marca=:marca, modelo=:modelo, patente=:patente, color=:color, tipo_id=:tipo_id, asientos=:asientos  WHERE id=:id", ["marca" => $datos["marca"], "modelo" => $datos["modelo"], "patente" => $datos["patente"], "color" => $datos["color"], "tipo_id" => $datos["tipo"],"asientos" => $datos["asientos"] , "id" => $datos["id"]]);
+		 return $answer;
+	}
+
 }
+
 
 /* SELECT * FROM viaje WHERE id_origen='1' AND fecha='2018-05-10' */
 

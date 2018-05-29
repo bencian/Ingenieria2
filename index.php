@@ -35,9 +35,23 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "actualizar_perfil"){
 	AppController::getInstance()->actualizar_perfil($_POST);
 } elseif ($_GET["action"] == "buscando"){
-	AppController::getInstance()->buscador($_GET);
+	AppController::getInstance()->buscador($_POST);
 } elseif ($_GET["action"] == "lista_vehiculos"){
 	AppController::getInstance()->listar_vehiculos($_GET);
 } elseif ($_GET["action"] == "eliminar_vehiculo"){
 	AppController::getInstance()->eliminar_vehiculo($_POST);
+} elseif($_GET['action'] == "eliminar_viaje"){
+    if(isset($_GET['id'])){
+        if(is_numeric($_GET['id'])){
+            AppController::getInstance()->eliminarViaje($_GET['id']);
+        } else {
+            AppController::getInstance()->mostrarPerfil();
+        }
+    } else {
+        AppController::getInstance()->mostrarPerfil();
+    }
+} elseif($_GET['action'] == "modificar_vehiculo"){
+	AppController::getInstance()->modificar_vehiculo($_POST);
+} elseif ($_GET["action"] == "actualizar_vehiculo"){
+	AppController::getInstance()->actualizar_vehiculo($_POST);
 }

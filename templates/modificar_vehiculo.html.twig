@@ -1,0 +1,72 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+  Registrar vehiculo
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block container %}
+
+<div class="container">
+<div class="row">
+<div class="col-sm-4 col-sm-offset-4 text-center well">
+<form class="col-lg-12" method="post" action="./?action=actualizar_vehiculo">
+  <div class="form-group">
+    <label for="exampleInput">Marca</label>
+    <input type="text" class="form-control" id="marca" name="marca" placeholder="Marca" required
+	{% if vehiculo is defined %} 
+		value="{{ vehiculo.0.marca }}"
+	{% endif %}>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInput">Modelo</label>
+    <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Modelo" required
+	{% if vehiculo is defined %} 
+		value="{{ vehiculo.0.modelo }}"
+	{% endif %}>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput">Patente</label>
+    <input type="text" class="form-control" id="patente" name="patente" placeholder="Patente" required
+	{% if vehiculo is defined %} 
+		value="{{ vehiculo.0.patente }}"
+	{% endif %}>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput">Color</label>
+    <input type="text" class="form-control" id="color" name="color" placeholder="Color" required
+	{% if vehiculo is defined %} 
+		value="{{ vehiculo.0.color }}"
+	{% endif %}>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput">Tipo</label>
+    <select class="form-control" id="tipo" name="tipo" placeholder="Tipo de vehiculo">
+
+{% if vehiculo is defined %} 
+	{% for each in vehiculo %}
+      <option value={{ each.id }}>{{ each.nombre }}</option>
+    {% endfor %}
+{% endif %}
+
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleInput">Asientos</label>
+    <input type="text" class="form-control" id="asientos" name="asientos" placeholder="Cantidad de asientos a usar" required
+	{% if vehiculo is defined %} 
+		value="{{ vehiculo.0.asientos }}"
+	{% endif %}>
+  </div>
+  <input type="hidden" name="id" value="{{ vehiculo.0.id }}">
+  <button type="submit" class="btn btn-primaryPink">Registrar</button>
+</form>
+</div>
+</div>
+</div>
+
+{% endblock %}

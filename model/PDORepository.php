@@ -36,6 +36,14 @@ abstract class PDORepository {
         $stmt->execute($args);
         return $stmt->fetchAll();
     }
+	
+	protected function queryDevuelveId($sql, $args){
+        $connection = $this->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute($args);
+        return $connection->lastInsertId();
+    }
+	
 
     //funcion para a la que se le envian las consultas... parametros (sql= consulta , args= parametros)
     // hay ejemplos en el MODEL

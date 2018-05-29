@@ -70,9 +70,11 @@ class AppController {
 		$tipos = $bd->tipos();
 		$vector = array();
 		for ($i=0;$i<count($tipos);$i++){
-			array_push($vector,$tipos[$i]["nombre"]);
+			$vector[$i]["nombre"]= $tipos[$i]["nombre"];
+			$vector[$i]["id"]= $tipos[$i]["id"];
 		}
-		$view->formularioTipoVehiculos($vector);
+		$string="registrar_vehiculo.html.twig";
+		$view->formularioTipoVehiculos($vector,$string);
     }
 
 	public function containsNumbers($String){
@@ -178,6 +180,7 @@ class AppController {
 		if(isset($datos)){
 			$test = $this->validar_vehiculo($datos);
 			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
+				$datos["id_usuario"] = $_SESSION['id'];
 				$bd->registrar_vehiculo($datos);
 				$view->show("sesion.html.twig");
 			} else {
@@ -287,7 +290,6 @@ class AppController {
 	public function validacionModificacionUsuario($datos){
 		//valida los datos desde servidor
 		$valor = true;
-		var_dump($datos["pass"]);
 		if(isset($datos["pass"]) && $datos["pass"]!=""){
 			if(isset($datos["pass1"]) &&!($datos["pass"]==$datos["pass1"])){
 				echo "Las contraseñas no coinciden ";
@@ -331,9 +333,10 @@ class AppController {
 	
 	public function listar_vehiculos(){
 		$view = new Home();
-		$vehiculos=AppModel::getInstance()->getVehiculos(); //falta un monton aca
+		$vehiculos=AppModel::getInstance()->getVehiculos(); 
 		$view->listarVehiculosPropios($vehiculos);
 	}
+
 
 	public function poseeViajes($datos){
 		return AppModel::getInstance()->poseeViajesEchos($datos);
@@ -348,5 +351,51 @@ class AppController {
 			/* borrar de usuarios_has_vehiculos y de vehiculos */
 		}
 	}
+
+	public function eliminarViaje($idViaje){
+		$today = date("Y/m/d");
+		$fechaViaje = ($_POST['fecha']);
+		if ( $today < $fechaViaje ){ 
+			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
+			$result = AppModel::getInstance()->eliminarViaje($idViaje);
+			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
+		} else { 
+			echo "el viaje ya se realizó";
+		}
+	}
+	
+	public function modificar_vehiculo($datos){
+		//datos tiene el id del vehiculo a modificar en un string
+		$view = new Home();
+		$bd = AppModel::getInstance();
+		$idVehiculo = (int)$datos["id"];
+		$vehiculo = $bd->getVehiculo($idVehiculo);
+		$tipos = $bd->tipos();
+		for ($i=1;$i<=count($tipos);$i++){
+			$vehiculo[$i]["nombre"]= $tipos[$i-1]["nombre"];
+			$vehiculo[$i]["id"]= $tipos[$i-1]["id"];
+		}
+		$string="modificar_vehiculo.html.twig";
+		$view->modificarVehiculo($string,$vehiculo);
+	}
+
+	public function actualizar_vehiculo($datos){
+		$bd = AppModel::getInstance();
+		$view = new Home();
+		if(isset($datos)){
+			$test = $this->validar_vehiculo($datos);
+			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
+				$datos["id"] = (int)$_POST["id"];
+				$datos["tipo"] = (int)$datos["tipo"];
+				$bd->actualizar_vehiculo($datos);
+				$view->show("sesion.html.twig");
+			} else {
+				$vehiculos=$bd->getVehiculos(); 
+				$view->$view->listarVehiculosPropios($vehiculos);
+			}
+		}
+	}
+
+
 }
 
