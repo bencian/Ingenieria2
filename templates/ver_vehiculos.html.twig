@@ -33,7 +33,15 @@ Lista de vehiculos
 		<td>{{ vehiculo.tipo_id }}</td>
 		<td>{{ vehiculo.asientos }}</td>
 		<td><a class="btn btn-primaryPink" href="">Modificar</a></td>
-		<td><a class="btn btn-primaryPink" href="">Eliminar</a></td>
+		
+		<td>
+			<form method="POST" action="./?action=eliminar_vehiculo">
+				<input hidden="hidden" name="vehiculo" value="{{ vehiculo.id }}">
+				<input type="submit" class="btn btn-primaryPink" value='Eliminar'>
+			</form>
+		</td>
+
+		<td><a class="btn btn-primaryPink" href="">Ver</a></td>
     </tr>
 	{% endfor %} 
   </tbody>

@@ -159,6 +159,11 @@ class AppModel extends PDORepository {
         }
         return $answer;
     }
+
+    public function poseeViajesEchos($datos){
+        $answer= $this->queryList("SELECT * FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo", [ "vehiculo"=>$datos["vehiculo"]]);
+        return $answer;
+    }
 }
 
 /* SELECT * FROM viaje WHERE id_origen='1' AND fecha='2018-05-10' */

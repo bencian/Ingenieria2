@@ -334,5 +334,19 @@ class AppController {
 		$vehiculos=AppModel::getInstance()->getVehiculos(); //falta un monton aca
 		$view->listarVehiculosPropios($vehiculos);
 	}
+
+	public function poseeViajes($datos){
+		return AppModel::getInstance()->poseeViajesEchos($datos);
+	}
+
+	public function eliminar_vehiculo($datos){
+		var_dump($datos);
+		$viajes=$this->poseeViajes($datos);
+		if($viajes){
+			/* borrar de usuarios_has_vehiculo */
+		} else {
+			/* borrar de usuarios_has_vehiculos y de vehiculos */
+		}
+	}
 }
 

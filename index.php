@@ -38,4 +38,6 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->buscador($_GET);
 } elseif ($_GET["action"] == "lista_vehiculos"){
 	AppController::getInstance()->listar_vehiculos($_GET);
+} elseif ($_GET["action"] == "eliminar_vehiculo"){
+	AppController::getInstance()->eliminar_vehiculo($_POST);
 }
