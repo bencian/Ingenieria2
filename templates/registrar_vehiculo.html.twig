@@ -37,7 +37,7 @@
 
 {% if tipoVehiculo is defined %} 
 	{% for each in tipoVehiculo %}
-      <option value={{ each.id }}>{{ each.nombre }}</option>
+      <option value="{{ each.id }}">{{ each.nombre }}</option>
     {% endfor %}
 {% endif %}
 

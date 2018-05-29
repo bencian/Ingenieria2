@@ -10,3 +10,7 @@ function cambio(){
 		document.getElementById("periodico").style.display = "none";		
 	}
 }
+
+function validarDatos(){
+	
+}

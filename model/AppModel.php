@@ -193,6 +193,11 @@ class AppModel extends PDORepository {
         $answer= $this->queryList("DELETE FROM vehiculo WHERE id =:vehiculo", [ "vehiculo"=>$datos["id"]]);
         return $answer;
     }
+	
+	public function getCiudades(){
+		$answer = $this->queryList("SELECT * FROM ciudad", []);
+		return $answer;
+	}
 
 }
 

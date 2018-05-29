@@ -49,4 +49,8 @@ class Home extends TwigView {
 	public function modificarVehiculo($html,$datos){
 		echo self::getTwig()->render($html, array("vehiculo" => $datos));
 	}
+	
+	public function listarCiudadesMenuPrincipal($datos){
+		echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos));
+	}
 }
