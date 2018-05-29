@@ -54,4 +54,6 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->modificar_vehiculo($_POST);
 } elseif ($_GET["action"] == "actualizar_vehiculo"){
 	AppController::getInstance()->actualizar_vehiculo($_POST);
+} elseif ($_GET["action"] == "listar_viajes_generales"){
+	AppController::getInstance()->listadoViajesGenerales($_POST);
 }

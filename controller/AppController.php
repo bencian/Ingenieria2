@@ -359,6 +359,7 @@ class AppController {
 			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
 			$result = AppModel::getInstance()->eliminarViaje($idViaje);
 			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
+			Echo "el viaje se eliminó con exito";
 		} else { 
 			echo "el viaje ya se realizó";
 		}
@@ -396,6 +397,29 @@ class AppController {
 		}
 	}
 
+	public function listadoViajesGenerales(){
+        //Lista todos los viajes con algunos detalles
+        $viajes = AppModel::getInstance()->getViajes();
+        if(count($viajes) == 0){
+        	$parametros['mensaje'] = 'No hay viajes registrados.';
+    	    $this->accesoAPaginaQueLista($parametros);
+        }else{
+        	$parametros['listaViajes'] = $viajes;
+	        $parametros['mensaje'] = 'Listado de viajes.';
+	        $this->accesoAPaginaQueLista($parametros);
+        }
+    }
 
+    public function accesoAPaginaQueLista($parametros){
+        //Muestra la pagina con el listado de viajes
+        $view = new Home();
+        $arreglo = array();
+        $arreglo['mensajeDeResultado'] = $parametros['mensaje'];
+        if(isset($parametros['listaViajes'])){
+            $arreglo['listadoCompletoDeViajes'] = $parametros['listaViajes'];
+            $arreglo['elemPorPagina'] = int("3");
+        }
+        $view->listarViajesGenerales('index.html.twig',$arreglo);
+    }
 }
 
