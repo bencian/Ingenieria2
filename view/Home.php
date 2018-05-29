@@ -47,6 +47,6 @@ class Home extends TwigView {
 	}
 	
 	public function modificarVehiculo($html,$datos){
-		echo self::getTwig()->render($html, array("vehiculo" => $datos));//funciona agregando el vector al vector>:
+		echo self::getTwig()->render($html, array("vehiculo" => $datos));
 	}
 }
