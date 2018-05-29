@@ -32,7 +32,7 @@ class AppController {
 			$view->show("index.html.twig");
 		} else {
 			$view = new Home();
-			$view->show("sesion.html.twig");
+			$this->mostrarMenuPrincipalSesion();
 		}
 	}
 
@@ -89,8 +89,8 @@ class AppController {
 		$mes = (int) date('m');
 		$dia = (int) date('d');
 		$bool = false;
-		if($anio-$tempArray[0]>14){
-			if($anio-$tempArray[0]==15){
+		if($anio-$tempArray[0]>15){
+			if($anio-$tempArray[0]==16){
 				if ($mes-$tempArray[1]>-1){
 					if($dia-$tempArray[2]>-1){
 						$bool = true;
@@ -127,7 +127,7 @@ class AppController {
 			$valor= false;			
 		}
 		if(!($this->mayorDeEdad($datos["nacimiento"]))){
-			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
+			echo "Necesitas tener al menos 16 años para registrarte al sitio ";
 			$valor= false;
 		}
 		return $valor;
@@ -147,7 +147,7 @@ class AppController {
 					$usuario_id = (int)$vector_usuario[0][0];
 					$_SESSION["id"]= $usuario_id;
 					$view = new Home();
-            		$view->show("sesion.html.twig"); //insertar pagina principal
+            		$this->mostrarMenuPrincipalSesion();
         	}
     	}
     }
@@ -182,7 +182,7 @@ class AppController {
 			if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
 				$datos["id_usuario"] = $_SESSION['id'];
 				$bd->registrar_vehiculo($datos);
-				$view->show("sesion.html.twig");
+				$this->mostrarMenuPrincipalSesion();
 			} else {
 				$this->registrar_vehiculo();
 			}
@@ -353,7 +353,7 @@ class AppController {
 			AppModel::getInstance()->borrarVehiculo($datos);
 		}
 		$view = new Home();
-		$view->show("sesion.html.twig");
+		$this->mostrarMenuPrincipalSesion();
 	}
 
 	public function eliminarViaje($idViaje){
@@ -363,6 +363,7 @@ class AppController {
 			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
 			$result = AppModel::getInstance()->eliminarViaje($idViaje);
 			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
+			Echo "el viaje se eliminó con exito";
 		} else { 
 			echo "el viaje ya se realizó";
 		}
@@ -392,13 +393,24 @@ class AppController {
 				$datos["id"] = (int)$_POST["id"];
 				$datos["tipo"] = (int)$datos["tipo"];
 				$bd->actualizar_vehiculo($datos);
-				$view->show("sesion.html.twig");
+				$this->mostrarMenuPrincipalSesion();
 			} else {
 				$vehiculos=$bd->getVehiculos(); 
 				$view->$view->listarVehiculosPropios($vehiculos);
 			}
 		}
 	}
+	
+	public function mostrarMenuPrincipalSesion(){
+		$bd = AppModel::getInstance();
+		$view = new Home();
+		$ciudades = $bd->getCiudades();
+		$vectorFormulario["ciudades"] = $ciudades;
+		$vehiculosUsuario = $bd->getVehiculos();
+		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
+		$view->listarCiudadesMenuPrincipal($vectorFormulario);
+	}
+
 
 	public function modificar_viaje_ocasional($datos){
 
@@ -409,5 +421,31 @@ class AppController {
 		
 		$view->modificarViajeOcasional($viaje);
 	}
+
+	public function listadoViajesGenerales(){
+        //Lista todos los viajes con algunos detalles
+        $viajes = AppModel::getInstance()->getViajes();
+        if(count($viajes) == 0){
+        	$parametros['mensaje'] = 'No hay viajes registrados.';
+    	    $this->accesoAPaginaQueLista($parametros);
+        }else{
+        	$parametros['listaViajes'] = $viajes;
+	        $parametros['mensaje'] = 'Listado de viajes.';
+	        $this->accesoAPaginaQueLista($parametros);
+        }
+    }
+
+    public function accesoAPaginaQueLista($parametros){
+        //Muestra la pagina con el listado de viajes
+        $view = new Home();
+        $arreglo = array();
+        $arreglo['mensajeDeResultado'] = $parametros['mensaje'];
+        if(isset($parametros['listaViajes'])){
+            $arreglo['listadoCompletoDeViajes'] = $parametros['listaViajes'];
+            $arreglo['elemPorPagina'] = int("3");
+        }
+        $view->listarViajesGenerales('index.html.twig',$arreglo);
+    }
+
 }
 
