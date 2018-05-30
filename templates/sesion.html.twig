@@ -18,7 +18,7 @@ Inicio
 					<div class="col-sm-12 col-sm-offset-12 pull-right well">
 						<button id="botonCambio" type="button" class="btn btn-primaryPink text-align:center" onClick="cambio()">Cambiar a periodico</button>
 						<div id="ocasional">
-							<form method="post" action="crear_viajeOcasional">
+							<form method="post" action="./?action=crear_viajeOcasional" onsubmit="return validarDatos()">
 								<div class="form-group">
 									<p class="text-align: center h3"> Crear viaje ocasional</p>
 									<br>
@@ -72,7 +72,7 @@ Inicio
 							</form>
 						</div>
 						<div id="periodico" style="display: none"> 
-							<form method="post" action="crear_viajePeriodico">
+							<form method="post" action="./?action=crear_viajePeriodico">
 								<div class="form-group">
 									<p class="text-align: center h3"> Crear viaje periodico</p>
 									<br>

@@ -53,7 +53,7 @@ class Home extends TwigView {
 
 	public function listarViajesGenerales($html,$datos){
 		echo self::getTwig()->render($html, array("datos" => $datos));
-
+	}
 	
 	public function listarCiudadesMenuPrincipal($datos){
 		echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos));

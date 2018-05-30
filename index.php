@@ -50,10 +50,12 @@ if(!isset($_GET["action"])){
     } else {
         AppController::getInstance()->mostrarPerfil();
     }
-} elseif($_GET['action'] == "modificar_vehiculo"){
+} elseif ($_GET['action'] == "modificar_vehiculo"){
 	AppController::getInstance()->modificar_vehiculo($_POST);
 } elseif ($_GET["action"] == "actualizar_vehiculo"){
 	AppController::getInstance()->actualizar_vehiculo($_POST);
 } elseif ($_GET["action"] == "listar_viajes_generales"){
 	AppController::getInstance()->listadoViajesGenerales($_POST);
+} elseif ($_GET["action"] == "crear_viajeOcasional"){
+	AppController::getInstance()->publicarViajeOcasional($_POST);
 }

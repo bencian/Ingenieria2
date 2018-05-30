@@ -435,5 +435,9 @@ class AppController {
         }
         $view->listarViajesGenerales('index.html.twig',$arreglo);
     }
+	
+	public function publicarViajeOcasional($datos){
+		 $this->mostrarMenuPrincipalSesion();
+	}
 }
 
