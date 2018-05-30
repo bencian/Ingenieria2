@@ -44,10 +44,6 @@ Inicio
 									<input type="text" class="form-control" id="distancia" name="distancia" placeholder="Distancia" required>
 								</div>
 								<div class="form-group">
-									<label for="">Asientos</label>
-									<input type="text" class="form-control" id="asientos" name="asientos" placeholder="Asientos" required>
-								</div>	
-								<div class="form-group">
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
 										{% if vectorForm is defined %} 
@@ -90,31 +86,22 @@ Inicio
 								<div class="form-group">
 									<p class="text-align: center h3"> Crear viaje periodico</p>
 									<br>
-									<label for="">Fecha</label>
+									<label for="">Fecha de inicio</label>
 									<input type="date" class="form-control" id="fecha" name="fecha" placeholder="Fecha" required>
 								</div>
 								<div class="form-group">
 									<label for="">Precio</label>
 									<input type="text" class="form-control" id="precio" name="precio" placeholder="Precio" required>
 								</div>
-
 								<div class="form-group">
-									<label for="">Hora de salida</label>
-									<input type="text" class="form-control" id="hora_salida" name="hora_salida" placeholder="Hora de salida" required>
-								</div>
-								<div class="form-group">
-									<label for="">Duracion</label>
+									<label for="">Duracion (en horas)</label>
 									<input type="text" class="form-control" id="duracion" name="duracion" placeholder="Duracion" required>
 								</div>
 
 								<div class="form-group">
 									<label for="">Distancia</label>
-									<input type="text" class="form-control" id="duracion" name="duracion" placeholder="Distancia" required>
+									<input type="text" class="form-control" id="distancia" name="distancia" placeholder="Distancia" required>
 								</div>
-								<div class="form-group">
-									<label for="">Asientos</label>
-									<input type="text" class="form-control" id="asientos" name="asientos" placeholder="Asientos" required>
-								</div>		
 								<div class="form-group">
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
@@ -162,72 +149,72 @@ Inicio
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="lunes" value=""></td>
+													<td><input type="checkbox" id="lunes" onchange="toggleTextArea('lunes');"value=""></td>
 													<td><label>Lunes</label></td>
 												</div>
 												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_lunes" name="hora_lunes" placeholder="hora lunes"></td>
+													<td><label for="" class="hora_lunes" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_lunes" id="hora_lunes" name="hora_lunes" style="display: none" placeholder="hora lunes"></td>
 												</div>	
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="martes" value=""></td>
+													<td><input type="checkbox" id="martes" onchange="toggleTextArea('martes');"value=""></td>
 													<td><label>Martes</label></td>
 												</div>
-												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_martes" name="hora_martes" placeholder="hora martes"></td>
+												<div class="form-group" id="hora_martes" name="hora_martes" style="display: none">
+													<td><label for="" class="hora_martes" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_martes" id="hora_martes" name="hora_martes" style="display: none" placeholder="hora martes"></td>
 												</div>
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="miercoles" value=""></td>
+													<td><input type="checkbox" id="miercoles" onchange="toggleTextArea('miercoles');" value=""></td>
 													<td><label>Miercoles</label></td>
 												</div>
-												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_miercoles" name="hora_miercoles" placeholder="hora miercoles"></td>
+												<div class="form-group" id="hora_miercoles" name="hora_miercoles" style="display: none">
+													<td><label for="" class="hora_miercoles" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_miercoles" id="hora_miercoles" name="hora_miercoles" style="display: none" placeholder="hora miercoles"></td>
 												</div>
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="jueves" value=""></td>
+													<td><input type="checkbox" id="jueves" onchange="toggleTextArea('jueves');" value=""></td>
 													<td><label>Jueves</label></td>
 												</div>
-												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_jueves" name="hora_jueves" placeholder="hora jueves"></td>
+												<div class="form-group" id="hora_jueves" name="hora_jueves" style="display: none">
+													<td><label for="" class="hora_jueves" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_jueves" id="hora_jueves" name="hora_jueves" style="display: none" placeholder="hora jueves"></td>
 												</div>
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="viernes" value=""></td>
+													<td><input type="checkbox" id="viernes" onchange="toggleTextArea('viernes');" value=""></td>
 													<td><label>Viernes</label></td>
 												</div>
-												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_viernes" name="hora_viernes" placeholder="hora viernes"></td>
+												<div class="form-group" id="hora_viernes" name="hora_viernes" style="display: none">
+													<td><label for="" class="hora_viernes" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_viernes" id="hora_viernes" name="hora_viernes" style="display: none" placeholder="hora viernes"></td>
 												</div>
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="sabado" value=""></td>
+													<td><input type="checkbox" id="sabado" onchange="toggleTextArea('sabado');" value=""></td>
 													<td><label>Sabado</label></td>
 												</div>
-												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_sabado" name="hora_sabado" placeholder="hora sabado"></td>
+												<div class="form-group" id="hora_sabado" name="hora_sabado" style="display: none">
+													<td><label for="" class="hora_sabado" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_sabado" id="hora_sabado" name="hora_sabado" style="display: none" placeholder="hora sabado"></td>
 												</div>
 											</tr>
 											<tr>
 												<div class="checkbox">
-													<td><input type="checkbox" id="domingo" value=""></td>
+													<td><input type="checkbox" id="domingo" onchange="toggleTextArea('domingo');" value=""></td>
 													<td><label>Domingo</label></td>
 												</div>
-												<div class="form-group">
-													<td><label for="">Hora: </label></td>
-													<td><input type="textarea" class="form-control" id="hora_domingo" name="hora_domingo" placeholder="hora domingo"></td>
+												<div class="form-group" id="hora_domingo" name="hora_domingo" style="display: none">
+													<td><label for="" class="hora_domingo" style="display: none">Hora: </label></td>
+													<td><input type="time" class="form-control hora_domingo" id="hora_domingo" name="hora_domingo" style="display: none" placeholder="hora domingo"></td>
 												</div>
 											</tr>
 										</tbody>
