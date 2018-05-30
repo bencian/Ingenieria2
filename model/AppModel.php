@@ -69,20 +69,7 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-    public function registrar_vehiculo($datos){
-        $answer = $this->queryDevuelveId("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
-		$datos2["usuario"] = $datos["id_usuario"];
-		$datos2["vehiculo"] = $answer;
-		$this->asociar_vehiculo($datos2);
-		return $answer;
-    }
-	
-	public function asociar_vehiculo($datos){
-		$answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
-		return $answer;
-	}
-
-	public function actualizarUsuario($datos){
+    public function actualizarUsuario($datos){
 		 $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
 		 return $answer;
 	}
@@ -203,17 +190,41 @@ class AppModel extends PDORepository {
 		$answer = $this->queryList("SELECT * FROM ciudad", []);
 		return $answer;
 	}
+	
+	public function registrar_vehiculo($datos){
+        $answer = $this->queryDevuelveId("INSERT INTO vehiculo (asientos, marca, modelo, patente, color, tipo_id) VALUES (:asientos,:marca,:modelo,:patente,:color,:tipo_id)" , [ "asientos"=>$datos["asientos"], "marca"=>$datos["marca"], "modelo"=>$datos["modelo"], "patente"=>$datos["patente"], "color"=>$datos["color"], "tipo_id"=>$datos["tipo"]]);
+		$datos2["usuario"] = $datos["id_usuario"];
+		$datos2["vehiculo"] = $answer;
+		$this->asociar_vehiculo($datos2);
+		return $answer;
+    }
+	
+	public function asociar_vehiculo($datos){
+		$answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
+		return $answer;
+	}
 
     public function getViajeOcasional($datos){
         $answer = $this->queryList("SELECT * FROM viaje where id=?;", [ $datos ]);
-        $tmp = $this->queryList("SELECT * FROM viaje_ocacional where viaje_id=?;", [ $datos ]);
+        $tmp = $this->queryList("SELECT * FROM viaje_ocasional where viaje_id=?;", [ $datos ]);
         $answer["hora_salida"]=$tmp["hora_salida"];
         return $answer;
     }
 	
-	/*public function crearViajeOcasional($datos){
-		$answer = $this->queryDevuelveId("INSERT INTO ", []);
-	}*/
+	public function getViajeId($datos){
+		$answer = $this->queryDevuelveId("INSERT INTO viaje (fecha,precio,duracion,distancia,lugares,comentarios,id_origen,id_destino,usuarios_id,vehiculo_id) VALUES (:fecha,:precio,:duracion,:distancia,:lugares,:comentarios,:id_origen,:id_destino,:usuarios_id,:vehiculo_id)", ["fecha"=>$datos["fecha"],"precio"=>$datos["precio"],"duracion"=>$datos["duracion"],"distancia"=>0,"lugares"=>$datos["asientos"],"comentarios"=>$datos["comentarios"],"id_origen"=>$datos["origen"],"id_destino"=>$datos["destino"],"usuarios_id"=>$_SESSION["id"],"vehiculo_id"=>$datos["vehiculo"] ]);
+		return $answer;
+	}
+	
+	public function getAsientos($datos){
+		$answer = $this->queryList("SELECT asientos FROM vehiculo where id=?",[$datos]);
+		return $answer;
+	}
+	
+	public function crearOcasional($datos){
+	$answer = $this->queryList("INSERT INTO viaje_ocasional (viaje_id, hora_salida) VALUES (:viaje_id, :hora_salida)", ["viaje_id"=>$datos["id_viaje"], "hora_salida"=>$datos["hora_salida"]]);
+		return $answer;
+	}
 
 }
 
