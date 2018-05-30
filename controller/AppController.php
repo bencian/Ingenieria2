@@ -411,6 +411,17 @@ class AppController {
 		$view->listarCiudadesMenuPrincipal($vectorFormulario);
 	}
 
+
+	public function modificar_viaje_ocasional($datos){
+
+		$view = new Home();
+		$bd = AppModel::getInstance();
+		$viaje = $bd->getViajeOcasional($datos["id"]);
+
+		
+		$view->modificarViajeOcasional($viaje);
+	}
+
 	public function listadoViajesGenerales(){
         //Lista todos los viajes con algunos detalles
         $viajes = AppModel::getInstance()->getViajes();
