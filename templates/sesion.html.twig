@@ -16,9 +16,9 @@ Inicio
 			<div id="publicar_viaje" class="col-xs-4 col-md-4 col-lg-4">
 				<div class="row">				
 					<div class="col-sm-12 col-sm-offset-12 pull-right well">
-						<button id="botonCambio" type="button" class="btn btn-primaryPink text-align:center" onClick="cambio()">Cambiar a periodico</button>
+						<button id="botonCambio" type="button" class="btn btn-primaryPink text-align:center">Cambiar a periodico</button>
 						<div id="ocasional">
-							<form method="post" action="crear_viajeOcasional">
+							<form method="post" action="./?action=crear_viajeOcasional" onsubmit="return validarDatos()">
 								<div class="form-group">
 									<p class="text-align: center h3"> Crear viaje ocasional</p>
 									<br>
@@ -30,7 +30,7 @@ Inicio
 									<input type="text" class="form-control" id="precio" name="precio" placeholder="precio" required>
 								</div>
 								<div class="form-group">
-									<label for="">Duracion</label>
+									<label for="">Duracion (en horas)</label>
 									<input type="text" class="form-control" id="duracion" name="durecion" placeholder="duracion" required>
 								</div>	
 								<div class="form-group">
@@ -72,7 +72,7 @@ Inicio
 							</form>
 						</div>
 						<div id="periodico" style="display: none"> 
-							<form method="post" action="crear_viajePeriodico">
+							<form method="post" action="./?action=crear_viajePeriodico">
 								<div class="form-group">
 									<p class="text-align: center h3"> Crear viaje periodico</p>
 									<br>
@@ -116,6 +116,34 @@ Inicio
 											{% endfor %}
 										{% endif %}
 									</select>
+								</div>
+								<div class="form-group">
+									<label for="">Fecha final</label>
+									<input type="date" class="form-control" id="final" name="final" placeholder="Fecha" required>
+								</div>
+								<div class="form-group">
+									<label for="">Dias</label>
+									<div class="checkbox">
+										<label><input type="checkbox" id="lunes" value="">Lunes</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="martes" value="">Martes</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="miercoles" value="">Miercoles</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="jueves" value="">Jueves</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="viernes" value="">Viernes</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="sabado" value="">Sabado</label>
+									</div>
+									<div class="checkbox">
+										<label><input type="checkbox" id="domingo" value="">Domingo</label>
+									</div>
 								</div>
 								<div class="form-group">
 									<label for="">Comentarios</label>
