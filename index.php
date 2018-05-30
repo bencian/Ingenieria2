@@ -40,7 +40,7 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->listar_vehiculos($_GET);
 } elseif ($_GET["action"] == "eliminar_vehiculo"){
 	AppController::getInstance()->eliminar_vehiculo($_POST);
-} elseif($_GET['action'] == "eliminar_viaje"){
+} elseif ($_GET['action'] == "eliminar_viaje"){
     if(isset($_GET['id'])){
         if(is_numeric($_GET['id'])){
             AppController::getInstance()->eliminarViaje($_GET['id']);
