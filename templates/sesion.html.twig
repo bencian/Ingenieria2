@@ -32,7 +32,7 @@ Inicio
 
 								<div class="form-group">
 									<label for="">Hora de salida</label>
-									<input type="text" class="form-control" id="hora_salida" name="hora_salida" placeholder="Hora de salida" required>
+									<input type="time" class="form-control" id="hora_salida" name="hora_salida" placeholder="Hora de salida" required>
 								</div>
 								<div class="form-group">
 									<label for="">Duracion</label>
@@ -41,7 +41,7 @@ Inicio
 
 								<div class="form-group">
 									<label for="">Distancia</label>
-									<input type="text" class="form-control" id="duracion" name="duracion" placeholder="Distancia" required>
+									<input type="text" class="form-control" id="distancia" name="distancia" placeholder="Distancia" required>
 								</div>
 								<div class="form-group">
 									<label for="">Asientos</label>
@@ -150,28 +150,88 @@ Inicio
 									<input type="date" class="form-control" id="final" name="final" placeholder="Fecha" required>
 								</div>
 								<div class="form-group">
-									<label for="">Dias</label>
-									<div class="checkbox">
-										<label><input type="checkbox" id="lunes" value="">Lunes</label>
-									</div>
-									<div class="checkbox">
-										<label><input type="checkbox" id="martes" value="">Martes</label>
-									</div>
-									<div class="checkbox">
-										<label><input type="checkbox" id="miercoles" value="">Miercoles</label>
-									</div>
-									<div class="checkbox">
-										<label><input type="checkbox" id="jueves" value="">Jueves</label>
-									</div>
-									<div class="checkbox">
-										<label><input type="checkbox" id="viernes" value="">Viernes</label>
-									</div>
-									<div class="checkbox">
-										<label><input type="checkbox" id="sabado" value="">Sabado</label>
-									</div>
-									<div class="checkbox">
-										<label><input type="checkbox" id="domingo" value="">Domingo</label>
-									</div>
+									<table class="table">	
+										<tbody>
+											<tr>
+												<div>
+													<td></td>
+													<td class="h4">Dias</td>
+													<td></td>
+													<td class="h4">Horarios</td>
+												</div>
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="lunes" value=""></td>
+													<td><label>Lunes</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_lunes" name="hora_lunes" placeholder="hora lunes"></td>
+												</div>	
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="martes" value=""></td>
+													<td><label>Martes</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_martes" name="hora_martes" placeholder="hora martes"></td>
+												</div>
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="miercoles" value=""></td>
+													<td><label>Miercoles</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_miercoles" name="hora_miercoles" placeholder="hora miercoles"></td>
+												</div>
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="jueves" value=""></td>
+													<td><label>Jueves</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_jueves" name="hora_jueves" placeholder="hora jueves"></td>
+												</div>
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="viernes" value=""></td>
+													<td><label>Viernes</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_viernes" name="hora_viernes" placeholder="hora viernes"></td>
+												</div>
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="sabado" value=""></td>
+													<td><label>Sabado</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_sabado" name="hora_sabado" placeholder="hora sabado"></td>
+												</div>
+											</tr>
+											<tr>
+												<div class="checkbox">
+													<td><input type="checkbox" id="domingo" value=""></td>
+													<td><label>Domingo</label></td>
+												</div>
+												<div class="form-group">
+													<td><label for="">Hora: </label></td>
+													<td><input type="textarea" class="form-control" id="hora_domingo" name="hora_domingo" placeholder="hora domingo"></td>
+												</div>
+											</tr>
+										</tbody>
+									</table>	
 								</div>
 								<div class="form-group">
 									<label for="">Comentarios</label>

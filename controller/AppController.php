@@ -472,11 +472,57 @@ class AppController {
 		}
 	}
 	
+	public function esHoy($vectorFecha){
+		date_default_timezone_set("America/Argentina/Buenos_Aires");
+		$anio = (int) date('y')+2000;
+		$mes = (int) date('m');
+		$dia = (int) date('d');
+		if (($anio == $vectorFecha[0])&&($mes == $vectorFecha[1])&&($dia == $vectorFecha[2])){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public function esNumerico($string){
 		return preg_match("/^[0-9]*$/",$string);
 	}
 	
+	public function masTarde($hora){
+		date_default_timezone_set("America/Argentina/Buenos_Aires");
+		$tempArray = explode(':',$hora);
+		for ($i=0;$i<count($tempArray);$i++){
+			$tempArray[$i] = (int)$tempArray[$i];
+		}
+		$hours = (int)date("G");
+		$minutes = (int)date("i");
+		if($tempArray[0]>=$hours){
+			if($tempArray[0]=$hours){
+				if ($tempArray[1]>$minutes){
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public function publicarViajeOcasional($datos){
+		if($this->validarViajeOcasional($datos)){
+			$bd = AppModel::getInstance();
+			$asientos = $bd->getAsientos($datos["vehiculo"]);
+			$datos["asientos"] = $asientos[0]["asientos"];
+			$idViaje = $bd->getViajeId($datos);
+			$datos["id_viaje"] = $idViaje;
+			$bd->crearOcasional($datos);
+			$this->mostrarMenuPrincipalSesion();
+		} else {
+			$this->mostrarMenuPrincipalSesion();
+		}		
+	}
+	
+	public function validarViajeOcasional($datos){
 		$tempArray = explode('-',$datos["fecha"]);
 		for ($i=0;$i<count($tempArray);$i++){
 			$tempArray[$i] = (int)$tempArray[$i];
@@ -496,15 +542,23 @@ class AppController {
 		}
 		if($datos["origen"]==$datos["destino"]){
 			echo "El origen y el destino no pueden ser los mismos";
-			$entra - false;
+			$entra = false;
 		}
-		if($entra){
-			$bd = AppModel::getInstance();
-			$bd->crearViajeOcasional($datos);
-			$this->mostrarMenuPrincipalSesion();
-		} else {
-			$this->mostrarMenuPrincipalSesion();
-		}		
+		if($this->esHoy($tempArray)){
+			if(!$this->masTarde($datos["hora_salida"])){
+				echo "Debe ser para mas tarde";
+				$entra = false;
+			}
+		}
+		if(!$this->esNumerico($datos["distancia"])){
+			echo "La distancia no puede tener letras";
+			$entra = false;
+		}
+		if(!$this->esNumerico($datos["asientos"])){
+			echo "La cantidad de asientos no puede tener letras";
+			$entra = false;
+		}
+		return $entra;
 	}
 	
 }
