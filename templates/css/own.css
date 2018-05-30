@@ -37,3 +37,8 @@ body{
 	float: right;
 	margin-right: 1em;
 }
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: pink !important;
+}

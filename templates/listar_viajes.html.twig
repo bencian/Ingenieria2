@@ -11,17 +11,36 @@ Inicio
 <div class="col-sm-12 col-sm-offset-0 text-center well">
 <ul>
 {% if viajes %}
-	{% for viaje in viajes %}
-		<tr>
-		<td>Origen: {{ viaje.id_origen }}</td>
-		<td>Destino: {{ viaje.id_destino }}</td>
-		<td>Fecha: {{ viaje.fecha }}</td>
-		<td>Precio: {{ viaje.precio }}</td>
-		<td>Duracion: {{ viaje.duracion }}</td>
-		<td>Distancia: {{ viaje.distancia }}</h4>
-		</tr>
-	{% endfor %} 
-
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Precio</th>
+				<th scope="col">Duracion</th>
+				<th scope="col">Distancia</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for viaje in viajes %}
+				<tr>
+					<td>{{ viaje.id_origen }}</td>
+					<td>{{ viaje.id_destino }}</td>
+					<td>{{ viaje.fecha }}</td>
+					<td>$ {{ viaje.precio }}</td>
+					<td>{{ viaje.duracion }} horas</td>
+					<td>{{ viaje.distancia }} kms</td>
+					<td>						
+						<form method="post" class="pull-left" action="#">
+							<input type="hidden" name="id" value="postularse">
+							<input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% else %}
 	<h1>No hay viajes para mostrar</h1>
 {% endif %}

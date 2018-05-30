@@ -14,58 +14,72 @@ Inicio
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 text-center well">
 
-							<form method="post" action="ModificarViajeOcasional">
-								<div class="form-group">
-									<p class="text-align: center h3"> Modificar viaje ocasional</p>
-									<br>
-									<label for="">Fecha</label>
-									<input type="date" class="form-control" id="fecha" name="fecha" placeholder="Fecha" required>
-								</div>
-								<div class="form-group">
-									<label for="">Precio</label>
-									<input type="text" class="form-control" id="precio" name="precio" placeholder="precio" required>
-								</div>
-								<div class="form-group">
-									<label for="">Duracion</label>
-									<input type="text" class="form-control" id="duracion" name="durecion" placeholder="duracion" required>
-								</div>	
-								<div class="form-group">
-									<label for="">Origen</label>
-									<select class="form-control" id="origen" name="origen" required>
-										{% if vectorForm is defined %} 
-											{% for each in vectorForm.ciudades %}
-												<option value="{{ each.id }}">{{ each.nombre }}</option>
-											{% endfor %}
-										{% endif %}
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="">Destino</label>
-									<select class="form-control" id="destino" name="destino">
-										{% if vectorForm is defined %} 
-											{% for each in vectorForm.ciudades %}
-												<option value="{{ each.id }}">{{ each.nombre }}</option>
-											{% endfor %}
-										{% endif %}
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="">Vehiculo</label>
-									<select class="form-control" id="vehiculo" name="vehiculo" required>
-										{% if vectorForm is defined %} 
-											{% for each in vectorForm.vehiculos %}
-												<option value="{{ each.id }}">{{ each.marca }} - {{ each.patente }} - con {{ each.asientos }} asientos</option>
-											{% endfor %}
-										{% endif %}
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="">Comentarios</label>
-									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios" required>
-								</div>	
-								<cr>
-								<button type="submit" class="btn btn-primaryPink">Submit</button>
-							</form>
+			<form method="post" action="./?action=crear_viajeOcasional" onsubmit="return validarDatos()">
+				<div class="form-group">
+					<p class="text-align: center h3"> Crear viaje ocasional</p>
+					<br>
+					<label for="">Fecha</label>
+					<input type="date" class="form-control" id="fecha" name="fecha" placeholder="Fecha" required>
+				</div>
+				<div class="form-group">
+					<label for="">Precio</label>
+					<input type="text" class="form-control" id="precio" name="precio" placeholder="Precio" required>
+				</div>
+
+				<div class="form-group">
+					<label for="">Hora de salida</label>
+					<input type="text" class="form-control" id="hora_salida" name="hora_salida" placeholder="Hora de salida" required>
+				</div>
+				<div class="form-group">
+					<label for="">Duracion</label>
+					<input type="text" class="form-control" id="duracion" name="duracion" placeholder="Duracion" required>
+				</div>
+
+				<div class="form-group">
+					<label for="">Distancia</label>
+					<input type="text" class="form-control" id="duracion" name="duracion" placeholder="Distancia" required>
+				</div>
+				<div class="form-group">
+					<label for="">Asientos</label>
+					<input type="text" class="form-control" id="asientos" name="asientos" placeholder="Asientos" required>
+				</div>	
+				<div class="form-group">
+					<label for="">Origen</label>
+					<select class="form-control" id="origen" name="origen" required>
+						{% if vectorForm is defined %} 
+							{% for each in vectorForm.ciudades %}
+								<option value="{{ each.id }}">{{ each.nombre }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="">Destino</label>
+					<select class="form-control" id="destino" name="destino">
+						{% if vectorForm is defined %} 
+							{% for each in vectorForm.ciudades %}
+								<option value="{{ each.id }}">{{ each.nombre }}</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="">Vehiculo</label>
+					<select class="form-control" id="vehiculo" name="vehiculo" required>
+						{% if vectorForm is defined %} 
+							{% for each in vectorForm.vehiculos %}
+								<option value="{{ each.id }}">{{ each.marca }} - {{ each.patente }} - con {{ each.asientos }} asientos</option>
+							{% endfor %}
+						{% endif %}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="">Comentarios</label>
+					<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios" required>
+				</div>	
+				<cr>
+				<button type="submit" class="btn btn-primaryPink">Submit</button>
+			</form>
 
 		</div>
 	</div>

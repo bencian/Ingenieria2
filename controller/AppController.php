@@ -353,7 +353,7 @@ class AppController {
 			AppModel::getInstance()->borrarVehiculo($datos);
 		}
 		$view = new Home();
-		$this->mostrarMenuPrincipalSesion();
+		$this->listar_vehiculos();
 	}
 
 	public function eliminarViaje($idViaje){
@@ -424,6 +424,11 @@ class AppController {
 
 	public function listadoViajesGenerales(){
         //Lista todos los viajes con algunos detalles
+
+        /*
+        *CONTROLAR QUE EL VIAJE SEA EN LOS PROXIMOS 30 DIAS!
+        */
+
         $viajes = AppModel::getInstance()->getViajes();
         if(count($viajes) == 0){
         	$parametros['mensaje'] = 'No hay viajes registrados.';

@@ -131,20 +131,15 @@ class AppModel extends PDORepository {
         $origen= $this->getCiudad($datos["origen"]);
         $destino= $this->getCiudad($datos["destino"]);
         $fecha= $datos["salida"];
-        /*$sql="SELECT * FROM viaje WHERE id_origen=".$origen[0]["id"]." AND id_destino=".$destino[0]["id"]." AND fecha=\'".$fecha. "';";
-        $answer= $this->queryList($sql, []);
-        var_dump($answer);*/
-
         $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND id_destino=:destino AND fecha=:fecha", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
         array_push($answer[0], $origen, $destino);
-        var_dump($answer[0]);
+
         return $answer;
     }
 
     public function busqueda_parcial($datos){
         $origen= $this->getCiudad($datos["origen"]);
         $fecha= $datos["salida"];
-
         $answer= $this->queryList("SELECT * FROM viaje WHERE id_origen=:origen AND fecha=:fecha", ["origen"=>$origen[0]["id"], "fecha"=>$fecha]);
         return $answer;
     }
@@ -217,6 +212,4 @@ class AppModel extends PDORepository {
 
 }
 
-
-/* SELECT * FROM viaje WHERE id_origen='1' AND fecha='2018-05-10' */
 

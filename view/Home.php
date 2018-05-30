@@ -54,6 +54,7 @@ class Home extends TwigView {
 	public function modificarViajeOcacional($viaje){
 	/*"modificar_viaje_ocacional.html.twig";
 	*/
+	
 	}
 
 	public function listarViajesGenerales($html,$datos){
