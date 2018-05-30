@@ -457,18 +457,26 @@ class AppController {
 		$anio = (int) date('y')+2000;
 		$mes = (int) date('m');
 		$dia = (int) date('d');
-		if(($vectorFecha[0]>=$anio)){
-			if(($vectorFecha[1]>=$mes)){
-				if(($vectorFecha[2]>=$dia)){
-					return true;
-				} else {
-					return false;
-				}
-			} else{
-				return false;
-			}	
-		} else {
+		if($vectorFecha[0]<$anio){
 			return false;
+		} else {
+			if($vectorFecha[0]=$anio){
+				if($vectorFecha[1]<$mes){
+					return false;
+				} else {
+					if($vectorFecha[1]=$mes){
+						if($vectorFecha[2]<$dia){
+							return false;
+						} else {
+							return true;
+						}
+					} else {
+						return true;
+					}
+				}
+			} else {
+				return true;
+			}
 		}
 	}
 	
@@ -554,12 +562,23 @@ class AppController {
 			echo "La distancia no puede tener letras";
 			$entra = false;
 		}
-		if(!$this->esNumerico($datos["asientos"])){
-			echo "La cantidad de asientos no puede tener letras";
-			$entra = false;
-		}
 		return $entra;
 	}
 	
+	public function publicarViajePeriodico($datos){
+		$test = $this->validarViajeOcasional($datos);
+		var_dump($datos);
+		if($test){	
+			$bd = AppModel::getInstance();
+			$asientos = $bd->getAsientos($datos["vehiculo"]);
+			$datos["asientos"] = $asientos[0]["asientos"];
+			$idViaje = $bd->getViajeId($datos);
+			$datos["id_viaje"] = $idViaje;
+			$bd->crearOcasional($datos);
+			$this->mostrarMenuPrincipalSesion();
+		} else {
+			$this->mostrarMenuPrincipalSesion();
+		}		
+	}
 }
 

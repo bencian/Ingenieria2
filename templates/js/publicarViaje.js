@@ -16,5 +16,22 @@ window.onload=function(){
 			document.getElementById("periodico").style.display = "none";		
 		}
 	}
-}	
+}
+	
+function toggleTextArea(string) {
+	stringCon = "hora_" + string;
+	var elems = document.getElementsByClassName(stringCon);
+	var check = document.getElementById(string);
+	
+	if(check.checked == true) {
+		for (var i=0;i<elems.length;i+=1){
+			elems[i].style.display = 'block';
+		}
+	} else {
+		for (var i=0;i<elems.length;i+=1){
+			elems[i].style.display = 'none';
+		}
+	}
+}
+
 	
