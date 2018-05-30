@@ -411,17 +411,6 @@ class AppController {
 		$view->listarCiudadesMenuPrincipal($vectorFormulario);
 	}
 
-
-	public function modificar_viaje_ocasional($datos){
-
-		$view = new Home();
-		$bd = AppModel::getInstance();
-		$viaje = $bd->getViajeOcasional($datos["id"]);
-
-		
-		$view->modificarViajeOcasional($viaje);
-	}
-
 	public function listadoViajesGenerales(){
         //Lista todos los viajes con algunos detalles
 
@@ -559,6 +548,31 @@ class AppController {
 			$entra = false;
 		}
 		return $entra;
+	}
+
+	public function modificar_viaje_ocasional($datos){
+
+		$view = new Home();
+		$bd = AppModel::getInstance();
+		$ciudades = $bd->getCiudades();
+		$vectorFormulario["ciudades"] = $ciudades;
+		$vehiculosUsuario = $bd->getVehiculos();
+		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
+
+		$viaje = $bd->getViajeOcasional($datos["id"]);		
+		$view->modificarViajeOcasional($viaje, $vectorFormulario);
+
+
+	}
+
+	public function modificarViajeOcasional($datos){
+		$view = new Home();
+		$bd = AppModel::getInstance();
+		$valido=$this->validarViajeOcasional($datos);
+		if($valido){
+			$db-> actualizarViajeOcasional($datos);
+		}
+		$this->mostrarMenuPrincipalSesion();	
 	}
 	
 }

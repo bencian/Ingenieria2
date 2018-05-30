@@ -217,9 +217,18 @@ class AppModel extends PDORepository {
 	}
 	
 	public function crearOcasional($datos){
-	$answer = $this->queryList("INSERT INTO viaje_ocasional (viaje_id, hora_salida) VALUES (:viaje_id, :hora_salida)", ["viaje_id"=>$datos["id_viaje"], "hora_salida"=>$datos["hora_salida"]]);
+	   $answer = $this->queryList("INSERT INTO viaje_ocasional (viaje_id, hora_salida) VALUES (:viaje_id, :hora_salida)", ["viaje_id"=>$datos["id_viaje"], "hora_salida"=>$datos["hora_salida"]]);
 		return $answer;
 	}
+
+    public function actualizarViajeOcasional($datos){
+        $sql ="UPDATE viaje 
+        SET fecha=:fecha, precio=:precio, duracion=:duracion, distancia=:distancia, lugares=:lugares, comentarios=:comentarios, id_origen=:id_origen, id_destino=:id_destino, vehiculo_id=:vehiculo_id  
+        WHERE id=:id";
+        $answer = $this->queryList($sql,[ "fecha"=>$datos["fecha"], "precio"=>$datos["precio"], "duracion"=>$datos["duracion"], "distancia"=>$datos["distancia"], "lugares"=>$datos["lugares"], "comentarios"=>$datos["comentarios"], "id_origen"=>$datos["id_origen"], "id_destino"=>$datos["id_destino"], "vehiculo_id"=>$datos["vehiculo_id"], "id"=>$datos["id"]]);
+        $answer2 = $this->queryList("UPDATE viaje_ocasional SET hora_salida=:hora WHERE viaje_id=:id",["hora"=>$datos["hora_salida"], "id"=>$datos["id"]]);
+        return $answer;
+    }
 
 }
 

@@ -60,5 +60,7 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->listadoViajesGenerales($_POST);
 } elseif ($_GET["action"] == "crear_viajeOcasional"){
 	AppController::getInstance()->publicarViajeOcasional($_POST);
+} elseif ($_GET["action"] == "modificarViajeOcasional"){
+	AppController::getInstance()->modificarViajeOcasional($_POST);
 }
 

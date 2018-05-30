@@ -39,10 +39,47 @@ Mi perfil
 		</div>
 	</div>		
 	<div class="container" id="viajes_futuros">
-		<h4 style="text-align:center; color:black;"> Viajes futuros</h4>
-		<div class="well">
-			<p>	No hay viajes disponibles	</p>
-		</div>
+<div class="row">
+<div class="col-sm-12 col-sm-offset-0 text-center well">
+<ul>
+{% if viajes %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Precio</th>
+				<th scope="col">Duracion</th>
+				<th scope="col">Distancia</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for viaje in viajes %}
+				<tr>
+					<td>{{ viaje.id_origen }}</td>
+					<td>{{ viaje.id_destino }}</td>
+					<td>{{ viaje.fecha }}</td>
+					<td>$ {{ viaje.precio }}</td>
+					<td>{{ viaje.duracion }} horas</td>
+					<td>{{ viaje.distancia }} kms</td>
+					<td>						
+						<form method="post" class="pull-left" action="#">
+							<input type="hidden" name="id" value="modificar">
+							<input type="submit" class="btn btn-primaryPink"  value="Modificar">
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h1>No hay viajes para mostrar</h1>
+{% endif %}
+
+</ul>
+</div>
+</div>
 	</div>
 </div>
 
