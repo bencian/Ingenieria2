@@ -447,8 +447,60 @@ class AppController {
         $view->listarViajesGenerales('index.html.twig',$arreglo);
     }
 	
-	public function publicarViajeOcasional($datos){
-		 $this->mostrarMenuPrincipalSesion();
+	public function fechaMayor($vectorFecha){
+		date_default_timezone_set("America/Argentina/Buenos_Aires");
+		$anio = (int) date('y')+2000;
+		$mes = (int) date('m');
+		$dia = (int) date('d');
+		if(($vectorFecha[0]>=$anio)){
+			if(($vectorFecha[1]>=$mes)){
+				if(($vectorFecha[2]>=$dia)){
+					return true;
+				} else {
+					return false;
+				}
+			} else{
+				return false;
+			}	
+		} else {
+			return false;
+		}
 	}
+	
+	public function esNumerico($string){
+		return preg_match("/^[0-9]*$/",$string);
+	}
+	
+	public function publicarViajeOcasional($datos){
+		$tempArray = explode('-',$datos["fecha"]);
+		for ($i=0;$i<count($tempArray);$i++){
+			$tempArray[$i] = (int)$tempArray[$i];
+		}
+		$entra = true;
+		if(!$this->fechaMayor($tempArray)){
+			echo "Fecha ingresada invalida";
+			$entra = false;
+		}
+		if(!$this->esNumerico($datos["precio"])){
+			echo "El precio no puede tener letras";
+			$entra = false;
+		}
+		if(!$this->esNumerico($datos["duracion"])){
+			echo "La duracion no puede tener letras";
+			$entra = false;
+		}
+		if($datos["origen"]==$datos["destino"]){
+			echo "El origen y el destino no pueden ser los mismos";
+			$entra - false;
+		}
+		if($entra){
+			$bd = AppModel::getInstance();
+			$bd->crearViajeOcasional($datos);
+			$this->mostrarMenuPrincipalSesion();
+		} else {
+			$this->mostrarMenuPrincipalSesion();
+		}		
+	}
+	
 }
 
