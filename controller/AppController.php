@@ -375,6 +375,8 @@ class AppController {
 
 	public function eliminarViajeDeLaBD($idViaje){	
 		AppModel::getInstance()->eliminarViajeOcasional($idViaje);
+		AppModel::getInstance()->eliminarViajePeriodicoDias($idViaje);
+		AppModel::getInstance()->eliminarViajePeriodico($idViaje);
 		AppModel::getInstance()->eliminarViaje($idViaje);
 	}
 	
@@ -438,14 +440,12 @@ class AppController {
     }
 
     public function listadoViajesGenerales(){
-        //Lista todos los viajes con algunos detalles
 
         /*
         *CONTROLAR QUE EL VIAJE SEA EN LOS PROXIMOS 30 DIAS!
         */
 
         $viajesVar = AppModel::getInstance()->getViajes();
-        var_dump($viajesVar);
         $parametros = array();
         if(count($viajesVar) == 0){
         	$parametros['mensaje'] = 'No hay viajes registrados.';
