@@ -440,6 +440,7 @@ class AppController {
         */
 
         $viajesVar = AppModel::getInstance()->getViajes();
+        var_dump($viajesVar);
         $parametros = array();
         if(count($viajesVar) == 0){
         	$parametros['mensaje'] = 'No hay viajes registrados.';
