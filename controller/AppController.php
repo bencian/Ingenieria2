@@ -170,6 +170,8 @@ class AppController {
 			$mostrarDatos["nombre"] = $nombre;
 			$mostrarDatos["email"] = $datosUsuario[0]["email"];
 			$view = new Home();
+			$viajes = AppModel::getInstance()->getViajesPropios($_SESSION['id']);
+			$mostrarDatos["viajes"]=$viajes;
 			$view->mostrarNombre($mostrarDatos);
 		}
 	}
