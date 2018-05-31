@@ -572,7 +572,7 @@ class AppController {
 		$vehiculosUsuario = $bd->getVehiculos();
 		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
 
-		$viaje = $bd->getViajeOcasional($datos["id"]);		
+		$viaje = $bd->getViajeOcasional($datos);		
 		$view->modificarViajeOcasional($viaje, $vectorFormulario);
 
 
@@ -580,13 +580,12 @@ class AppController {
 
 	public function modificarViajeOcasional($datos){
 		$view = new Home();
-		$bd = AppModel::getInstance();
-		$viaje= $bd->getViajeOcasional($datos["id"]);
-
-		$valido=$this->validarViajeOcasional($viaje);
+		/*$viaje= $bd->getViajeOcasional($datos["id"]);*/
+		$valido=$this->validarViajeOcasional($datos);
 
 		if($valido){
-			$db-> actualizarViajeOcasional($viaje);
+			$db = AppModel::getInstance();
+			$db-> actualizarViajeOcasional($datos);
 		}
 		$this->mostrarMenuPrincipalSesion();	
 	}

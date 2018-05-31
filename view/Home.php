@@ -52,9 +52,7 @@ class Home extends TwigView {
 	}
 
 	public function modificarViajeOcasional($viaje, $datos){
-	/*"modificar_viaje_ocacional.html.twig";
-	*/
-		echo self::getTwig()->render("modificarViajeOcacional.html.twig", array("viaje" => $viaje, "vectorForm"=> $datos));
+		echo self::getTwig()->render("modificarViajeOcasional.html.twig", array("viaje" => $viaje, "vectorForm"=> $datos));
 	}
 
 	public function listarViajesGenerales($html,$datos){
