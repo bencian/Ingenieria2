@@ -34,28 +34,29 @@ Inicio
 			<div class="row">
 				<div class="col-sm-11 col-sm-offset-11 pull-right well">
 				{% if datos.listadoCompletoDeViajes is defined %} 
-					<h3 style="text-align:center; color:red;"> Proximos viajes </h3> 
-					<p style="color:red;"> {{ datos.listadoCompletoDeViajes }} </p>
-				{% else %} 
-						<p style="text-align:center; color:red;"> {{ datos.mensajeDeResultado }} </p>
-			 	{% endif %}
-				<!--	<div class="container">
-  						<h2>Pagination</h2>
-  						<p>hola, soy un parrafo y estoy al pedo :D</p>                  
-  						<ul class="pagination">
-  								<h2>List Group With Linked Items</h2>
-  								<div class="list-group">
-    								<a href="#" class="list-group-item">First item</a>
-    								<a href="#" class="list-group-item">Second item</a> 
-    								<a href="#" class="list-group-item">Third item</a>
-  								</div>
-    						<li><a href="#">1</a></li>
-    						<li><a href="#">2</a></li>
-    						<li><a href="#">3</a></li>
-    						<li><a href="#">4</a></li>
-   							<li><a href="#">5</a></li>
-  						</ul>
-					</div> -->
+					<h3 style="text-align:center; color:black;"> Proximos viajes </h3> 
+					<p style="color:black;"> {{ datos.listadoCompletoDeViajes.1.fecha }} </p>
+  							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col">Origen</th>
+										<th scope="col">Destino</th>
+										<th scope="col">Fecha</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for viaje in datos.listadoCompletoDeViajes %}
+									<tr>
+										<td>{{ viaje.id_origen }}</td>
+										<td>{{ viaje.id_destino }}</td>
+										<td>{{ viaje.fecha }}</td>
+									</tr>
+									{% endfor %}
+							</tbody>
+						</table>
+					{% else %} 
+						<p style="text-align:center; color:black;"> {{ datos.mensajeDeResultado }} </p>
+			 		{% endif %}
 				</div>
 			</div>
 		</div>

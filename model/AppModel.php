@@ -156,8 +156,20 @@ class AppModel extends PDORepository {
         $this->queryList("DELETE FROM viaje WHERE id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
 
+    public function eliminarViajeOcasional($idViaje){
+        $this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
+    }
+
+    public function eliminarViajePeriodico($idViaje){
+        $this->queryList("DELETE FROM viaje_periodico WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
+    }
+
+    public function eliminarViajePeriodicoDias($idViaje){
+        $this->queryList("DELETE FROM dia_horario WHERE viaje_periodico_viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
+    }
+
     public function getViajes(){
-        $answer = $this->queryList("SELECT id, fecha FROM viaje", []);
+        $answer = $this->queryList("SELECT id, fecha, id_origen, id_destino FROM viaje", []);
         return $answer;
     }
 	

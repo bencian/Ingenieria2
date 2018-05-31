@@ -258,12 +258,29 @@ Inicio
 			<div id="viajes_actuales" class="col-xs-6 col-md-6 col-lg-6">
 				<div class="row">
 					<div class="col-sm-11 col-sm-offset-11 pull-right well">
-						{% if datos.listadoCompletoDeViajes is defined %} 
-							<h3 style="text-align:center; color:red;"> Proximos viajes </h3> 
-							<p style="color:red;"> {{ datos.listadoCompletoDeViajes }} </p>
-						{% else %} 
-							<p style="text-align:center; color:red;"> {{ datos.mensajeDeResultado }} </p>
-			 			{% endif %}
+					{% if datos.listadoCompletoDeViajes is defined %} 
+						<h3 style="text-align:center; color:black;"> Proximos viajes </h3> 
+  							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col">Origen</th>
+										<th scope="col">Destino</th>
+										<th scope="col">Fecha</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for viaje in datos.listadoCompletoDeViajes %}
+									<tr>
+										<td>{{ viaje.id_origen }}</td>
+										<td>{{ viaje.id_destino }}</td>
+										<td>{{ viaje.fecha }}</td>
+									</tr>
+									{% endfor %}
+							</tbody>
+						</table>
+					{% else %} 
+						<p style="text-align:center; color:black;"> {{ datos.mensajeDeResultado }} </p>
+			 		{% endif %}
 					</div>
 				</div>
 			</div>	
