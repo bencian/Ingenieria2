@@ -27,7 +27,8 @@ class Home extends TwigView {
 	public function mostrarNombre($dato){
 		$vector["nombre"] = $dato["nombre"];
 		$vector["email"] = $dato["email"];
-		echo self::getTwig()->render("perfil.html.twig", $vector );
+		/*var_dump($dato);*/
+		echo self::getTwig()->render("perfil.html.twig", $dato );	//$vector
 	}
 	
 	public function formularioTipoVehiculos($datos,$string){

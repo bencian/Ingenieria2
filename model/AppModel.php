@@ -230,6 +230,22 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
+    public function getViajesPropios($id){
+        $answer = $this->queryList("SELECT * FROM viaje vj INNER JOIN viaje_ocasional vo ON vj.id=vo.viaje_id WHERE usuarios_id=:id", ["id"=>$_SESSION["id"]]);
+        if($answer){
+            return $answer;
+        } else {
+            $sql="SELECT * FROM viaje vj 
+            INNER JOIN viaje_periodico vp ON vj.id=vp.viaje_id 
+            INNER JOIN dia_horario dh ON dh.viaje_periodico_viaje_id=vj.id 
+            WHERE id_usuario=:id";
+            $answer = $this->queryList($sql, ["id"=>$id]);
+            return $answer;
+        }
+        
+    }
+
+
 }
 
 
