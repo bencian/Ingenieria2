@@ -1,4 +1,6 @@
+
 window.onload=function(){
+	
 	boton = document.getElementById("botonCambio");
 	if(boton){
 		boton.addEventListener("click",cambiarBoton);
@@ -16,6 +18,16 @@ window.onload=function(){
 			document.getElementById("periodico").style.display = "none";		
 		}
 	}
+	
+	/*n =  new Date();
+	y = n.getFullYear();
+	m = n.getMonth() + 1;
+	if(m<10){
+		m = "0" + m;
+	}
+	d = n.getDate() + 7;
+	fechaFinal = y + "-" + m + "-" + d;
+	document.getElementById("final").value = fechaFinal;*/
 }
 	
 function toggleTextArea(string) {
@@ -26,6 +38,7 @@ function toggleTextArea(string) {
 	if(check.checked == true) {
 		for (var i=0;i<elems.length;i+=1){
 			elems[i].style.display = 'block';
+			elems[i].setAttribute("required","")
 		}
 	} else {
 		for (var i=0;i<elems.length;i+=1){
@@ -33,5 +46,6 @@ function toggleTextArea(string) {
 		}
 	}
 }
+
 
 	
