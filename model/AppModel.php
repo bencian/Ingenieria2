@@ -156,8 +156,8 @@ class AppModel extends PDORepository {
         $this->queryList("DELETE FROM viaje WHERE id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
 
-    public function getViajes(){
-        $answer = $this->queryList("SELECT id, fecha FROM viaje", []);
+    public function getViajes($dato){
+        $answer = $this->queryList("SELECT id, fecha FROM viaje WHERE fecha<?", [$dato]);
         return $answer;
     }
 	
@@ -253,7 +253,11 @@ class AppModel extends PDORepository {
         }
         
     }
-
+	
+	public function countViajes(){
+		$answer = $this->queryList("SELECT COUNT(*) FROM viaje",[]);	
+		return $answer;
+	}
 
 }
 

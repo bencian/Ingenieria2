@@ -223,73 +223,7 @@ class AppController {
 			}
 		}
 	}
-		
-		/*if(isset($datos)){
-			$test = $this->validacionModificacionUsuario($datos);
-			if($test){
-				$bd->actualizar_usuario($datos);
-				$view->show("index.html.twig");
-			} else {
-				if ($bd->existeMail($datos["email"])){
-					echo "Ya existe el mail en la base de datos ";
-				}
-				$view->show("registrarse.html.twig");
-			}
-		} else {
-		$view->show("registrarse.html.twig");
-		}			
-	}
-
-	public function validacionModificacionUsuario($datos){
-		//valida los datos desde servidor
-		$valor = true;
-		var_dump($datos["pass"]);
-		if(isset($datos["pass"]) && $datos["pass"]!=""){
-			if(isset($datos["pass1"]) &&!($datos["pass"]==$datos["pass1"])){
-				echo "Las contraseñas no coinciden ";
-				$valor = false;
-			}
-			if(!(strlen($datos["pass"])>7)){
-				echo "La contraseña es muy corta ";
-				$valor = false;
-			}
-			if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
-				echo "La contraseña no contiene un simbolo o un numero ";
-				$valor = false;			
-			}
-
-		}
-		if(!($this->mayorDeEdad($datos["nacimiento"]))){
-			echo "Necesitas tener al menos 15 años para registrarte al sitio ";
-			$valor = false;
-		}
-
-		if(!((preg_match("#\W+#", $datos["oldPass"]))or($this->containsNumbers($datos["oldPass"])))){
-			echo "La contraseña no contiene un simbolo o un numero ";
-			$valor = false;			
-		}
-		return $valor;
-	}*/
-/*
-	public function actualizar_perfil($datos){
-		$bd = AppModel::getInstance();
-		$view = new Home();
-		if(isset($datos)){
-			$test = $this->validacionModificacionUsuario($datos);
-			if($test){
-				$bd->actualizar_usuario($datos);
-				$view->show("index.html.twig");
-			} else {
-				if ($bd->existeMail($datos["email"])){
-					echo "Ya existe el mail en la base de datos ";
-				}
-				$view->show("registrarse.html.twig");
-			}
-		} else {
-		$view->show("registrarse.html.twig");
-		}			
-	}
-*/
+	
 	public function validacionModificacionUsuario($datos){
 		//valida los datos desde servidor
 		$valor = true;
@@ -438,9 +372,9 @@ class AppController {
         /*
         *CONTROLAR QUE EL VIAJE SEA EN LOS PROXIMOS 30 DIAS!
         */
-
-        $viajesVar = AppModel::getInstance()->getViajes();
-        $parametros = array();
+		$diaMax = date('Y-m-d', strtotime("+30 days"));
+        $viajesVar = AppModel::getInstance()->getViajes($diaMax); 
+		$parametros = array();
         if(count($viajesVar) == 0){
         	$parametros['mensaje'] = 'No hay viajes registrados.';
         }else{
@@ -587,17 +521,6 @@ class AppController {
 		}
 		$this->mostrarMenuPrincipalSesion();	
 	}
-	
-	/*public function fechaViajesPeriodicos($fechaInicial){
-		// Create a new DateTime object
-		$date = new DateTime($fechaInicial);
-		// Modify the date it contains
-		$date->modify('next Wednesday');
-	
-		// Output
-		echo $date->format('Y-m-d');
-		var_dump( date('w', strtotime($fechaInicial)));
-	}*/
 	
 	public function publicarViajePeriodico($datos){
 		$test = $this->validarViajePeriodico($datos);
