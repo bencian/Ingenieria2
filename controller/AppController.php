@@ -575,9 +575,12 @@ class AppController {
 	public function modificarViajeOcasional($datos){
 		$view = new Home();
 		$bd = AppModel::getInstance();
-		$valido=$this->validarViajeOcasional($datos);
+		$viaje= $bd->getViajeOcasional($datos["id"]);
+
+		$valido=$this->validarViajeOcasional($viaje);
+
 		if($valido){
-			$db-> actualizarViajeOcasional($datos);
+			$db-> actualizarViajeOcasional($viaje);
 		}
 		$this->mostrarMenuPrincipalSesion();	
 	}
