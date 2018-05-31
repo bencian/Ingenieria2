@@ -157,7 +157,7 @@ class AppModel extends PDORepository {
     }
 
     public function getViajes(){
-        $answer = $this->queryList("SELECT * FROM viaje", []);
+        $answer = $this->queryList("SELECT id, fecha FROM viaje", []);
         return $answer;
     }
 	
@@ -238,6 +238,22 @@ class AppModel extends PDORepository {
 	public function asociarDiaHorario($datos){
 	$answer = $this->queryList("INSERT INTO dia_horario (dia, viaje_periodico_viaje_id, horario) VALUES (:dia, :viaje_periodico_viaje_id, :horario)", [ "dia" =>$datos["fecha"] , "viaje_periodico_viaje_id" => $datos["idViaje"], "horario" => $datos["horario"] ]);
 	}
+
+    public function getViajesPropios($id){
+        $answer = $this->queryList("SELECT * FROM viaje vj INNER JOIN viaje_ocasional vo ON vj.id=vo.viaje_id WHERE usuarios_id=:id", ["id"=>$_SESSION["id"]]);
+        if($answer){
+            return $answer;
+        } else {
+            $sql="SELECT * FROM viaje vj 
+            INNER JOIN viaje_periodico vp ON vj.id=vp.viaje_id 
+            INNER JOIN dia_horario dh ON dh.viaje_periodico_viaje_id=vj.id 
+            WHERE id_usuario=:id";
+            $answer = $this->queryList($sql, ["id"=>$id]);
+            return $answer;
+        }
+        
+    }
+
 
 }
 

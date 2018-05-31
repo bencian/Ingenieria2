@@ -27,7 +27,8 @@ class Home extends TwigView {
 	public function mostrarNombre($dato){
 		$vector["nombre"] = $dato["nombre"];
 		$vector["email"] = $dato["email"];
-		echo self::getTwig()->render("perfil.html.twig", $vector );
+		/*var_dump($dato);*/
+		echo self::getTwig()->render("perfil.html.twig", $dato );	//$vector
 	}
 	
 	public function formularioTipoVehiculos($datos,$string){
@@ -60,8 +61,8 @@ class Home extends TwigView {
 		echo self::getTwig()->render($html, array("datos" => $datos));
 	}
 	
-	public function listarCiudadesMenuPrincipal($datos){
-		echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos));
+	public function listarCiudadesMenuPrincipal($datos, $viajes){
+		echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos, "datos"=> $viajes));
 
 	}
 }

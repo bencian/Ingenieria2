@@ -33,7 +33,12 @@ Inicio
 		<div id="viajes_actuales" class="col-xs-8 col-md-8 col-lg-8">
 			<div class="row">
 				<div class="col-sm-11 col-sm-offset-11 pull-right well">
-				    <p style="text-align:center; color:red;"> {{ datos.mensajeDeResultado }} </p>
+				{% if datos.listadoCompletoDeViajes is defined %} 
+					<h3 style="text-align:center; color:red;"> Proximos viajes </h3> 
+					<p style="color:red;"> {{ datos.listadoCompletoDeViajes }} </p>
+				{% else %} 
+						<p style="text-align:center; color:red;"> {{ datos.mensajeDeResultado }} </p>
+			 	{% endif %}
 				<!--	<div class="container">
   						<h2>Pagination</h2>
   						<p>hola, soy un parrafo y estoy al pedo :D</p>                  

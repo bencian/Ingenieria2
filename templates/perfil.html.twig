@@ -64,9 +64,13 @@ Mi perfil
 					<td>{{ viaje.duracion }} horas</td>
 					<td>{{ viaje.distancia }} kms</td>
 					<td>						
-						<form method="post" class="pull-left" action="#">
-							<input type="hidden" name="id" value="modificar">
+						<form method="post" class="pull-left" action="index.php?action=modificarViajeOcasional">
+							<input type="hidden" name="id" value="{{ viaje.id }}">
 							<input type="submit" class="btn btn-primaryPink"  value="Modificar">
+						</form>
+						<form method="post" class="pull-center" action="index.php?action=eliminar_viaje&id={{ viaje.id }}">
+							<input type="hidden" name="id" value="{{ viaje.id }}">
+							<input type="submit" class="btn btn-primaryPink"  value="Eliminar">
 						</form>
 					</td>
 				</tr>

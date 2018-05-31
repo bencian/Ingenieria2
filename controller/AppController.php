@@ -29,7 +29,8 @@ class AppController {
    public function index(){
         if(!isset($_SESSION['id'])){
 			$view = new Home();
-			$view->show("index.html.twig");
+			$viajes = $this->accesoAPaginaQueLista();
+			$view->listarViajesGenerales("index.html.twig", $viajes);
 		} else {
 			$view = new Home();
 			$this->mostrarMenuPrincipalSesion();
@@ -157,8 +158,7 @@ class AppController {
 		if(isset($_SESSION)){
 			session_unset();
 			session_destroy();
-			$view = new Home();
-			$view->show("index.html.twig");
+			$this->index();
 		}
 	}
 
@@ -170,6 +170,9 @@ class AppController {
 			$mostrarDatos["nombre"] = $nombre;
 			$mostrarDatos["email"] = $datosUsuario[0]["email"];
 			$view = new Home();
+			$viajes = AppModel::getInstance()->getViajesPropios($_SESSION['id']);
+			$mostrarDatos["viajes"]=$viajes;
+			/*var_dump($viajes);*/
 			$view->mostrarNombre($mostrarDatos);
 		}
 	}
@@ -361,12 +364,13 @@ class AppController {
 		$fechaViaje = ($_POST['fecha']);
 		if ( $today < $fechaViaje ){ 
 			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
-			$result = AppModel::getInstance()->eliminarViaje($idViaje);
+			AppModel::getInstance()->eliminarViaje($idViaje);
 			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
 			Echo "el viaje se eliminó con exito";
 		} else { 
 			echo "el viaje ya se realizó";
 		}
+		$this->mostrarPerfil();
 	}
 	
 	public function modificar_vehiculo($datos){
@@ -408,37 +412,42 @@ class AppController {
 		$vectorFormulario["ciudades"] = $ciudades;
 		$vehiculosUsuario = $bd->getVehiculos();
 		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
-		$view->listarCiudadesMenuPrincipal($vectorFormulario);
+		$viajes = $this->accesoAPaginaQueLista();
+		$view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes);
 	}
 
-	public function listadoViajesGenerales(){
+
+
+    public function accesoAPaginaQueLista(){
+        //Muestra la pagina con el listado de viajes
+        $parametros = $this->listadoViajesGenerales();
+       // $view = new Home();
+        $arreglo = array();
+        $arreglo['mensajeDeResultado'] = $parametros['mensaje'];
+        if(isset($parametros['listaViajes'])){
+            $arreglo['listadoCompletoDeViajes'] = $parametros['listaViajes'];
+            $arreglo['elemPorPagina'] = 3;
+        }
+       // $view->listarViajesGenerales('index.html.twig',$arreglo);
+        return $arreglo;
+    }
+
+    public function listadoViajesGenerales(){
         //Lista todos los viajes con algunos detalles
 
         /*
         *CONTROLAR QUE EL VIAJE SEA EN LOS PROXIMOS 30 DIAS!
         */
 
-        $viajes = AppModel::getInstance()->getViajes();
-        if(count($viajes) == 0){
+        $viajesVar = AppModel::getInstance()->getViajes();
+        $parametros = array();
+        if(count($viajesVar) == 0){
         	$parametros['mensaje'] = 'No hay viajes registrados.';
-    	    $this->accesoAPaginaQueLista($parametros);
         }else{
-        	$parametros['listaViajes'] = $viajes;
+        	$parametros['listaViajes'] = $viajesVar;
 	        $parametros['mensaje'] = 'Listado de viajes.';
-	        $this->accesoAPaginaQueLista($parametros);
         }
-    }
-
-    public function accesoAPaginaQueLista($parametros){
-        //Muestra la pagina con el listado de viajes
-        $view = new Home();
-        $arreglo = array();
-        $arreglo['mensajeDeResultado'] = $parametros['mensaje'];
-        if(isset($parametros['listaViajes'])){
-            $arreglo['listadoCompletoDeViajes'] = $parametros['listaViajes'];
-            $arreglo['elemPorPagina'] = int("3");
-        }
-        $view->listarViajesGenerales('index.html.twig',$arreglo);
+        return $parametros;
     }
 	
 	public function fechaMayor($vectorFecha){
