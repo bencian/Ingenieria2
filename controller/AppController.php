@@ -449,11 +449,11 @@ class AppController {
 		if($vectorFecha[0]<$anio){
 			return false;
 		} else {
-			if($vectorFecha[0]=$anio){
+			if($vectorFecha[0]==$anio){
 				if($vectorFecha[1]<$mes){
 					return false;
 				} else {
-					if($vectorFecha[1]=$mes){
+					if($vectorFecha[1]==$mes){
 						if($vectorFecha[2]<$dia){
 							return false;
 						} else {
@@ -494,7 +494,7 @@ class AppController {
 		$hours = (int)date("G");
 		$minutes = (int)date("i");
 		if($tempArray[0]>=$hours){
-			if($tempArray[0]=$hours){
+			if($tempArray[0]==$hours){
 				if ($tempArray[1]>$minutes){
 					return true;
 				}
@@ -541,15 +541,15 @@ class AppController {
 			echo "El origen y el destino no pueden ser los mismos";
 			$entra = false;
 		}
-		if($this->esHoy($tempArray)){
-			if(!$this->masTarde($datos["hora_salida"])){
-				echo "Debe ser para mas tarde";
-				$entra = false;
-			}
-		}
 		if(!$this->esNumerico($datos["distancia"])){
 			echo "La distancia no puede tener letras";
 			$entra = false;
+		}
+		if($this->esHoy($tempArray)){
+			if($this->masTarde($datos["hora_salida"])){
+				echo "Debe ser para mas tarde";
+				$entra = false;
+			}
 		}
 		return $entra;
 	}
@@ -579,20 +579,245 @@ class AppController {
 		$this->mostrarMenuPrincipalSesion();	
 	}
 	
+	/*public function fechaViajesPeriodicos($fechaInicial){
+		// Create a new DateTime object
+		$date = new DateTime($fechaInicial);
+		// Modify the date it contains
+		$date->modify('next Wednesday');
+	
+		// Output
+		echo $date->format('Y-m-d');
+		var_dump( date('w', strtotime($fechaInicial)));
+	}*/
+	
 	public function publicarViajePeriodico($datos){
-		$test = $this->validarViajeOcasional($datos);
-		var_dump($datos);
+		$test = $this->validarViajePeriodico($datos);
 		if($test){	
 			$bd = AppModel::getInstance();
 			$asientos = $bd->getAsientos($datos["vehiculo"]);
 			$datos["asientos"] = $asientos[0]["asientos"];
-			$idViaje = $bd->getViajeId($datos);
-			$datos["id_viaje"] = $idViaje;
-			$bd->crearOcasional($datos);
+			$fechas = $this->diasViajePeriodico($datos);			
+			$vectorFechas = $this->acomodarVectorFechas($fechas,$datos);
+			foreach(array_keys($vectorFechas) as $fecha){
+				$datos["fecha"] = $fecha;
+				$datosPeriodico["viajeId"] = $bd->getViajeId($datos);
+				$datosPeriodico["fechaFinal"] = $fecha;
+				$datosDiaHorario["horario"] = $vectorFechas[$fecha];
+				$datosDiaHorario["fecha"] = $datosPeriodico["fechaFinal"];
+				$datosDiaHorario["idViaje"] = $datosPeriodico["viajeId"];
+				$bd->asociarPeriodico($datosPeriodico);
+				$bd->asociarDiaHorario($datosDiaHorario);
+			}
 			$this->mostrarMenuPrincipalSesion();
 		} else {
 			$this->mostrarMenuPrincipalSesion();
 		}		
+	}
+	
+	public function validarViajePeriodico($datos){
+		$tempArray = explode('-',$datos["fecha"]);
+		for ($i=0;$i<count($tempArray);$i++){
+			$tempArray[$i] = (int)$tempArray[$i];
+		}
+		$entra = true;
+		if(!$this->fechaMayor($tempArray)){
+			echo "Fecha ingresada invalida";
+			$entra = false;
+		}
+		if(!$this->esNumerico($datos["precio"])){
+			echo "El precio no puede tener letras";
+			$entra = false;
+		}
+		if(!$this->esNumerico($datos["duracion"])){
+			echo "La duracion no puede tener letras";
+			$entra = false;
+		}
+		if($datos["origen"]==$datos["destino"]){
+			echo "El origen y el destino no pueden ser los mismos";
+			$entra = false;
+		}
+		if(!$this->esNumerico($datos["distancia"])){
+			echo "La distancia no puede tener letras";
+			$entra = false;
+		}
+		return $entra;
+	}
+	
+	public function acomodarVectorFechas($vector,$datos){
+		/*for ($i=0;$i<count($vector);$i++){
+			$vector[$i] = $vector[$i]->format('Y-m-d');
+		}*/
+		if($datos["hora_lunes"] != ""){
+			$vector[$vector[1]->format('Y-m-d')] = $datos["hora_lunes"];
+		}
+		unset($vector[1]);
+		if($datos["hora_martes"] != ""){
+			$vector[$vector[2]->format('Y-m-d')] = $datos["hora_martes"];
+		}
+		unset($vector[2]);
+		if($datos["hora_miercoles"] != ""){
+			$vector[$vector[3]->format('Y-m-d')] = $datos["hora_miercoles"];
+		}
+		unset($vector[3]);
+		if($datos["hora_jueves"] != ""){
+			$vector[$vector[4]->format('Y-m-d')] = $datos["hora_jueves"];
+		}
+		unset($vector[4]);
+		if($datos["hora_viernes"] != ""){
+			$vector[$vector[5]->format('Y-m-d')] = $datos["hora_viernes"];
+		}
+		unset($vector[5]);
+		if($datos["hora_sabado"] != ""){
+			$vector[$vector[6]->format('Y-m-d')] = $datos["hora_sabado"];
+		}
+		unset($vector[6]);
+		if($datos["hora_domingo"] != ""){
+			$vector[$vector[0]->format('Y-m-d')] = $datos["hora_domingo"];
+		}
+		unset($vector[0]);
+		return $vector;
+	}
+	
+	public function diasViajePeriodico($datos){
+		if($this->esHoy($datos["fecha"])){
+			$numDia = date('w',strtotime($fechaInicial));
+			switch ($numDia){
+				case "0":
+					if($datos["hora_domingo"]=!""){
+						//controlar horario, crear viaje para hoy o doming que viene
+						if($this->masTarde($datos["hora_domingo"])){
+							$vector[0]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Sunday');
+							$vector[0]= $date;
+						}
+					} 
+					$datos["hora_domingo"] = "";
+				break;
+				case "1":
+					if($datos["hora_lunes"]=!""){
+						//controlar horario, crear viaje para hoy o lunes que viene
+						if($this->masTarde($datos["hora_lunes"])){
+							$vector[1]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Monday');
+							$vector[1]= $date;
+						}
+					}
+					$datos["hora_lunes"] = "";
+				break;
+				case "2":
+					if($datos["hora_martes"]=!""){
+						//controlar horario, crear viaje para hoy o martes que viene
+						if($this->masTarde($datos["hora_martes"])){
+							$vector[2]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Tuesday');
+							$vector[2]= $date;
+						}
+					}
+					$datos["hora_martes"] = "";
+				break;
+				case "3":
+					if($datos["hora_miercoles"]=!""){
+						//controlar horario, crear viaje para hoy o mier que viene
+						if($this->masTarde($datos["hora_miercoles"])){
+							$vector[3]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Wednesday');
+							$vector[3]= $date;
+						}
+					}
+					$datos["hora_miercoles"]="";
+				break;
+				case "4":
+					if($datos["hora_jueves"]=!""){
+						//controlar horario, crear viaje para hoy o jueves que viene
+						if($this->masTarde($datos["hora_jueves"])){
+							$vector[4]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Thursday');
+							$vector[4]= $date;
+						}
+					}
+					$datos["hora_jueves"]="";
+				break;
+				case "5":
+					if($datos["hora_viernes"]=!""){
+						//controlar horario, crear viaje para hoy o viernes que viene
+						if($this->masTarde($datos["hora_viernes"])){
+							$vector[5]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Friday');
+							$vector[5]= $date;
+						}
+					}
+					$datos["hora_viernes"]="";
+				break;
+				case "6":
+					if($datos["hora_sabado"]=!""){
+						//controlar horario, crear viaje para hoy o sabado que viene
+						if($this->masTarde($datos["hora_sabado"])){
+							$vector[6]= $datos["fecha"];
+						} else {
+							$date = new DateTime($datos["fecha"]);
+							$date->modify('next Saturday');
+							$vector[6]= $date;
+						}
+					}
+					$datos["hora_sabado"]="";
+				break;
+			}
+		}
+		if($datos["hora_lunes"]=!""){
+			//viaje el lunes
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Monday');
+			$vector[1]= $date;
+		}
+		if($datos["hora_martes"]=!""){
+			//viaje el martes
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Tuesday');
+			$vector[2]= $date;
+		}
+		if($datos["hora_miercoles"]=!""){
+			//viaje el miercoles
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Wednesday');
+			$vector[3]= $date;
+		}
+		if($datos["hora_jueves"]=!""){
+			//viaje el jueves
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Thursday');
+			$vector[4]= $date;
+		}
+		if($datos["hora_viernes"]=!""){
+			//viaje el viernes
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Friday');
+			$vector[5]= $date;
+		}
+		if($datos["hora_sabado"]=!""){
+			//viaje el sabado
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Saturday');
+			$vector[6]= $date;
+		}
+		if($datos["hora_domingo"]=!""){
+			//viaje el domingo
+			$date = new DateTime($datos["fecha"]);
+			$date->modify('next Sunday');
+			$vector[0]= $date;
+		}
+		return $vector;
 	}
 }
 

@@ -12,6 +12,7 @@ require_once('view/TwigView.php');
 require_once('view/Home.php');
 
 //SI se agrega un controller o un model debe "registrarse" con el required once como se muestra ahi arriba (los templates no).
+
 if(!isset($_GET["action"])){
 	AppController::getInstance()->index();
 } elseif ($_GET["action"] == "login"){
