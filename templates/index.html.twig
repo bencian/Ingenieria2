@@ -34,10 +34,10 @@ Inicio
 			<div class="row">
 				<div class="col-sm-11 col-sm-offset-11 pull-right well">
 				{% if datos.listadoCompletoDeViajes is defined %} 
-					<h3 style="text-align:center; color:black;"> Proximos viajes </h3> 
-					<p style="color:black;"> {{ datos.listadoCompletoDeViajes }} </p>
+					<h3 style="text-align:center; color:red;"> Proximos viajes </h3> 
+					<p style="color:red;"> {{ datos.listadoCompletoDeViajes }} </p>
 				{% else %} 
-						<p style="text-align:center; color:black;"> {{ datos.mensajeDeResultado }} </p>
+						<p style="text-align:center; color:red;"> {{ datos.mensajeDeResultado }} </p>
 			 	{% endif %}
 				<!--	<div class="container">
   						<h2>Pagination</h2>

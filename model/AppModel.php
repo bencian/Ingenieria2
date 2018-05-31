@@ -161,6 +161,10 @@ class AppModel extends PDORepository {
         return $answer;
     }
 	
+	 public function eliminarViajeOcasional($idViaje){
+        $this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
+    }
+	
 	public function getVehiculo($idVehiculo){
 		$answer = $this->queryList("SELECT * FROM vehiculo WHERE id=?", [$idVehiculo]);
 		return $answer;
