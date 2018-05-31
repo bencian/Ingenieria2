@@ -364,12 +364,13 @@ class AppController {
 		$fechaViaje = ($_POST['fecha']);
 		if ( $today < $fechaViaje ){ 
 			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
-			$result = AppModel::getInstance()->eliminarViaje($idViaje);
+			AppModel::getInstance()->eliminarViaje($idViaje);
 			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
 			Echo "el viaje se eliminó con exito";
 		} else { 
 			echo "el viaje ya se realizó";
 		}
+		$this->mostrarPerfil();
 	}
 	
 	public function modificar_vehiculo($datos){
@@ -411,7 +412,8 @@ class AppController {
 		$vectorFormulario["ciudades"] = $ciudades;
 		$vehiculosUsuario = $bd->getVehiculos();
 		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
-		$view->listarCiudadesMenuPrincipal($vectorFormulario);
+		$viajes = $this->accesoAPaginaQueLista();
+		$view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes);
 	}
 
 
