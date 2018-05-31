@@ -157,7 +157,7 @@ class AppModel extends PDORepository {
     }
 
     public function getViajes(){
-        $answer = $this->queryList("SELECT * FROM viaje", []);
+        $answer = $this->queryList("SELECT id, fecha FROM viaje", []);
         return $answer;
     }
 	
