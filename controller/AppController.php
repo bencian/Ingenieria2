@@ -296,15 +296,15 @@ class AppController {
 
 	public function eliminarViaje($idViaje){
 		$today = date("Y/m/d");
-		$fechaViaje = ($_POST['fecha']);
-		if ( $today > $fechaViaje ){ 
+		//$fechaViaje = ($_POST['fecha']);
+		//if ( $today > $fechaViaje ){ 
 			// if ($this->sin_acompaniantes($idViaje)){} verifica si hay gente ya aceptada en el viaje
 			$this->eliminarViajeDeLaBD($idViaje);
 			// $this->listar_usuarios(); lista con el viaje ya eliminado (funcion sin hacer)
 			Echo "el viaje se eliminó con exito";
-		} else { 
-			echo "el viaje ya se realizó";
-		}
+		//} else { 
+			//echo "el viaje ya se realizó";
+		//}
 		$this->mostrarPerfil();
 	}
 
