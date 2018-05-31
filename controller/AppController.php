@@ -309,6 +309,8 @@ class AppController {
 
 	public function eliminarViajeDeLaBD($idViaje){	
 		AppModel::getInstance()->eliminarViajeOcasional($idViaje);
+		AppModel::getInstance()->eliminarViajePeriodicoDias($idViaje);
+		AppModel::getInstance()->eliminarViajePeriodico($idViaje);
 		AppModel::getInstance()->eliminarViaje($idViaje);
 	}
 	
@@ -372,7 +374,6 @@ class AppController {
     }
 
     public function listadoViajesGenerales(){
-        //Lista todos los viajes con algunos detalles
 
         /*
         *CONTROLAR QUE EL VIAJE SEA EN LOS PROXIMOS 30 DIAS!
@@ -511,7 +512,7 @@ class AppController {
 		$vehiculosUsuario = $bd->getVehiculos();
 		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
 
-		$viaje = $bd->getViajeOcasional($datos["id"]);		
+		$viaje = $bd->getViajeOcasional($datos);		
 		$view->modificarViajeOcasional($viaje, $vectorFormulario);
 
 
@@ -519,9 +520,11 @@ class AppController {
 
 	public function modificarViajeOcasional($datos){
 		$view = new Home();
-		$bd = AppModel::getInstance();
+		/*$viaje= $bd->getViajeOcasional($datos["id"]);*/
 		$valido=$this->validarViajeOcasional($datos);
+
 		if($valido){
+			$db = AppModel::getInstance();
 			$db-> actualizarViajeOcasional($datos);
 		}
 		$this->mostrarMenuPrincipalSesion();	
