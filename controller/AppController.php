@@ -172,6 +172,7 @@ class AppController {
 			$view = new Home();
 			$viajes = AppModel::getInstance()->getViajesPropios($_SESSION['id']);
 			$mostrarDatos["viajes"]=$viajes;
+			/*var_dump($viajes);*/
 			$view->mostrarNombre($mostrarDatos);
 		}
 	}
