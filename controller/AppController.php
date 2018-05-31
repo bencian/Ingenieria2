@@ -29,8 +29,9 @@ class AppController {
    public function index(){
         if(!isset($_SESSION['id'])){
 			$view = new Home();
-			$viajes = $this->accesoAPaginaQueLista();
-			$view->listarViajesGenerales("index.html.twig", $viajes);
+			$viajes = $this->accesoAPaginaQueLista();			
+			$parametros['ciudades'] = AppModel::getInstance()->getCiudades(); 
+			$view->listarViajesGenerales("index.html.twig", $viajes,$parametros);
 		} else {
 			$view = new Home();
 			$this->mostrarMenuPrincipalSesion();
@@ -353,7 +354,7 @@ class AppController {
 		$vectorFormulario["ciudades"] = $ciudades;
 		$vehiculosUsuario = $bd->getVehiculos();
 		$vectorFormulario["vehiculos"] = $vehiculosUsuario;
-		$viajes = $this->accesoAPaginaQueLista();
+		$viajes = $this->accesoAPaginaQueLista(); 
 		$view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes);
 	}
 

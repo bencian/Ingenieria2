@@ -155,16 +155,11 @@ class AppModel extends PDORepository {
         //Elimina el viaje con id pasado por parametro
         $this->queryList("DELETE FROM viaje WHERE id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
-	
-    public function getViajes($dato){
-        $answer = $this->queryList("SELECT id, fecha FROM viaje WHERE fecha<?", [$dato]);
-		return $answer;
-	}
-	
-	public function eliminarViajeOcasional($idViaje){
+
+    public function eliminarViajeOcasional($idViaje){
         $this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
-
+		
     public function eliminarViajePeriodico($idViaje){
         $this->queryList("DELETE FROM viaje_periodico WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
@@ -172,7 +167,12 @@ class AppModel extends PDORepository {
     public function eliminarViajePeriodicoDias($idViaje){
         $this->queryList("DELETE FROM dia_horario WHERE viaje_periodico_viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
-	
+
+    public function getViajes($dato){
+        $answer = $this->queryList("SELECT id, fecha, id_origen, id_destino FROM viaje WHERE fecha<?", [$dato]);
+        return $answer;
+    }
+		
 	public function getVehiculo($idVehiculo){
 		$answer = $this->queryList("SELECT * FROM vehiculo WHERE id=?", [$idVehiculo]);
 		return $answer;
