@@ -10,6 +10,7 @@ require_once('model/AppModel.php');
 
 require_once('controller/AppControllerViajes.php');
 require_once('controller/AppControllerUsuario.php');
+require_once('controller/AppControllerVehiculo.php');
 
 
 class AppController {
@@ -29,7 +30,7 @@ class AppController {
         
     }
     
-   public function index(){
+    public function index(){
         if(!isset($_SESSION['id'])){
 			$view = new Home();
 			$viajes = $this->accesoAPaginaQueLista();
@@ -48,7 +49,7 @@ class AppController {
         $vehiculosUsuario = $bd->getVehiculos();
         $vectorFormulario["vehiculos"] = $vehiculosUsuario;
         $viajes = $this->accesoAPaginaQueLista();
-        $view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes); //falta
+        $view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes);
     }
 
     public function accesoAPaginaQueLista(){

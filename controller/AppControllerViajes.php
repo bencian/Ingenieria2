@@ -9,7 +9,7 @@
 require_once('model/AppModel.php');
 
 
-class AppController {
+class AppControllerViajes {
     
     private static $instance;
 
@@ -30,7 +30,7 @@ class AppController {
 
         //CONTROLA QUE EL VIAJE SEA EN LOS PROXIMOS 30 DIAS!
         $diaMax = date('Y-m-d', strtotime("+30 days"));
-        $viajesVar = AppModel::getInstance()->getViajes($diaMax); //falta
+        $viajesVar = AppModelViajes::getInstance()->getViajes($diaMax);
         $parametros = array();
         if(count($viajesVar) == 0){
             $parametros['mensaje'] = 'No hay viajes registrados.';

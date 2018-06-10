@@ -22,4 +22,7 @@ class Home extends TwigView {
     	echo self::getTwig()->render("login.html.twig", array("errorTipo" => $dato));
     }
 
+    public function listarCiudadesMenuPrincipal($datos, $viajes){
+		echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos, "datos"=> $viajes));
+	}
 }
