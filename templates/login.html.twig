@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+Iniciar sesion
+{% endblock %}
+
+{% block javascript %}
+    <script src="templates/js/validarIniciarSesion.js"></script>
+{% endblock %}
+
+{% block container %}
+
+{% if errorTipo is defined %} <h3 style="text-align:center; color:red;"> {{errorTipo}} </h3> {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 text-center well">
+                <form method="POST" action="./?action=nueva_Sesion">
+                    <h1><label> Iniciar Sesion</label></h1><br>
+                    <div class="form-group">
+                        <h3><label>Email</label></h3>
+                        <input type="email" class="form-control" id="usr" name="usr" data-validation="email" placeholder="Ingrese mail" required>
+                        <div id="xmail" class="hide"><h6 class="text-danger">Ingresa un email valido</h6></div>
+  		    </div>
+                    <div class="form-group">
+    			<h3><label>Password</label></h3>
+    			<input type="password" class="form-control" id="contraseña" name="contraseña" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primaryPink">Ingresar</button>
+		</form>
+              </div>
+	</div>
+    </div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+Inicio
+{% endblock %}
+
+{% block container %}
+
+<div class="container">
+<div class="row">
+<div class="col-sm-12 col-sm-offset-0 text-center well">
+<ul>
+{% if viajes %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Precio</th>
+				<th scope="col">Duracion</th>
+				<th scope="col">Distancia</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for viaje in viajes %}
+				<tr>
+					<td>{{ viaje.id_origen }}</td>
+					<td>{{ viaje.id_destino }}</td>
+					<td>{{ viaje.fecha }}</td>
+					<td>$ {{ viaje.precio }}</td>
+					<td>{{ viaje.duracion }} horas</td>
+					<td>{{ viaje.distancia }} kms</td>
+					<td>						
+						<form method="post" class="pull-left" action="#">
+							<input type="hidden" name="id" value="postularse">
+							<input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+						</form>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h1>No hay viajes para mostrar</h1>
+{% endif %}
+
+</ul>
+</div>
+</div>
+</div>
+
+{% endblock %}

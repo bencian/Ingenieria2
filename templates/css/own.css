@@ -1,0 +1,44 @@
+#logo{
+	width: 14%;
+	height: auto;
+	position: relative;
+	left: 41%;
+}
+
+#navbar{
+	background-color: #FF7479; /*#FF353B #FF4653*/
+	/*height: 4em;*/
+	margin-bottom: 1em;
+}
+
+#register{
+	float: right;
+}
+
+#footer{
+	background-color: #FF7479;
+	margin-top: 1em;
+}
+
+a{
+	color: black;
+	/*background-color: #FF4653;*/
+}
+
+body{
+	background-color: pink;
+}
+
+#cabecera{
+	background-color: #FFFFFF;
+}
+
+#cda{
+	float: right;
+	margin-right: 1em;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: pink !important;
+}
