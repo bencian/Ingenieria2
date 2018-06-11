@@ -8,7 +8,7 @@
 
 require_once('model/AppModel.php');
 
-require_once('controller/AppController.php')
+require_once('controller/AppController.php');
 
 
 class AppControllerUsuario {
@@ -116,14 +116,41 @@ class AppControllerUsuario {
     public function mostrarPerfil(){
         //busca los datos a mostrar para el perfil del usuario
         if(isset($_SESSION)){
-            $datosUsuario = AppModel::getInstance()->getPerfil($_SESSION['id']); //falta
+            $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
             $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
             $mostrarDatos["nombre"] = $nombre;
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
             $view = new Home();
-            $viajes = AppModel::getInstance()->getViajesPropios($_SESSION['id']); //falta
+            $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
             $mostrarDatos["viajes"]=$viajes;
             $view->mostrarNombre($mostrarDatos); //falta
+        }
+    }
+
+    public function modificar_perfil(){
+        $view = new Home();
+        //busca los datos anteriores del perfil
+        $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
+        $view->camposModificarPerfil($datosUsuario[0]); //falta     
+    }
+
+    public function actualizar_perfil($datos){
+        $bd = AppModelUsuario::getInstance();
+        $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION["id"]);
+        $view = new Home();
+        if(isset($datos)){
+            if(!(($datos["oldPass"])==""||($datos["oldPass"])==null)&&($datos["oldPass"]==$datosUsuario[0]["password"])){
+                if($this->validacionUsuario($datos)){
+                    $datos["id"] = $_SESSION['id'];
+                    $bd->actualizarUsuario($datos);
+                    $this->mostrarPerfil();
+                } else {
+                    $view->camposModificarPerfil($datosUsuario[0]); //falta
+                }
+            } else {
+                echo "Contraseña incorrecta";
+                $view->camposModificarPerfil($datosUsuario[0]); //falta
+            }
         }
     }
 }

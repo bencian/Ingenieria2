@@ -7,6 +7,7 @@
  */
 
 require_once('model/AppModel.php');
+require_once('model/AppModelUsuario.php');
 
 require_once('controller/AppControllerViajes.php');
 require_once('controller/AppControllerUsuario.php');

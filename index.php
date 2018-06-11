@@ -12,58 +12,64 @@ require_once('controller/AppControllerVehiculo.php');
 
 require_once('model/PDORepository.php');
 require_once('model/AppModel.php');
+require_once('model/AppModelUsuario.php');
+require_once('model/AppModelViaje.php');
 
 require_once('view/TwigView.php');
 require_once('view/Home.php');
 
+$controller = AppController::getInstance();
+$usuario = AppControllerUsuario::getInstance();
+$vehiculo = AppControllerVehiculo::getInstance();
+$viaje = AppControllerViajes::getInstance();
 if(!isset($_GET["action"])){
-	AppController::getInstance()->index();
+	$controller->index();
 } elseif ($_GET["action"] == "login"){
-	AppControllerUsuario::getInstance()->login($_POST);
+	$usuario->login($_POST);
 } elseif ($_GET["action"] == "registrarse"){
-	AppControllerUsuario::getInstance()->registrarse($_POST);
+	$usuario->registrarse($_POST);
 } elseif ($_GET["action"] == "registrar_vehiculo"){
-	AppControllerVehiculo::getInstance()->registrar_vehiculo();
+	$vehiculo->registrar_vehiculo();
 } elseif ($_GET["action"] == "crear_usuario"){
-	AppControllerUsuario::getInstance()->crear_usuario($_POST);
+	$usuario->crear_usuario($_POST);
 } elseif ($_GET["action"] == "nueva_Sesion"){
-	AppController::getInstance()->validar_Inicio_Sesion($_POST);
+	$controller->validar_Inicio_Sesion($_POST);
 } elseif ($_GET["action"] == "cerrar_sesion"){
-	AppController::getInstance()->cerrarSesion();
+	$controller->cerrarSesion();
 } elseif ($_GET["action"] == "mostrar_perfil"){
-	AppControllerUsuario::getInstance()->mostrarPerfil();
+	$usuario->mostrarPerfil();
 } elseif ($_GET["action"] == "crear_vehiculo"){
-	AppController::getInstance()->crear_vehiculo($_POST); //falta
+	$vehiculo->crear_vehiculo($_POST);
 } elseif ($_GET["action"] == "modificar_perfil"){
-	AppController::getInstance()->modificar_perfil(); //falta
+	$usuario->modificar_perfil();
 } elseif ($_GET["action"] == "actualizar_perfil"){
-	AppController::getInstance()->actualizar_perfil($_POST); //falta
+	$usuario->actualizar_perfil($_POST);
 } elseif ($_GET["action"] == "buscando"){
-	AppController::getInstance()->buscador($_POST); //falta
+	$viaje->buscador($_POST);
 } elseif ($_GET["action"] == "lista_vehiculos"){
-	AppController::getInstance()->listar_vehiculos($_GET); //falta
+	$vehiculo->listar_vehiculos($_GET);
 } elseif ($_GET["action"] == "eliminar_vehiculo"){
-	AppController::getInstance()->eliminar_vehiculo($_POST); //falta
+	$vehiculo->eliminar_vehiculo($_POST);
 } elseif ($_GET['action'] == "eliminar_viaje"){
     if(isset($_GET['id'])){
         if(is_numeric($_GET['id'])){
-            AppController::getInstance()->eliminarViaje($_GET['id']); //falta
+            $viaje->eliminarViaje($_GET['id']);
         } else {
-            AppController::getInstance()->mostrarPerfil(); //falta
+            $usuario->mostrarPerfil();
         }
     } else {
-        AppController::getInstance()->mostrarPerfil(); //falta
+        $usuario->mostrarPerfil();
     }
 } elseif ($_GET['action'] == "modificar_vehiculo"){
-	AppController::getInstance()->modificar_vehiculo($_POST); //falta
+	$vehiculo->modificar_vehiculo($_POST);
 } elseif ($_GET["action"] == "actualizar_vehiculo"){
-	AppController::getInstance()->actualizar_vehiculo($_POST); //falta
+	$vehiculo->actualizar_vehiculo($_POST);
 } elseif ($_GET["action"] == "modificar_viaje_ocasional"){
-	AppController::getInstance()->modificar_viaje_ocasional($_POST); //falta
+	$viaje->modificar_viaje_ocasional($_POST);
 } elseif ($_GET["action"] == "crear_viajeOcasional"){
-	AppController::getInstance()->publicarViajeOcasional($_POST); //falta
+	$viaje->publicarViajeOcasional($_POST);
 } elseif ($_GET["action"] == "modificarViajeOcasional"){
-	AppController::getInstance()->modificarViajeOcasional($_POST); //falta
+	AppController::getInstance()->modificarViajeOcasional($_POST); //SOSPECHOSO! no se bien porque esta esto aca 
 } elseif ($_GET["action"] == "crear_viajePeriodico"){
-	AppController::getInstance()->publicarViajePeriodico($_POST); //falta
+	$viaje->publicarViajePeriodico($_POST);
 }

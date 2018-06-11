@@ -42,4 +42,74 @@ class AppControllerVehiculo {
         $view->formularioTipoVehiculos($vector,$string); //falta
     }
 
+    public function crear_vehiculo($datos){
+        $bd = AppModel::getInstance();
+        $view = new Home();
+        if(isset($datos)){
+            $test = $this->validar_vehiculo($datos); 
+            if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
+                $datos["id_usuario"] = $_SESSION['id'];
+                $bd->registrar_vehiculo($datos);
+                $this->mostrarMenuConSesion();
+            } else {
+                $this->registrar_vehiculo();
+            }
+        }
+    }
+
+    public function validar_vehiculo($datos){
+        $valor = ((preg_match("#[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}#", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
+        return $valor;
+    }
+
+    public function listar_vehiculos(){
+        $view = new Home();
+        $vehiculos = AppModel::getInstance()->getVehiculos(); 
+        $view->listarVehiculosPropios($vehiculos); //falta
+    }
+
+    public function eliminar_vehiculo($datos){
+        $bdViaje = AppModelViaje::getInstance();
+        $bd = AppModel::getInstance();
+        $viajes=$bdViaje->poseeViajesEchos($datos);
+        if(!$viajes){
+            //borrar de usuarios_has_vehiculo y de vehiculos
+            $bd->borrarVehiculo($datos);
+        } 
+        $bd->eliminarRelacionUsuarioVehiculo($datos);
+        $view = new Home();
+        $this->listar_vehiculos();
+    }
+
+    public function modificar_vehiculo($datos){
+        //datos tiene el id del vehiculo a modificar en un string
+        $view = new Home();
+        $bd = AppModel::getInstance();
+        $idVehiculo = (int)$datos["id"];
+        $vehiculo = $bd->getVehiculo($idVehiculo);
+        $tipos = $bd->tipos();
+        for ($i=1;$i<=count($tipos);$i++){
+            $vehiculo[$i]["nombre"]= $tipos[$i-1]["nombre"];
+            $vehiculo[$i]["id"]= $tipos[$i-1]["id"];
+        }
+        $string="modificar_vehiculo.html.twig";
+        $view->modificarVehiculo($string,$vehiculo); //falta
+    }
+
+    public function actualizar_vehiculo($datos){
+        $bd = AppModel::getInstance();
+        $view = new Home();
+        if(isset($datos)){
+            $test = $this->validar_vehiculo($datos);
+            if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
+                $datos["id"] = (int)$_POST["id"];
+                $datos["tipo"] = (int)$datos["tipo"];
+                $bd->actualizar_vehiculo($datos);
+                $this->mostrarMenuConSesion();
+            } else {
+                $vehiculos=$bd->getVehiculos();
+                $view->listarVehiculosPropios($vehiculos); //falta
+            }
+        }
+    }
 }
