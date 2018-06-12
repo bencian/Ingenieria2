@@ -13,7 +13,6 @@ require_once('controller/AppControllerViajes.php');
 require_once('controller/AppControllerUsuario.php');
 require_once('controller/AppControllerVehiculo.php');
 
-
 class AppController {
     
     private static $instance;
