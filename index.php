@@ -9,7 +9,9 @@ require_once('controller/AppController.php');
 require_once('model/PDORepository.php');
 require_once('model/AppModel.php');
 require_once('view/TwigView.php');
-require_once('view/Home.php');
+require_once('view/Home.php');/*
+require_once('controller/UsuariosController.php');
+require_once('controller/ViajeController.php');*/
 
 //SI se agrega un controller o un model debe "registrarse" con el required once como se muestra ahi arriba (los templates no).
 
