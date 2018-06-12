@@ -71,14 +71,19 @@ class AppControllerVehiculo {
     public function eliminar_vehiculo($datos){
         $bdViaje = AppModelViaje::getInstance();
         $bd = AppModel::getInstance();
-        $viajes=$bdViaje->poseeViajesEchos($datos);
-        if(!$viajes){
-            //borrar de usuarios_has_vehiculo y de vehiculos
-            $bd->borrarVehiculo($datos);
-        } 
-        $bd->eliminarRelacionUsuarioVehiculo($datos);
-        $view = new Home();
-        $this->listar_vehiculos();
+        $cant_viajes=$bdViaje->noPoseeViajesFuturos($datos);
+        if($cant_viajes){
+
+          $viajes=$bdViaje->poseeViajesEchos($datos);
+          if(!$viajes){
+              //borrar de usuarios_has_vehiculo y de vehiculos
+              $bd->borrarVehiculo($datos);
+          }
+          $bd->eliminarRelacionUsuarioVehiculo($datos);
+          $view = new Home();
+          $this->listar_vehiculos();
+        }
+        AppControllerUsuario::getInstance()->mostrarPerfil();/* ??? */
     }
 
     public function modificar_vehiculo($datos){

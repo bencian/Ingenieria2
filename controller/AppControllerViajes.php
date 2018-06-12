@@ -48,11 +48,12 @@ class AppControllerViajes {
         $viajes= AppModelViaje::getInstance();
         if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){
             if(isset($datos["destino"]) && $datos["destino"]!=""){
-                $viajes->busqueda_completa($datos);
+                $viajes_hechos=$viajes->busqueda_completa($datos);
             } else {
-                $viajes->busqueda_parcial($datos);                
+                $viajes_hechos=$viajes->busqueda_parcial($datos);
             }
-            $view->listarViajes($viajes); //falta
+            $ciudades= AppModel::getInstance()->getCiudades();
+            $view->listarViajes($viajes_hechos, $ciudades); //falta
         } else {
             echo "Faltan ingresar datos";
         }

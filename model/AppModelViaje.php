@@ -106,4 +106,10 @@ class AppModelViaje extends PDORepository {
     public function asociarDiaHorario($datos){
     $answer = $this->queryList("INSERT INTO dia_horario (dia, viaje_periodico_viaje_id, horario) VALUES (:dia, :viaje_periodico_viaje_id, :horario)", [ "dia" =>$datos["fecha"] , "viaje_periodico_viaje_id" => $datos["idViaje"], "horario" => $datos["horario"] ]);
     }
+
+    public function noPoseeViajesFuturos($datos){
+      $answer= $this->queryList("SELECT vj.id FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo AND vj.fecha> CURDATE()", [ "vehiculo"=>$datos["id"]]);
+      var_dump($answer);
+      return false;
+    }
 }

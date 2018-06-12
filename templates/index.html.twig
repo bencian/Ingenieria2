@@ -47,9 +47,15 @@ Inicio
 								{% for viaje in datos.listadoCompletoDeViajes %}
 									
 									<tr>
-										<td>{{ viaje.id_origen }}</td>
-										<td>{{ viaje.id_destino }}</td>
+										<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
+										<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
+										<td>
+											<form method="get" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+												<input type="hidden" name="id" value="{{ viaje.id }}">
+												<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+											</form>
+										</td>
 									</tr>
 								{% endfor %}
 							</tbody>

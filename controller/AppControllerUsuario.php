@@ -123,6 +123,8 @@ class AppControllerUsuario {
             $view = new Home();
             $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
             $mostrarDatos["viajes"]=$viajes;
+            $ciudades = AppModel::getInstance()->getCiudades();
+            $mostrarDatos["ciudades"]=$ciudades;
             $view->mostrarNombre($mostrarDatos); //falta
         }
     }
