@@ -26,7 +26,8 @@ a{
 }
 
 body{
-	background-color: pink;
+	/*background-color: pink;*/
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#FF7479 100%) !important;
 }
 
 #cabecera{
@@ -41,4 +42,9 @@ body{
 .table-striped>tbody>tr:nth-child(odd)>td, 
 .table-striped>tbody>tr:nth-child(odd)>th {
    background-color: pink !important;
+}
+
+.well{
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#FFFFFF 100%) !important;
+	/*background-image: linear-gradient(to bottom,#FFFFFF 0,#FF7479 100%) !important;*/
 }

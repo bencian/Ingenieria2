@@ -8,31 +8,45 @@ Detalles de viaje
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 text-center well">
-            <table class="table table-striped">
-                <tr>  
-                    <td><h3>Origen: {{ ciudades[viaje.viaje.id_origen -1].nombre }}</h3></td>
-                    <td><h3>Destino: {{ ciudades[viaje.viaje.id_destino -1].nombre }}</h3></td>
-                    <td><h3>Fecha: {{ viaje.viaje.fecha }}</h3></td>
-                </tr>
-                <tr>   
-                    <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
-                    <td>Hora: {{ viaje.ocasional.hora_salida }}</td>
-                    <td>Precio: {{ viaje.viaje.precio }}</td>
-                </tr>
-                <tr>
-                    <td>Duracion: {{ viaje.viaje.duracion }}</td>
-                    <td>Distancia: {{ viaje.viaje.distancia }}</td>
-                    <td>Cantidad de postulados:</td>
-                    {% if viaje.viaje.comentarios %}
-                        <td>Comentarios: {{ viaje.viaje.comentarios }}</td>
-                    {% endif %}
-                </tr>
-                <tr>
-                    <td>Cantidad de asientos: {{ vehiculo.asientos }}</td>
-                    <td>Marca: {{ vehiculo.marca }}</td>
-                    <td>Modelo: {{ vehiculo.modelo }}</td>
-                </tr>
-            </table>
+            <div>
+                <table class="table table-striped">
+                    <tr> 
+                        <td><h2>Datos basicos</h2></td> 
+                        <td><h3>Origen: {{ ciudades[viaje.viaje.id_origen -1].nombre }}</h3></td>
+                        <td><h3>Destino: {{ ciudades[viaje.viaje.id_destino -1].nombre }}</h3></td>
+                        <td><h3>Fecha: {{ viaje.viaje.fecha }}</h3></td>
+                    </tr>
+                    <tr>
+                        <td><h3>Datos generales</h3></td>  
+                        <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
+                        <td>Hora: {{ viaje.ocasional.hora_salida }}</td>
+                        <td>Precio: {{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
+                    </tr>
+                    <tr>
+                        <td><h3>Datos extras</h3></td>
+                        <td>Duracion: {{ viaje.viaje.duracion }}</td>
+                        <td>Distancia: {{ viaje.viaje.distancia }}</td>
+                        <td>Cantidad de postulados:</td>
+                    </tr>
+                    <tr>
+                        <td><h3>Datos del vehiculo</h3></td>
+                        <td>Cantidad de asientos: {{ vehiculo.asientos }}</td>
+                        <td>Marca: {{ vehiculo.marca }}</td>
+                        <td>Modelo: {{ vehiculo.modelo }}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        {% if viaje.viaje.comentarios %}
+                           <td>Comentarios: {{ viaje.viaje.comentarios }}</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% if viaje.viaje.comentarios %}
+                           Comentarios: {{ viaje.viaje.comentarios }}
+                {% endif %}
+            </div>
             <form method="post" class="pull-left" action="#">
                 <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                 <input type="submit" class="btn btn-primaryPink"  value="Postularme!">

@@ -9,7 +9,7 @@
 require_once('model/AppModel.php');
 require_once('model/AppModelViaje.php');
 require_once('controller/AppControllerUsuario.php');
-
+require_once('controller/AppController.php');
 
 class AppControllerViajes {
     
@@ -215,7 +215,7 @@ class AppControllerViajes {
                 $bdViaje->asociarDiaHorario($datosDiaHorario);
             }
         }
-        $this->mostrarMenuPrincipalSesion();     
+        AppController::getInstance()->mostrarMenuConSesion();     
     }
     
     public function validarViajePeriodico($datos){
