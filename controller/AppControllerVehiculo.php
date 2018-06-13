@@ -97,7 +97,7 @@ aca no va false
             $bd->borrarVehiculo($datos);
         }
         $bd->eliminarRelacionUsuarioVehiculo($datos);*/
-        $view = new Home();
+        //$view = new Home();
         $this->listar_vehiculos();
     }
 
