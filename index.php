@@ -74,4 +74,8 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->modificarViajeOcasional($_POST); //SOSPECHOSO! no se bien porque esta esto aca 
 } elseif ($_GET["action"] == "crear_viajePeriodico"){
 	$viaje->publicarViajePeriodico($_POST);
+} elseif ($_GET["action"] == "confirmar_eliminacion_en_cascada"){
+	$vehiculo->confirmar_eliminacion_en_cascada($_POST);
+} elseif ($_GET["action"] == "ver_publicacion_viaje"){
+	$viaje->ver_publicacion_viaje($_POST);
 }

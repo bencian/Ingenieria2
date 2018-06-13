@@ -420,4 +420,15 @@ class AppControllerViajes {
         }
         return $vector;
     }
+
+    public function ver_publicacion_viaje($viaje_id){
+        $view=new Home();
+        $model=AppModel::getInstance();
+        $viaje=AppModelViaje::getInstance()->getViaje($viaje_id);
+        $calificaciones=$model->getCalificaciones();
+        $vehiculo=($model->getVehiculo($viaje["viaje"]["vehiculo_id"]))[0];
+        $ciudades=$model->getCiudades();
+        $piloto=(AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"]))[0];
+        $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto);
+    }
 }

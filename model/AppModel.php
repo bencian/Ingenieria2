@@ -100,4 +100,8 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
+    public function getCalificaciones(){/*  IMPLEMENTAR     */
+        return true;
+    }
+
 }

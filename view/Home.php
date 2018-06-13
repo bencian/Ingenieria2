@@ -58,4 +58,12 @@ class Home extends TwigView {
     public function listarCiudadesMenuPrincipal($datos, $viajes){
         echo self::getTwig()->render("sesion.html.twig", array("vectorForm" => $datos, "datos"=> $viajes));
     }
+
+    public function eliminarEnCascada($parametros){
+        echo self::getTwig()->render("eliminarEnCascada.html.twig", array("viajes"=>$parametros["viajes"], "vehiculo"=>$parametros["vehiculo"]));
+    }
+
+    public function verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades,$piloto){
+        echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto));
+    }
 }
