@@ -99,5 +99,4 @@ class AppModel extends PDORepository {
         $answer = $this->queryList("SELECT asientos FROM vehiculo where id=?",[$datos]);
         return $answer;
     }
-
 }
