@@ -1,0 +1,22 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+Confirmar eliminar
+{% endblock %}
+
+{% block container %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center well">{# tiene que ser la cantidad de postulados aceptados #}
+			<h3>Si lo elimina se le descontaran {{ viajes[0]["COUNT(*)"] }} puntos</h3>
+			<form method="post" class="pull-left" action="./?action=confirmar_eliminacion_en_cascada">
+				<input type="hidden" name="id" value="{{ vehiculo }}">
+				<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
+				<input type="cancel" class="btn btn-primaryPink"  value="Cancelar">
+			</form>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

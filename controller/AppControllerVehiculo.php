@@ -71,15 +71,47 @@ class AppControllerVehiculo {
     public function eliminar_vehiculo($datos){
         $bdViaje = AppModelViaje::getInstance();
         $bd = AppModel::getInstance();
-        $viajes=$bdViaje->poseeViajesEchos($datos);
+        $tieneViajes=$bdViaje->noPoseeViajesFuturos($datos);
+/*
+aca no va false
+*/      if(false){
+
+          $viajes=$bdViaje->poseeViajesEchos($datos);
+          if(!$viajes){
+              //borrar de usuarios_has_vehiculo y de vehiculos
+              $bd->borrarVehiculo($datos);
+          }
+          $bd->eliminarRelacionUsuarioVehiculo($datos);
+          $view = new Home();
+          $this->listar_vehiculos();
+        }
+        $this->confirmarEliminacionCascada($datos);
+    }
+
+    public function confirmar_eliminacion_en_cascada($datos){
+        $bdViaje = AppModelViaje::getInstance();
+        $bd = AppModel::getInstance();
+        $bdViaje->eliminarViajesFuturosEnCascada($datos);
+        /*$viajes=$bdViaje->poseeViajesEchos($datos);
         if(!$viajes){
-            //borrar de usuarios_has_vehiculo y de vehiculos
             $bd->borrarVehiculo($datos);
-        } 
-        $bd->eliminarRelacionUsuarioVehiculo($datos);
+        }
+        $bd->eliminarRelacionUsuarioVehiculo($datos);*/
         $view = new Home();
         $this->listar_vehiculos();
     }
+
+    public function confirmarEliminacionCascada($datos){
+        $view = new Home();
+        $bdViaje = AppModelViaje::getInstance();
+        $cant_viajes=$bdViaje->noPoseeViajesFuturos($datos);
+        $vehiculo=AppModel::getInstance()->getVehiculo($datos["id"]);
+        $parametros["viajes"]=$cant_viajes;
+        $parametros["vehiculo"]=$vehiculo[0]["id"];
+        $view->eliminarEnCascada($parametros);
+
+    }
+
 
     public function modificar_vehiculo($datos){
         //datos tiene el id del vehiculo a modificar en un string

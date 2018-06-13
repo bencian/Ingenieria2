@@ -19,7 +19,7 @@ class AppModel extends PDORepository {
         
     }
 
-	public static function getInstance() {
+    public static function getInstance() {
         if (!isset(self::$instance)) {
             self::$instance = new self();
         }
@@ -28,12 +28,12 @@ class AppModel extends PDORepository {
     }
 
     public function getCiudades(){
-		$answer = $this->queryList("SELECT * FROM ciudad", []);
-		return $answer;
-	}
-	
-	//VEHICULO
-	public function getTipoVehiculo($datos){
+        $answer = $this->queryList("SELECT * FROM ciudad", []);
+        return $answer;
+    }
+    
+    //VEHICULO
+    public function getTipoVehiculo($datos){
         $answer= $this->queryList("SELECT nombre FROM tipo WHERE id=:id",["id"=>$datos]);
         return $answer;
     }
@@ -98,5 +98,9 @@ class AppModel extends PDORepository {
     public function getAsientos($datos){
         $answer = $this->queryList("SELECT asientos FROM vehiculo where id=?",[$datos]);
         return $answer;
+    }
+
+    public function getCalificaciones(){/*  IMPLEMENTAR     */
+        return true;
     }
 }

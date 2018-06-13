@@ -14,7 +14,7 @@ Inicio
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 text-center well">
 			<div id="publicar_viaje" class="col-xs-4 col-md-4 col-lg-4">
-				<div class="row">				
+				<div class="row">
 					<div class="col-sm-12 col-sm-offset-12 pull-right well">
 						<button id="botonCambio" type="button" class="btn btn-primaryPink text-align:center">Cambiar a periodico</button>
 						<div id="ocasional">
@@ -46,7 +46,7 @@ Inicio
 								<div class="form-group">
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
-										{% if vectorForm is defined %} 
+										{% if vectorForm is defined %}
 											{% for each in vectorForm.ciudades %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
@@ -56,7 +56,7 @@ Inicio
 								<div class="form-group">
 									<label for="">Destino</label>
 									<select class="form-control" id="destino" name="destino">
-										{% if vectorForm is defined %} 
+										{% if vectorForm is defined %}
 											{% for each in vectorForm.ciudades %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
@@ -66,7 +66,7 @@ Inicio
 								<div class="form-group">
 									<label for="">Vehiculo</label>
 									<select class="form-control" id="vehiculo" name="vehiculo" required>
-										{% if vectorForm is defined %} 
+										{% if vectorForm is defined %}
 											{% for each in vectorForm.vehiculos %}
 												<option value="{{ each.id }}">{{ each.marca }} - {{ each.patente }} - con {{ each.asientos }} asientos</option>
 											{% endfor %}
@@ -75,13 +75,13 @@ Inicio
 								</div>
 								<div class="form-group">
 									<label for="">Comentarios</label>
-									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios" required>
-								</div>	
+									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios">
+								</div>
 								<cr>
 								<button type="submit" class="btn btn-primaryPink">Submit</button>
 							</form>
 						</div>
-						<div id="periodico" style="display: none"> 
+						<div id="periodico" style="display: none">
 							<form method="post" action="./?action=crear_viajePeriodico">
 								<div class="form-group">
 									<p class="text-align: center h3"> Crear viaje periodico</p>
@@ -105,17 +105,17 @@ Inicio
 								<div class="form-group">
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
-										{% if vectorForm is defined %} 
+										{% if vectorForm is defined %}
 											{% for each in vectorForm.ciudades %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
 										{% endif %}
 									</select>
-								</div>	
+								</div>
 								<div class="form-group">
 									<label for="">Destino</label>
 									<select class="form-control" id="destino" name="destino">
-										{% if vectorForm is defined %} 
+										{% if vectorForm is defined %}
 											{% for each in vectorForm.ciudades %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
@@ -125,7 +125,7 @@ Inicio
 								<div class="form-group">
 									<label for="">Vehiculo</label>
 									<select class="form-control" id="vehiculo" name="vehiculo" required>
-										{% if vectorForm is defined %} 
+										{% if vectorForm is defined %}
 											{% for each in vectorForm.vehiculos %}
 												<option value="{{ each.id }}">{{ each.marca }} - {{ each.patente }} - con {{ each.asientos }} asientos</option>
 											{% endfor %}
@@ -139,7 +139,7 @@ Inicio
 									<input type="date" class="form-control" id="final" value="" disabled-->
 								</div>
 								<div class="form-group">
-									<table class="table">	
+									<table class="table">
 										<tbody>
 											<tr>
 												<div>
@@ -157,7 +157,7 @@ Inicio
 												<div class="form-group">
 													<td><label for="" class="hora_lunes" style="display: none">Hora: </label></td>
 													<td><input type="time" class="form-control hora_lunes" id="hora_lunes" name="hora_lunes" style="display: none" placeholder="hora lunes"></td>
-												</div>	
+												</div>
 											</tr>
 											<tr>
 												<div class="checkbox">
@@ -220,19 +220,19 @@ Inicio
 												</div>
 											</tr>
 										</tbody>
-									</table>	
+									</table>
 								</div>
 								<div class="form-group">
 									<label for="">Comentarios</label>
-									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios" required>
-								</div>	
+									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios">
+								</div>
 								<cr>
 								<button type="submit" class="btn btn-primaryPink">Submit</button>
 							</form>
 						</div>
 					</div>
 				</div>
-			</div>	
+			</div>
 			<div id="buscador" class="col-xs-2 col-md-2 col-lg-2">
 				<div class="row" >
 					<div class="col-sm-11 col-sm-offset-11 pull-right well">
@@ -248,7 +248,7 @@ Inicio
 							<div class="form-check">
 								<label for="exampleCheck1">Fecha de salida</label>
 								<input type="date" class="form-check-input" id="salida" name="salida" required>
-							</div>	
+							</div>
 							<br>
 							<button type="submit" class="btn btn-primaryPink">Submit</button>
 						</form>
@@ -258,32 +258,39 @@ Inicio
 			<div id="viajes_actuales" class="col-xs-6 col-md-6 col-lg-6">
 				<div class="row">
 					<div class="col-sm-11 col-sm-offset-11 pull-right well">
-					{% if datos.listadoCompletoDeViajes is defined %} 
-						<h3 style="text-align:center; color:black;"> Proximos viajes </h3> 
+					{% if datos.listadoCompletoDeViajes is defined %}
+						<h3 style="text-align:center; color:black;"> Proximos viajes </h3>
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th scope="col">Origen</th>
-										<th scope="col">Destino</th>
-										<th scope="col">Fecha</th>
+										<td scope="col">Origen</td>
+										<td scope="col">Destino</td>
+										<td scope="col">Fecha</td>
+										<td></td>
 									</tr>
 								</thead>
 								<tbody>
 								{% for viaje in datos.listadoCompletoDeViajes %}
 									<tr>
-										<td>{{ vectorForm.ciudades[viaje.id_origen].nombre }}</td>
-										<td>{{ vectorForm.ciudades[viaje.id_destino].nombre }}</td>
+										<td>{{ vectorForm.ciudades[viaje.id_origen - 1].nombre }}</td>
+										<td>{{ vectorForm.ciudades[viaje.id_destino - 1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
+										<td>
+											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+												<input type="hidden" name="id" value="{{ viaje.id }}">
+												<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+											</form>
+										</td>
 									</tr>
 								{% endfor %}
 								</tbody>
 							</table>
-					{% else %} 
+					{% else %}
 						<p style="text-align:center; color:black;"> {{ datos.mensajeDeResultado }} </p>
 					{% endif %}
 					</div>
 				</div>
-			</div>	
+			</div>
 		</div>
 	</div>
 </div>

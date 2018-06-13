@@ -16,7 +16,9 @@ require_once('model/AppModelUsuario.php');
 require_once('model/AppModelViaje.php');
 
 require_once('view/TwigView.php');
-require_once('view/Home.php');
+require_once('view/Home.php');/*
+require_once('controller/UsuariosController.php');
+require_once('controller/ViajeController.php');*/
 
 $controller = AppController::getInstance();
 $usuario = AppControllerUsuario::getInstance();
@@ -72,4 +74,8 @@ if(!isset($_GET["action"])){
 	AppController::getInstance()->modificarViajeOcasional($_POST); //SOSPECHOSO! no se bien porque esta esto aca 
 } elseif ($_GET["action"] == "crear_viajePeriodico"){
 	$viaje->publicarViajePeriodico($_POST);
+} elseif ($_GET["action"] == "confirmar_eliminacion_en_cascada"){
+	$vehiculo->confirmar_eliminacion_en_cascada($_POST);
+} elseif ($_GET["action"] == "ver_publicacion_viaje"){
+	$viaje->ver_publicacion_viaje($_POST);
 }
