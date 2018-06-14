@@ -81,6 +81,12 @@ class AppModel extends PDORepository {
         $answer= $this->queryList("DELETE FROM vehiculo WHERE id =:vehiculo", [ "vehiculo"=>$datos["id"]]);
         return $answer;
     }
+    
+    //VEHICULO
+    public function asociar_vehiculo($datos){
+        $answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
+        return $answer;
+    }
 
     //VEHICULO
     public function getVehiculo($idVehiculo){
