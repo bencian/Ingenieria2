@@ -98,6 +98,12 @@ aca no va false
         }
         $bd->eliminarRelacionUsuarioVehiculo($datos);*/
         //$view = new Home();
+        $viajes=$bdViaje->poseeViajesEchos($datos);
+        if(!$viajes){
+              //borrar de usuarios_has_vehiculo y de vehiculos
+              $bd->borrarVehiculo($datos);
+        }
+        $bd->eliminarRelacionUsuarioVehiculo($datos);
         $this->listar_vehiculos();
     }
 

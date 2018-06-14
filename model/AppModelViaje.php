@@ -124,7 +124,7 @@ var_dump($datos);
         
         $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE())", ["vehiculo"=>$datos["id"]]);
         
-        $answer=$this->queryList("DELETE FROM viaje WHERE vehiculo_id=:vehiculo AND v.fecha>CURDATE()", ["vehiculo"=>$datos["id"]]);
+        $answer=$this->queryList("DELETE FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE()", ["vehiculo"=>$datos["id"]]);
         
         var_dump($answer);
         return $answer;
