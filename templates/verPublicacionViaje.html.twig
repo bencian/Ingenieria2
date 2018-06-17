@@ -49,10 +49,19 @@ Detalles de viaje
             </div>
             {% if usuario == piloto.id %}
                 <p>ACA SE TIENE QUE MOSTRAR LOS POSTULADOS</p>
+                <a href="">Nombre de los postulados</a>
+                <h5>Calificaciones</h5>
+                <button>Aceptar</button>
+                <button>Rechazar</button>
             {% else %}
                 <form method="post" class="pull-left" action="./?action=postularse">
                     <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                     <input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+
+
+                    {# cuando se postula deberia revisar si ya esta postulado y en caso de estarlo mostrar despostularse #}
+
+
                 </form>
             {% endif %}
         </div>
