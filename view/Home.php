@@ -65,7 +65,7 @@ class Home extends TwigView {
 
     public function verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades,$piloto){
         if(isSet($_SESSION["id"])){
-            echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto));
+            echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto, "usuario"=>$_SESSION["id"]));
         } else {
             echo self::getTwig()->render("verPublicacionViajeSinSesion.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto));
         }
