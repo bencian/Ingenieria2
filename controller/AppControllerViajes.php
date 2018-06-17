@@ -431,4 +431,9 @@ class AppControllerViajes {
         $piloto=(AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"]))[0];
         $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto);
     }
+
+    public function postularse($datos){
+        AppModelViaje::getInstance()->postularme($datos);
+        AppController::getInstance()->mostrarMenuConSesion();
+    }
 }

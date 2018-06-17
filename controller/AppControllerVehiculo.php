@@ -111,6 +111,7 @@ aca no va false
         $view = new Home();
         $bdViaje = AppModelViaje::getInstance();
         $cant_viajes=$bdViaje->noPoseeViajesFuturos($datos);
+        /*$cant_viajes=$bdViaje->viajesConAceptados($datos);*/
         $vehiculo=AppModel::getInstance()->getVehiculo($datos["id"]);
         $parametros["viajes"]=$cant_viajes;
         $parametros["vehiculo"]=$vehiculo[0]["id"];

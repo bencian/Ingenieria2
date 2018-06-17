@@ -108,16 +108,22 @@ class AppModelViaje extends PDORepository {
     }
 
     public function noPoseeViajesFuturos($datos){
-        $answer= $this->queryList("SELECT COUNT(*) FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo AND vj.fecha> CURDATE()", [ "vehiculo"=>$datos["id"]]);
-      return $answer;
+        $answer= $this->queryList("SELECT COUNT(*) FROM vehiculo vh 
+            INNER JOIN viaje vj ON vh.id=vj.vehiculo_id 
+            WHERE vh.id=:vehiculo AND vj.fecha> CURDATE()", [ "vehiculo"=>$datos["id"]]);
+        return $answer;
+    }
+
+    public function viajesConAceptados($datos){
+        $answer= $this->queryList("SELECT COUNT(vj.id) FROM vehiculo vh INNER JOIN viaje vj ON (vh.id=vj.vehiculo_id) INNER JOIN usuario_viaje uv ON (vj.id=uv.viaje_id) WHERE (vh.id=:vehiculo AND vj.fecha> CURDATE() AND  uv.estado='aceptado') GROUP BY (vj.id)", [ "vehiculo"=>$datos["id"]]);
+        var_dump($answer);
+        return $answer;
     }
 
 
 
     public function eliminarViajesFuturosEnCascada($datos){
-       /* $this->queryList("DELETE FROM viaje_ocasional WHERE vehiculo_id=:vehiculo", ["vehiculo"=>$datos["id"]]);
-        $this->queryList("DELETE FROM viaje_periodico WHERE vehiculo_id=:vehiculo", ["vehiculo"=>$datos["id"]]);*/
-var_dump($datos);
+
         $answer=$this->queryList("DELETE dh FROM viaje_periodico vp INNER JOIN dia_horario dh ON (vp.viaje_id= dh.viaje_periodico_viaje_id) WHERE vp.viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE());", ["vehiculo"=>$datos["id"]]);
         
         $answer=$this->queryList("DELETE FROM viaje_periodico WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE())", ["vehiculo"=>$datos["id"]]);
@@ -128,12 +134,21 @@ var_dump($datos);
         
         var_dump($answer);
         return $answer;
+/*
+        $answer=$this->queryList("DELETE dh FROM viaje_periodico vp INNER JOIN dia_horario dh ON (vp.viaje_id= dh.viaje_periodico_viaje_id) WHERE vp.viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) || (fecha=CURDATE() && horario>CURTIME() )));", ["vehiculo"=>$datos["id"]]);    ESO NO VA A SERVIR CON LAS OTRAS TABLAS!
+        
+        $answer=$this->queryList("DELETE vp FROM viaje_periodico vp LEFT JOIN dia_horario dh ON (vp.viaje_id= dh.viaje_periodico_viaje_id) WHERE horario=NULL", ["vehiculo"=>$datos["id"]]);  ASI DEBERIA FUNCIONAR!
+        
+        $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) || (fecha=CURDATE() && hora_salida>CURTIME() )))", ["vehiculo"=>$datos["id"]]);    CON ESTA SI!
+        
+        $answer=$this->queryList("DELETE v FROM viaje v 
+        LEFT JOIN viaje_periodico vp ON (vp.viaje_id= v.id) 
+        LEFT JOIN viaje_ocacional vo ON (vo.viaje_id= v.id)
+        WHERE vehiculo_id=:vehiculo AND (horario=NULL && hora_salida=NULL)", ["vehiculo"=>$datos["id"]]);
 
-        /*SELECT * FROM viaje WHERE vehiculo_id=4 AND viaje.fecha> CURDATE()
+    HAY QUE BORRAR DE LA TABLA USUARIO_VIAJE!!!
 
-        SELECT * FROM viaje_ocasional vp INNER JOIN  viaje v ON viaje_id=id WHERE vehiculo_id=4 AND fecha>CURDATE()
-        */
-        /*HAY QUE ELIMINAR VIAJES A PARTIR DEL MOMENTO ACTUAL*/
+*/
     }
 
 
@@ -149,6 +164,11 @@ var_dump($datos);
         } else {
             $answer["ocasional"]=$ocasional[0];
         }
+        return $answer;
+    }
+
+    public function postularme($datos){
+        $answer= $this->queryList("INSERT INTO usuario_viaje  (usuarios_id, viaje_id, estado) VALUES (:usuario, :viaje, :estado)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"], "estado"=>'pendiente']);
         return $answer;
     }
 }

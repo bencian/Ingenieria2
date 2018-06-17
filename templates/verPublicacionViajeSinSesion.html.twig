@@ -1,4 +1,4 @@
-{% extends "base_session.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block title %}
 Detalles de viaje
@@ -47,10 +47,6 @@ Detalles de viaje
                            Comentarios: {{ viaje.viaje.comentarios }}
                 {% endif %}
             </div>
-            <form method="post" class="pull-left" action="./?action=postularse">
-                <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
-                <input type="submit" class="btn btn-primaryPink"  value="Postularme!">
-            </form>
 
         </div>
     </div>

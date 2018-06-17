@@ -12,7 +12,7 @@ Confirmar eliminar
 			<form method="post" class="pull-left" action="./?action=confirmar_eliminacion_en_cascada">
 				<input type="hidden" name="id" value="{{ vehiculo }}">
 				<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
-				<input type="cancel" class="btn btn-primaryPink"  value="Cancelar">
+				<input type="cancel" onclick="window.location='./index.php?action=lista_vehiculos'" class="btn btn-primaryPink"  value="Cancelar">
 			</form>
 
 		</div>

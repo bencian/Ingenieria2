@@ -78,4 +78,6 @@ if(!isset($_GET["action"])){
 	$vehiculo->confirmar_eliminacion_en_cascada($_POST);
 } elseif ($_GET["action"] == "ver_publicacion_viaje"){
 	$viaje->ver_publicacion_viaje($_POST);
+} elseif ($_GET["action"] == "postularse"){
+	$viaje->postularse($_POST);
 }
