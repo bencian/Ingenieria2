@@ -81,6 +81,12 @@ class AppModel extends PDORepository {
         $answer= $this->queryList("DELETE FROM vehiculo WHERE id =:vehiculo", [ "vehiculo"=>$datos["id"]]);
         return $answer;
     }
+    
+    //VEHICULO
+    public function asociar_vehiculo($datos){
+        $answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
+        return $answer;
+    }
 
     //VEHICULO
     public function getVehiculo($idVehiculo){
@@ -100,8 +106,16 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
-    public function getCalificaciones(){/*  IMPLEMENTAR     */
+    public function getCalificaciones(){/*  IMPLEMENTAR Y PASAR AL APPMODEL USUARIO     */
         return true;
     }
 
+    //VEHICULO
+    public function vehiculoViaje($datos){
+        $patente="";
+        SELECT * FROM vehiculo vh
+        INNER JOIN viaje vj ON (vh.id=vj.vehiculo_id)
+        INNER JOIN viaje_ocasional vo ON (vj.id=vo.viaje_id)
+        WHERE (vh.patente=:patente  AND vj.fecha=:fecha AND (vo.hora_salida BETWEEN vo.hora_salida AND vo.hora_salida+ACA LALALA) AND (vo.hora_salida+LALALA BETWEEN vo.hora_salida AND vo.hora_salida+ACA LALALA)
+    }
 }

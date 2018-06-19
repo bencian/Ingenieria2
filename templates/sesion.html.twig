@@ -12,8 +12,8 @@ Inicio
 
 <div class="container">
 	<div class="row">
-		<div class="col-sm-12 col-sm-offset-0 text-center well">
-			<div id="publicar_viaje" class="col-xs-4 col-md-4 col-lg-4">
+		<div class="col-sm-12 col-sm-offset-0 text-center ">
+			<div id="publicar_viaje" class="col-xs-3 col-md-3 col-lg-3">
 				<div class="row">
 					<div class="col-sm-12 col-sm-offset-12 pull-right well">
 						<button id="botonCambio" type="button" class="btn btn-primaryPink text-align:center">Cambiar a periodico</button>
@@ -88,6 +88,10 @@ Inicio
 									<br>
 									<label for="">Fecha de inicio</label>
 									<input type="date" class="form-control" id="fecha" name="fecha" placeholder="Fecha" required>
+								</div>
+								<div class="form-group">
+									<label for="">Fecha final</label>
+									<input type="date" class="form-control" id="fechaFinal" name="fechaFinal" placeholder="fechaFinal" required>
 								</div>
 								<div class="form-group">
 									<label for="">Precio</label>
@@ -233,29 +237,29 @@ Inicio
 					</div>
 				</div>
 			</div>
-			<div id="buscador" class="col-xs-2 col-md-2 col-lg-2">
+			<div id="buscador" class="col-xs-9 col-md-9 col-lg-9">
 				<div class="row" >
 					<div class="col-sm-11 col-sm-offset-11 pull-right well">
 						<form id="buscador" action="./?action=buscando" method="POST">
-							<div class="form-group">
+							<div class="form-group col-lg-3">
 								<label for="exampleInputPassword1">Origen</label>
 								<input type="text" class="form-control" id="origen" name="origen" placeholder="Origen" required>
 							</div>
-							<div class="form-group">
+							<div class="form-group col-lg-3">
 								<label for="exampleInputPassword1">Destino</label>
 								<input type="text" class="form-control" id="destino" name="destino" placeholder="Donde quieres ir?">
 							</div>
-							<div class="form-check">
+							<div class="form-check col-lg-3">
 								<label for="exampleCheck1">Fecha de salida</label>
 								<input type="date" class="form-check-input" id="salida" name="salida" required>
 							</div>
 							<br>
-							<button type="submit" class="btn btn-primaryPink">Submit</button>
+							<button type="submit" class="btn btn-primaryPink col-lg-3">Buscar!</button>
 						</form>
 					</div>
 				</div>
 			</div>
-			<div id="viajes_actuales" class="col-xs-6 col-md-6 col-lg-6">
+			<div id="viajes_actuales" class="col-xs-9 col-md-9 col-lg-9">
 				<div class="row">
 					<div class="col-sm-11 col-sm-offset-11 pull-right well">
 					{% if datos.listadoCompletoDeViajes is defined %}

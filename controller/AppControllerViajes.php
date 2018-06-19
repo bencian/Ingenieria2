@@ -10,6 +10,7 @@ require_once('model/AppModel.php');
 require_once('model/AppModelViaje.php');
 require_once('controller/AppControllerUsuario.php');
 require_once('controller/AppController.php');
+require_once('controller/AppControllerVehiculo.php');
 
 class AppControllerViajes {
     
@@ -86,14 +87,18 @@ class AppControllerViajes {
 
     public function publicarViajeOcasional($datos){
         if($this->validarViajeOcasional($datos)){
-            $bd = AppModelViaje::getInstance();
-            $asientos = AppModel::getInstance()->getAsientos($datos["vehiculo"]);
-            $datos["asientos"] = $asientos[0]["asientos"];
-            $idViaje = $bd->getViajeId($datos);
-            $datos["id_viaje"] = $idViaje;
-            $bd->crearOcasional($datos);
+            $this->publicar_viaje_ocasional($datos);
         }
         AppController::getInstance()->mostrarMenuConSesion();       
+    }
+
+    public function publicar_viaje_ocasional($datos){
+        $bd = AppModelViaje::getInstance();
+        $asientos = AppModel::getInstance()->getAsientos($datos["vehiculo"]);
+        $datos["asientos"] = $asientos[0]["asientos"];
+        $idViaje = $bd->getViajeId($datos);
+        $datos["id_viaje"] = $idViaje;
+        $bd->crearOcasional($datos);
     }
 
     public function validarViajeOcasional($datos){
@@ -127,6 +132,10 @@ class AppControllerViajes {
                 echo "Debe ser para mas tarde";
                 $entra = false;
             }
+        }
+        if(!AppModel::getInstance()->vehiculoViaja($datos)){
+            echo "El vehiculo tiene un viaje para ese horario";
+            $entra = falsa;
         }
         return $entra;
     }
@@ -196,7 +205,13 @@ class AppControllerViajes {
     }
 
     public function publicarViajePeriodico($datos){
-        $test = $this->validarViajePeriodico($datos);
+        if($this->validarViajePeriodico($datos)){
+            if($this->diasAViajar($datos)==0){
+                echo "Debes seleccionar al menos un dia de la semana entre la fecha inicial y la final";
+            }
+        }
+        AppController::getInstance()->mostrarMenuConSesion(); 
+        /*$test = $this->validarViajePeriodico($datos);
         if($test){  
             $bd = AppModel::getInstance();
             $bdViaje = AppModelViaje::getInstance();
@@ -214,8 +229,7 @@ class AppControllerViajes {
                 $bdViaje->asociarPeriodico($datosPeriodico);
                 $bdViaje->asociarDiaHorario($datosDiaHorario);
             }
-        }
-        AppController::getInstance()->mostrarMenuConSesion();     
+        }*/     
     }
     
     public function validarViajePeriodico($datos){
@@ -224,6 +238,10 @@ class AppControllerViajes {
             $tempArray[$i] = (int)$tempArray[$i];
         }
         $entra = true;
+        if(strtotime($datos["fecha"])>strtotime($datos["fechaFinal"])){
+            echo "Fecha inicial mayor a la fecha final";
+            $entra = false;
+        }   
         if(!$this->fechaMayor($tempArray)){
             echo "Fecha ingresada invalida";
             $entra = false;
@@ -246,8 +264,98 @@ class AppControllerViajes {
         }
         return $entra;
     }
+
+    public function seViajaHoy($datos,$fecha){
+        $tempArray = explode('-',$fecha);
+        for ($i=0;$i<count($tempArray);$i++){
+            $tempArray[$i] = (int)$tempArray[$i];
+        }
+        $numDia = date('w',strtotime($fecha));
+        $datosEnviar = $datos;
+        $datosEnviar["fecha"]=$fecha;
+        switch ($numDia){
+            case "0":
+                $datosEnviar["hora_salida"] = $datos["hora_domingo"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);
+            break;
+            case "1":
+                $datosEnviar["hora_salida"] = $datos["hora_lunes"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);    
+            break;
+            case "2":
+                $datosEnviar["hora_salida"] = $datos["hora_martes"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);
+            break;
+            case "3":
+                $datosEnviar["hora_salida"] = $datos["hora_miercoles"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);
+            break;
+            case "4":
+                $datosEnviar["hora_salida"] = $datos["hora_jueves"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);
+            break;
+            case "5":
+                $datosEnviar["hora_salida"] = $datos["hora_viernes"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);
+            break;
+            case "6":
+                $datosEnviar["hora_salida"] = $datos["hora_sabado"];
+                $viaja = $this->cargarViaje($datosEnviar,$tempArray);
+            break;
+        }
+        return $viaja;
+    }
+
+    public function cargarViaje($datos,$tempArray){
+        $viaja = false;
+        $vehiculoViaja = AppModel::getInstance()->vehiculoViaja($datos);
+        if(($datos["hora_salida"]!=="")&&!($vehiculoViaja)){
+            if($this->esHoy($tempArray)){
+                if($this->masTarde($datosEnviar["hora_salida"])){
+                    //cargar viaje
+                    $this->publicar_viaje_ocasional($datos);
+                    $viaja = true;
+                } else {
+                    $viaja = false;
+                }  
+            } else {
+                //cargar viaje
+                $this->publicar_viaje_ocasional($datos);
+                $viaja = true;
+            } 
+        } else {
+            if(!($vehiculoViaja)){
+                echo "El vehiculo tiene un viaje programado para el dia".$datos["fecha"];
+            }
+            $viaja = false;
+        }
+        return $viaja;
+    }
+
+    public function diasAViajar($datos){
+        $fechaInicial = strtotime($datos["fecha"]);
+        $fechaFinal = strtotime($datos["fechaFinal"]);
+        $dias = $fechaFinal - $fechaInicial;
+        $cantDias = round($dias / (60*60*24));
+        $iterador = 0;
+        $diasConViaje = 0;
+        $fechaInicial = $datos["fecha"];
+        while ($iterador < (int)$cantDias){
+            //llama a la funcion que carga al viaje ocasional, que devuelve true o false dependiendo de si se viaja o no
+            if($this->seViajaHoy($datos,$fechaInicial)){
+                //aumenta la cantidad de dias viajados, para poder saber si no se puso ninguna fecha valida
+                $diasConViaje++;
+            }
+            $iterador++;
+            //aumentar $fechaInicial
+            $date = date_create($fechaInicial);
+            date_modify($date,'+1 day');
+            $fechaInicial = date_format($date,"Y-m-d");
+        }
+        return $diasConViaje;
+    }
     
-    public function acomodarVectorFechas($vector,$datos){
+    /*public function acomodarVectorFechas($vector,$datos){
         if($datos["hora_lunes"] != ""){
             $vector[$vector[1]->format('Y-m-d')] = $datos["hora_lunes"];
         }
@@ -270,7 +378,7 @@ class AppControllerViajes {
         unset($vector[5]);
         if($datos["hora_sabado"] != ""){
             $vector[$vector[6]->format('Y-m-d')] = $datos["hora_sabado"];
-        }
+        }   
         unset($vector[6]);
         if($datos["hora_domingo"] != ""){
             $vector[$vector[0]->format('Y-m-d')] = $datos["hora_domingo"];
@@ -280,8 +388,8 @@ class AppControllerViajes {
     }
     
     public function diasViajePeriodico($datos){
-        if($this->esHoy($datos["fecha"])){
-            $numDia = date('w',strtotime($fechaInicial));
+        if($this->esHoy($datos["fecha"])){            
+            $numDia = date('w',strtotime($datos["fecha"]));
             switch ($numDia){
                 case "0":
                     if($datos["hora_domingo"]=!""){
@@ -294,7 +402,7 @@ class AppControllerViajes {
                             $vector[0]= $date;
                         }
                     } 
-                    $datos["hora_domingo"] = "";
+                    //$datos["hora_domingo"] = "";
                 break;
                 case "1":
                     if($datos["hora_lunes"]=!""){
@@ -379,47 +487,40 @@ class AppControllerViajes {
         if($datos["hora_lunes"]=!""){
             //viaje el lunes
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Monday');
             $vector[1]= $date;
         }
         if($datos["hora_martes"]=!""){
             //viaje el martes
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Tuesday');
             $vector[2]= $date;
         }
         if($datos["hora_miercoles"]=!""){
             //viaje el miercoles
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Wednesday');
             $vector[3]= $date;
         }
         if($datos["hora_jueves"]=!""){
             //viaje el jueves
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Thursday');
             $vector[4]= $date;
         }
         if($datos["hora_viernes"]=!""){
             //viaje el viernes
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Friday');
             $vector[5]= $date;
         }
         if($datos["hora_sabado"]=!""){
             //viaje el sabado
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Saturday');
             $vector[6]= $date;
         }
         if($datos["hora_domingo"]=!""){
             //viaje el domingo
             $date = new DateTime($datos["fecha"]);
-            $date->modify('next Sunday');
             $vector[0]= $date;
         }
         return $vector;
-    }
+    }*/
 
     public function ver_publicacion_viaje($viaje_id){
         $view=new Home();
@@ -430,5 +531,10 @@ class AppControllerViajes {
         $ciudades=$model->getCiudades();
         $piloto=(AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"]))[0];
         $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto);
+    }
+
+    public function postularse($datos){
+        AppModelViaje::getInstance()->postularme($datos);
+        AppController::getInstance()->mostrarMenuConSesion();
     }
 }

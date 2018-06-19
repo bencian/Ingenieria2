@@ -10,7 +10,7 @@ require_once('model/AppModel.php');
 
 require_once('controller/AppControllerViajes.php');
 require_once('controller/AppControllerUsuario.php');
-
+require_once('controller/AppController.php');
 
 class AppControllerVehiculo {
     
@@ -50,7 +50,7 @@ class AppControllerVehiculo {
             if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
                 $datos["id_usuario"] = $_SESSION['id'];
                 $bd->registrar_vehiculo($datos);
-                $this->mostrarMenuConSesion();
+                AppController::getInstance()->mostrarMenuConSesion();
             } else {
                 $this->registrar_vehiculo();
             }
@@ -98,6 +98,12 @@ aca no va false
         }
         $bd->eliminarRelacionUsuarioVehiculo($datos);*/
         //$view = new Home();
+        $viajes=$bdViaje->poseeViajesEchos($datos);
+        if(!$viajes){
+              //borrar de usuarios_has_vehiculo y de vehiculos
+              $bd->borrarVehiculo($datos);
+        }
+        $bd->eliminarRelacionUsuarioVehiculo($datos);
         $this->listar_vehiculos();
     }
 
@@ -105,6 +111,7 @@ aca no va false
         $view = new Home();
         $bdViaje = AppModelViaje::getInstance();
         $cant_viajes=$bdViaje->noPoseeViajesFuturos($datos);
+        /*$cant_viajes=$bdViaje->viajesConAceptados($datos);*/
         $vehiculo=AppModel::getInstance()->getVehiculo($datos["id"]);
         $parametros["viajes"]=$cant_viajes;
         $parametros["vehiculo"]=$vehiculo[0]["id"];
@@ -137,7 +144,7 @@ aca no va false
                 $datos["id"] = (int)$_POST["id"];
                 $datos["tipo"] = (int)$datos["tipo"];
                 $bd->actualizar_vehiculo($datos);
-                $this->mostrarMenuConSesion();
+                AppController::getInstance()->mostrarMenuConSesion();
             } else {
                 $vehiculos=$bd->getVehiculos();
                 $view->listarVehiculosPropios($vehiculos); //falta
