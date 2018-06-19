@@ -66,7 +66,10 @@ Detalles de viaje
                     <p>{{ postulado.0.estado }}</p>
                 {% elseif postulado.0.estado=="aceptado" %}
                     <p>ACEPTADO!!!</p>
-
+                    <form method="post" class="pull-left" action="./?action=cancelar_postulacion_aceptada">
+                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                    </form>
                 {% endif %}
             {% else %}
                 <form method="post" class="pull-left" action="./?action=postularse">

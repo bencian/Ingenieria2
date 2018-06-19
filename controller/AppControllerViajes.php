@@ -444,13 +444,27 @@ class AppControllerViajes {
     }
 
     public function postularse($datos){
-        AppModelViaje::getInstance()->postularme($datos);/*
-        AppController::getInstance()->mostrarMenuConSesion();*/
+        if(!(AppModelViaje::getInstance()->yaMePostule($datos))){
+            AppModelViaje::getInstance()->postularme($datos);/*
+            AppController::getInstance()->mostrarMenuConSesion();*/
+        }
         $this->ver_publicacion_viaje($datos);
     }
 
     public function cancelar_postulacion($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
         $this->ver_publicacion_viaje($datos);
+    }
+
+    public function modificarViajeOcasional($datos){
+        $view = new Home();
+        /*$viaje= $bd->getViajeOcasional($datos["id"]);*/
+        $valido=$this->validarViajeOcasional($datos);
+        if($valido){
+            $asientos=AppModel::getInstance()->getAsientos($datos["vehiculo"]);
+            $db = AppModelViaje::getInstance();
+            $db-> actualizarViajeOcasional($datos,$asientos);
+        }
+        AppController::getInstance()->mostrarMenuConSesion();    
     }
 }

@@ -58,7 +58,15 @@ class AppControllerVehiculo {
     }
 
     public function validar_vehiculo($datos){
-        $valor = ((preg_match("#[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3}#", $datos["patente"])) && (preg_match("#[1-2][0-9]{3}#", $datos["modelo"])));
+        $valor = true;
+        if(!preg_match("/^([A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3})$/", $datos["patente"])){
+            echo "La patente ingresada no es valida";
+            $valor = false;
+        }
+        if(!preg_match("/^[1-2][0-9]{3}$/", $datos["modelo"])){
+            echo "El modelo ingresado no es valido, ingrese el año de su vehiculo";
+            $valor = false;
+        }
         return $valor;
     }
 
@@ -69,23 +77,27 @@ class AppControllerVehiculo {
     }
 
     public function eliminar_vehiculo($datos){
+/*
+DEBERIAMOS PREGUNTAR SI AL ELIMINAR VIAJES SIN VEHICULOS QUE HACER!!!
+*/
+/*
+
         $bdViaje = AppModelViaje::getInstance();
         $bd = AppModel::getInstance();
-        $tieneViajes=$bdViaje->noPoseeViajesFuturos($datos);
-/*
-aca no va false
-*/      if(false){
+        $tieneViajes=(($bdViaje->noPoseeViajesFuturos($datos))[0]["COUNT(*)"]>0);
+        if(!$tieneViajes){
 
-          $viajes=$bdViaje->poseeViajesEchos($datos);
-          if(!$viajes){
-              //borrar de usuarios_has_vehiculo y de vehiculos
-              $bd->borrarVehiculo($datos);
-          }
-          $bd->eliminarRelacionUsuarioVehiculo($datos);
-          $view = new Home();
-          $this->listar_vehiculos();
-        }
-        $this->confirmarEliminacionCascada($datos);
+            $viajes=$bdViaje->poseeViajesEchos($datos);
+            if(!$viajes){
+                //borrar de usuarios_has_vehiculo y de vehiculos
+                $bd->borrarVehiculo($datos);
+            }
+            $bd->eliminarRelacionUsuarioVehiculo($datos);
+            $view = new Home();
+            $this->listar_vehiculos();
+        } else {*/
+            $this->confirmarEliminacionCascada($datos);
+        //}
     }
 
     public function confirmar_eliminacion_en_cascada($datos){
