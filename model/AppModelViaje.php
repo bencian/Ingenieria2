@@ -171,4 +171,14 @@ class AppModelViaje extends PDORepository {
         $answer= $this->queryList("INSERT INTO usuario_viaje  (usuarios_id, viaje_id, estado) VALUES (:usuario, :viaje, :estado)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"], "estado"=>'pendiente']);
         return $answer;
     }
+
+    public function yaMePostule($datos){
+        $answer= $this->queryList("SELECT * FROM usuario_viaje WHERE (usuarios_id=:usuario AND viaje_id=:viaje)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"]]);
+        return $answer;
+    }
+
+    public function cancelarPostulacion($datos){
+        $answer= $this->queryList("DELETE FROM usuario_viaje WHERE (usuarios_id=:usuario AND viaje_id=:viaje)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"]]);
+        return $answer;
+    }
 }

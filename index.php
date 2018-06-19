@@ -80,4 +80,7 @@ if(!isset($_GET["action"])){
 	$viaje->ver_publicacion_viaje($_POST);
 } elseif ($_GET["action"] == "postularse"){
 	$viaje->postularse($_POST);
+} elseif ($_GET["action"] == "cancelar_postulacion"){
+	$viaje->cancelar_postulacion($_POST);
 }
+
