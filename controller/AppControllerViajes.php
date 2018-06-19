@@ -525,16 +525,62 @@ class AppControllerViajes {
     public function ver_publicacion_viaje($viaje_id){
         $view=new Home();
         $model=AppModel::getInstance();
-        $viaje=AppModelViaje::getInstance()->getViaje($viaje_id);
+        $dbViaje=AppModelViaje::getInstance();
+        $viaje=$dbViaje->getViaje($viaje_id);
         $calificaciones=$model->getCalificaciones();
         $vehiculo=($model->getVehiculo($viaje["viaje"]["vehiculo_id"]))[0];
         $ciudades=$model->getCiudades();
         $piloto=(AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"]))[0];
-        $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto);
+        if(isset($_SESSION["id"])){
+            $postulado=AppModelViaje::getInstance()->yaMePostule($viaje_id);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado);
+        } else {
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '');
+            /*
+
+            REVISAR COMO TRATA EL STRING VACIO!!! CREO QUE ESTA FUNCIONANDO POR EL IF EN EL VIEW, QUE HACE QUE COMO SESSION NO ESTA SETEADO NO ENVIA $POSTULADO COMO PARAMETRO!
+
+            */
+        }
     }
 
     public function postularse($datos){
-        AppModelViaje::getInstance()->postularme($datos);
-        AppController::getInstance()->mostrarMenuConSesion();
+        if(!(AppModelViaje::getInstance()->yaMePostule($datos))){
+            AppModelViaje::getInstance()->postularme($datos);/*
+            AppController::getInstance()->mostrarMenuConSesion();*/
+        }
+        $this->ver_publicacion_viaje($datos);
+    }
+
+    public function cancelar_postulacion($datos){
+        AppModelViaje::getInstance()->cancelarPostulacion($datos);
+        $this->ver_publicacion_viaje($datos);
+    }
+
+    public function modificarViajeOcasional($datos){
+        $view = new Home(); //CREO QUE ESTE NO VA!
+        /*$viaje= $bd->getViajeOcasional($datos["id"]);*/
+        $valido=$this->validarViajeOcasional($datos);
+        if($valido){
+            $asientos=AppModel::getInstance()->getAsientos($datos["vehiculo"]);
+            $db = AppModelViaje::getInstance();
+            $db-> actualizarViajeOcasional($datos,$asientos);
+        }
+        AppController::getInstance()->mostrarMenuConSesion();    
+    }
+
+    public function cancelar_postulacion_aceptada($datos){
+        $view = new Home();
+        $view->cancelarPostulacionAceptada($datos);
+    }
+
+    public function borrar_postulacion_aceptada($datos){
+        AppModelViaje::getInstance()->cancelarPostulacion($datos);
+        /*
+
+        ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
+
+        */
+        $this->ver_publicacion_viaje($datos);
     }
 }

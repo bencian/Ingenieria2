@@ -63,11 +63,18 @@ class Home extends TwigView {
         echo self::getTwig()->render("eliminarEnCascada.html.twig", array("viajes"=>$parametros["viajes"], "vehiculo"=>$parametros["vehiculo"]));
     }
 
-    public function verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades,$piloto){
+    public function verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades,$piloto,$postulado){
+        /* capaz conviene partir esta funcion en dos... 
+        var_dump($postulado); */
         if(isSet($_SESSION["id"])){
-            echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto));
+            echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto, "usuario"=>$_SESSION["id"], "postulado"=>$postulado));
         } else {
             echo self::getTwig()->render("verPublicacionViajeSinSesion.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto));
         }
+    }
+
+    public function cancelarPostulacionAceptada($datos){
+        var_dump($datos);
+        echo self::getTwig()->render("cancelarPostulacionAceptada.html.twig", array("viaje"=>$datos));
     }
 }

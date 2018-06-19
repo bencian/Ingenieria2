@@ -116,7 +116,6 @@ class AppModelViaje extends PDORepository {
 
     public function viajesConAceptados($datos){
         $answer= $this->queryList("SELECT COUNT(vj.id) FROM vehiculo vh INNER JOIN viaje vj ON (vh.id=vj.vehiculo_id) INNER JOIN usuario_viaje uv ON (vj.id=uv.viaje_id) WHERE (vh.id=:vehiculo AND vj.fecha> CURDATE() AND  uv.estado='aceptado') GROUP BY (vj.id)", [ "vehiculo"=>$datos["id"]]);
-        var_dump($answer);
         return $answer;
     }
 
@@ -131,9 +130,8 @@ class AppModelViaje extends PDORepository {
         $answer=$this->queryList("DELETE FROM viaje_periodico WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE())", ["vehiculo"=>$datos["id"]]);
         
         $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE())", ["vehiculo"=>$datos["id"]]);
-        
+
         $answer=$this->queryList("DELETE FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE()", ["vehiculo"=>$datos["id"]]);
-        
         return $answer;
 /*
         $answer=$this->queryList("DELETE dh FROM viaje_periodico vp INNER JOIN dia_horario dh ON (vp.viaje_id= dh.viaje_periodico_viaje_id) WHERE vp.viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) || (fecha=CURDATE() && horario>CURTIME() )));", ["vehiculo"=>$datos["id"]]);    ESO NO VA A SERVIR CON LAS OTRAS TABLAS!
@@ -172,4 +170,21 @@ class AppModelViaje extends PDORepository {
         $answer= $this->queryList("INSERT INTO usuario_viaje  (usuarios_id, viaje_id, estado) VALUES (:usuario, :viaje, :estado)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"], "estado"=>'pendiente']);
         return $answer;
     }
+
+    public function yaMePostule($datos){
+        $answer= $this->queryList("SELECT * FROM usuario_viaje WHERE (usuarios_id=:usuario AND viaje_id=:viaje)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"]]);
+        return $answer;
+    }
+
+    public function cancelarPostulacion($datos){
+        $answer= $this->queryList("DELETE FROM usuario_viaje WHERE (usuarios_id=:usuario AND viaje_id=:viaje)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"]]);
+        return $answer;
+    }
+
+    public function actualizarViajeOcasional($datos, $asientos){
+        $answer = $this->queryList("UPDATE viaje SET fecha=:fecha, precio=:precio, duracion=:duracion, distancia=:distancia, lugares=:lugares, comentarios=:comentarios, id_origen=:id_origen, id_destino=:id_destino, vehiculo_id=:vehiculo_id WHERE id=:id;",[ "fecha"=>$datos["fecha"], "precio"=>$datos["precio"], "duracion"=>$datos["duracion"], "distancia"=>$datos["distancia"], "lugares"=>$asientos[0][0], "comentarios"=>$datos["comentarios"], "id_origen"=>$datos["origen"], "id_destino"=>$datos["destino"], "vehiculo_id"=>$datos["vehiculo"], "id"=>$datos["id"]]);
+        $answer2 = $this->queryList("UPDATE viaje_ocasional SET hora_salida=:hora WHERE viaje_id=:id",["hora"=>$datos["hora_salida"], "id"=>$datos["id"]]);
+        return $answer;
+    }
+
 }
