@@ -457,7 +457,7 @@ class AppControllerViajes {
     }
 
     public function modificarViajeOcasional($datos){
-        $view = new Home();
+        $view = new Home(); //CREO QUE ESTE NO VA!
         /*$viaje= $bd->getViajeOcasional($datos["id"]);*/
         $valido=$this->validarViajeOcasional($datos);
         if($valido){
@@ -466,5 +466,20 @@ class AppControllerViajes {
             $db-> actualizarViajeOcasional($datos,$asientos);
         }
         AppController::getInstance()->mostrarMenuConSesion();    
+    }
+
+    public function cancelar_postulacion_aceptada($datos){
+        $view = new Home();
+        $view->cancelarPostulacionAceptada($datos);
+    }
+
+    public function borrar_postulacion_aceptada($datos){
+        AppModelViaje::getInstance()->cancelarPostulacion($datos);
+        /*
+
+        ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
+
+        */
+        $this->ver_publicacion_viaje($datos);
     }
 }

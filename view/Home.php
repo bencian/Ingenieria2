@@ -72,4 +72,9 @@ class Home extends TwigView {
             echo self::getTwig()->render("verPublicacionViajeSinSesion.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto));
         }
     }
+
+    public function cancelarPostulacionAceptada($datos){
+        var_dump($datos);
+        echo self::getTwig()->render("cancelarPostulacionAceptada.html.twig", array("viaje"=>$datos));
+    }
 }

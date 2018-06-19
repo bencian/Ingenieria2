@@ -184,4 +184,5 @@ class AppModelViaje extends PDORepository {
         $answer2 = $this->queryList("UPDATE viaje_ocasional SET hora_salida=:hora WHERE viaje_id=:id",["hora"=>$datos["hora_salida"], "id"=>$datos["id"]]);
         return $answer;
     }
+
 }
