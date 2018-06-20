@@ -163,4 +163,46 @@ DEBERIAMOS PREGUNTAR SI AL ELIMINAR VIAJES SIN VEHICULOS QUE HACER!!!
             }
         }
     }
+
+    public function vehiculoViaja($datos){
+        $puede = false;
+        $bd = AppModel::getInstance();
+        $viaje = AppModelViaje::getInstance();
+        $patente = $bd->getPatente($datos["vehiculo"]);
+        $viajesVehiculo = $viaje->getViajesConPatenteFecha($patente[0][0],$datos["fecha"]);
+        $viajesConflicto = 0;
+        foreach (array_keys($viajesVehiculo) as $idViaje){
+            if($this->viajeHorario($viajesVehiculo[$idViaje][0],$datos["hora_salida"],$datos["duracion"])){
+                $viajesConflicto++;
+            } 
+        }
+        if($viajesConflicto == 0){
+            $puede = true;
+        }
+        return $puede;
+    }
+
+    public function viajeHorario($datosViaje,$hora_salida,$duracion){
+        $noPuede = false;
+        $horario = AppModelViaje::getInstance()->getHorariosViaje($datosViaje);
+        //$horario[0][0] es la hora salida del viaje existente
+        //$horario[0][1] es la duracion del viaje existente
+        $viaje_existente_hora_ini = date('h:i', strtotime($horario[0][0]));
+        $viaje_existente_hora_fin = date('h:i', strtotime($horario[0][0])+60*60*$horario[0][1]);
+        $viaje_nuevo_hora_ini = date('h:i', strtotime($hora_salida));
+        $viaje_nuevo_hora_fin = date('h:i', strtotime($hora_salida)+60*60*$duracion);
+        if($viaje_existente_hora_ini<=$viaje_nuevo_hora_fin&&$viaje_nuevo_hora_fin<=$viaje_existente_hora_fin){
+            $noPuede = true;
+        }
+        if($viaje_existente_hora_ini<=$viaje_nuevo_hora_ini&&$viaje_nuevo_hora_ini<=$viaje_existente_hora_fin){
+            $noPuede = true;
+        }
+        if($viaje_nuevo_hora_ini<=$viaje_existente_hora_ini&&$viaje_existente_hora_ini<=$viaje_nuevo_hora_fin){
+            $noPuede = true;
+        }
+        if($viaje_nuevo_hora_ini<=$viaje_existente_hora_fin&&$viaje_existente_hora_fin<=$viaje_nuevo_hora_fin){
+            $noPuede = true;
+        }
+        return $noPuede;
+    }
 }

@@ -133,9 +133,9 @@ class AppControllerViajes {
                 $entra = false;
             }
         }
-        if(!AppModel::getInstance()->vehiculoViaja($datos)){
+        if(!AppControllerVehiculo::getInstance()->vehiculoViaja($datos)){
             echo "El vehiculo tiene un viaje para ese horario";
-            $entra = falsa;
+            $entra = false;
         }
         return $entra;
     }
@@ -308,8 +308,8 @@ class AppControllerViajes {
 
     public function cargarViaje($datos,$tempArray){
         $viaja = false;
-        $vehiculoViaja = AppModel::getInstance()->vehiculoViaja($datos);
-        if(($datos["hora_salida"]!=="")&&!($vehiculoViaja)){
+        $vehiculoViaja = AppControllerVehiculo::getInstance()->vehiculoViaja($datos);
+        if(($datos["hora_salida"]!=="")&&($vehiculoViaja)){
             if($this->esHoy($tempArray)){
                 if($this->masTarde($datosEnviar["hora_salida"])){
                     //cargar viaje
@@ -325,7 +325,7 @@ class AppControllerViajes {
             } 
         } else {
             if(!($vehiculoViaja)){
-                echo "El vehiculo tiene un viaje programado para el dia".$datos["fecha"];
+                echo "El vehiculo tiene un viaje programado para el dia ".$datos["fecha"]." ";
             }
             $viaja = false;
         }
@@ -340,7 +340,7 @@ class AppControllerViajes {
         $iterador = 0;
         $diasConViaje = 0;
         $fechaInicial = $datos["fecha"];
-        while ($iterador < (int)$cantDias){
+        while ($iterador <= (int)$cantDias){
             //llama a la funcion que carga al viaje ocasional, que devuelve true o false dependiendo de si se viaja o no
             if($this->seViajaHoy($datos,$fechaInicial)){
                 //aumenta la cantidad de dias viajados, para poder saber si no se puso ninguna fecha valida

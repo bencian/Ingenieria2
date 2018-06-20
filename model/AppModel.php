@@ -106,16 +106,14 @@ class AppModel extends PDORepository {
         return $answer;
     }
 
+    //VEHICULO
+    public function getPatente($datos){
+        $answer = $this->queryList("SELECT patente FROM vehiculo where id=?",[$datos]);
+        return $answer;
+    }
+
     public function getCalificaciones(){/*  IMPLEMENTAR Y PASAR AL APPMODEL USUARIO     */
         return true;
     }
 
-    //VEHICULO
-    public function vehiculoViaje($datos){
-        $patente="";
-        SELECT * FROM vehiculo vh
-        INNER JOIN viaje vj ON (vh.id=vj.vehiculo_id)
-        INNER JOIN viaje_ocasional vo ON (vj.id=vo.viaje_id)
-        WHERE (vh.patente=:patente  AND vj.fecha=:fecha AND ($datos["hora_salida"] BETWEEN vo.hora_salida AND vo.hora_salida+ACA LALALA) AND ($datos["hora_salida"]+LALALA BETWEEN vo.hora_salida AND vo.hora_salida+ACA LALALA)
-    }
 }
