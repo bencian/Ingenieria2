@@ -186,7 +186,7 @@ class AppModelViaje extends PDORepository {
         $answer2 = $this->queryList("UPDATE viaje_ocasional SET hora_salida=:hora WHERE viaje_id=:id",["hora"=>$datos["hora_salida"], "id"=>$datos["id"]]);
         return $answer;
     }
-
+    
     public function getViajesConPatenteFecha($patente,$fecha){
         $answer = $this->queryList("SELECT vj.id FROM viaje vj INNER JOIN vehiculo vh ON (vj.vehiculo_id = vh.id) WHERE (vh.patente=:patente AND vj.fecha=:fecha)",["patente"=>$patente,"fecha"=>$fecha]);
         return $answer;
@@ -197,4 +197,10 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
+    public function getPostulados($viaje_id){
+        $answer= $this->queryList("SELECT * FROM usuario_viaje uv 
+            INNER JOIN usuario us ON (uv.usuarios_id=us.id) 
+            WHERE (viaje_id=:viaje)", ["viaje"=>$viaje_id["id"]]);
+        return $answer;
+    }
 }
