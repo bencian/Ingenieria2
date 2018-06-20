@@ -431,10 +431,11 @@ class AppControllerViajes {
         $ciudades=$model->getCiudades();
         $piloto=(AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"]))[0];
         if(isset($_SESSION["id"])){
-            $postulado=AppModelViaje::getInstance()->yaMePostule($viaje_id);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado);
+            $postulado=$dbViaje->yaMePostule($viaje_id);
+            $postulados=$dbViaje->getPostulados($viaje_id);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados);
         } else {
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '');
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', '');
             /*
 
             REVISAR COMO TRATA EL STRING VACIO!!! CREO QUE ESTA FUNCIONANDO POR EL IF EN EL VIEW, QUE HACE QUE COMO SESSION NO ESTA SETEADO NO ENVIA $POSTULADO COMO PARAMETRO!

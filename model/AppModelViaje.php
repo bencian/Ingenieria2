@@ -185,4 +185,10 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
+    public function getPostulados($viaje_id){
+        $answer= $this->queryList("SELECT * FROM usuario_viaje uv 
+            INNER JOIN usuario us ON (uv.usuarios_id=us.id) 
+            WHERE (viaje_id=:viaje)", ["viaje"=>$viaje_id["id"]]);
+        return $answer;
+    }
 }
