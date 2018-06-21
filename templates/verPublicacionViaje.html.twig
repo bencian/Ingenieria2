@@ -1,0 +1,124 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+Detalles de viaje
+{% endblock %}
+
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 text-center well">
+            <div>
+                <table class="table table-striped">
+                    <tr> 
+                        <td><h2>Datos basicos</h2></td> 
+                        <td><h3>Origen: {{ ciudades[viaje.viaje.id_origen -1].nombre }}</h3></td>
+                        <td><h3>Destino: {{ ciudades[viaje.viaje.id_destino -1].nombre }}</h3></td>
+                        <td><h3>Fecha: {{ viaje.viaje.fecha }}</h3></td>
+                    </tr>
+                    <tr>
+                        <td><h3>Datos generales</h3></td>  
+                        <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
+                        <td>Hora: {{ viaje.ocasional.hora_salida }}</td>
+                        <td>Precio: {{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
+                    </tr>
+                    <tr>
+                        <td><h3>Datos extras</h3></td>
+                        <td>Duracion: {{ viaje.viaje.duracion }}</td>
+                        <td>Distancia: {{ viaje.viaje.distancia }}</td>
+                        <td>Cantidad de postulados:</td>
+                    </tr>
+                    <tr>
+                        <td><h3>Datos del vehiculo</h3></td>
+                        <td>Cantidad de asientos: {{ vehiculo.asientos }}</td>
+                        <td>Marca: {{ vehiculo.marca }}</td>
+                        <td>Modelo: {{ vehiculo.modelo }}</td>
+                    </tr>
+                    <tr>
+                        <td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        {% if viaje.viaje.comentarios %}
+                           <td>Comentarios: {{ viaje.viaje.comentarios }}</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% if viaje.viaje.comentarios %}
+                           Comentarios: {{ viaje.viaje.comentarios }}
+                {% endif %}
+            </div>
+            {% if usuario == piloto.id %}
+                {% if postulados %}
+                <h3>Postulados</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <td>Nombre y Apellido</td>
+                        <td>Calificaciones</td>
+                        <td>Estado</td>
+                        <td>Aceptar</td>
+                        <td>Cancelar</td>
+                    </thead>
+                    <tbody>
+                        {% for postulado in postulados %}
+                           
+                            <td>
+                                <a href="">{{ postulado.nombre }} {{ postulado. apellido }} </a>
+                            </td>
+                            <td>CALIFICACIONES</td>
+                            <td>{{ postulado.estado }}</td>
+                            <td>
+                                <form method="post" class="pull-left" action="#"> {# ACA SE ACEPTA UN POSTULANTE #}
+                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                    <input type="hidden" name="id" value="{{ postulado.id }}">
+                                    <input type="submit" class="btn btn-primaryPink"  value="Aceptar">
+                                </form>
+                            </td>
+                            <td>
+                                <form method="post" class="pull-left" action="#"> {# ACA SE RECHAZA UN POSTULANTE #}
+                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                    <input type="hidden" name="id" value="{{ postulado.id }}">
+                                    <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                                </form>
+                            </td>
+                            
+                        
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <h3>No se poseen postulantes para este viaje</h3>
+                {% endif %}
+            {% elseif postulado %}
+                {% if postulado.0.estado=="pendiente" %}
+                    <p>Mostrar boton para cancelar postulacion</p>
+                    <h3>SI SE FUE ACEPTADO SE TIENE QUE DESCONTAR UN PUNTO...</h3>
+                    <form method="post" class="pull-left" action="./?action=cancelar_postulacion">
+                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+
+
+                    </form>
+                    <p>{{ postulado.0.estado }}</p>
+                {% elseif postulado.0.estado=="aceptado" %}
+                    <p>ACEPTADO!!!</p>
+                    <form method="post" class="pull-left" action="./?action=cancelar_postulacion_aceptada">
+                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                    </form>
+                {% endif %}
+            {% else %}
+                <form method="post" class="pull-left" action="./?action=postularse">
+                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                    <input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+
+
+                    {# cuando se postula deberia revisar si ya esta postulado y en caso de estarlo mostrar despostularse #}
+
+
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+Confirmar cancelar
+{% endblock %}
+
+{% block container %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center well">
+
+			<h3>Si lo elimina se le descontara 1 punto</h3>
+			<form method="post" class="pull-left" action="./?action=borrar_postulacion_aceptada">
+				<input type="hidden" name="id" value="{{ viaje.id }}">
+				<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
+			</form>
+			<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+				<input type="hidden" name="id" value="{{ viaje.id }}">
+				<input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+			</form>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

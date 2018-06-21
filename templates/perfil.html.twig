@@ -1,7 +1,7 @@
 {% extends "base_session.html.twig" %}
 
 {% block title %}
-Mi perfil		
+Mi perfil
 {% endblock %}
 
 {% block stylesheets %}
@@ -14,19 +14,22 @@ Mi perfil
 	{% if nombre is defined %} <h3 style="text-align:center; color:black;"> {{ nombre }} </h3> {% endif %}
 	{% if email is defined %} <h4 style="text-align:center; color:black;"> {{ email }} </h4> {% endif %}
 </div>
-<div class="container">
-	<div class="row row-list">	
+<div class="container well">
+	<div class="row row-list">
 		<div id="calificaciones" class="col-xs-3 col-md-3 col-lg-3">
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion">Ver calificaciones detalladas</a>
+			<br>
+			<br>
 			<!--cuando este la funcion de calificar, agregar con else aca-->
-			{% if not calificacion_piloto is defined %} 
+			{% if not calificacion_piloto is defined %}
 				<p style="text-align: left; color:black;"> Calificacion como piloto = 0</p><cr>
 				<p style="text-align: left; color:black;"> Total viajes = 0</p>
-			{% endif %} 
-			{% if not calificacion_copiloto is defined %} 
+			{% endif %}
+			{% if not calificacion_copiloto is defined %}
 				<p style="text-align: left; color:black;"> Calificacion como copiloto = 0</p><cr>
 				<p style="text-align: left; color:black;"> Total viajes = 0</p>
 			{% endif %}
+			<br>
 		</div>
 		<div id="historialViajes" class="col-xs-3 col-md-3 col-lg-3">
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_historial">Ver historial de viajes</a>
@@ -37,54 +40,56 @@ Mi perfil
 		<div id="registrarVehiculo" class="col-xs-3 col-md-3 col-lg-3">
 			<a class="btn btn-primaryPink" href="index.php?action=registrar_vehiculo">Registrar Vehiculo</a>
 		</div>
-	</div>		
-	<div class="container" id="viajes_futuros">
-<div class="row">
-<div class="col-sm-12 col-sm-offset-0 text-center well">
-<ul>
-{% if viajes %}
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th scope="col">Origen</th>
-				<th scope="col">Destino</th>
-				<th scope="col">Fecha</th>
-				<th scope="col">Precio</th>
-				<th scope="col">Duracion</th>
-				<th scope="col">Distancia</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for viaje in viajes %}
-				<tr>
-					<td>{{ viaje.id_origen }}</td>
-					<td>{{ viaje.id_destino }}</td>
-					<td>{{ viaje.fecha }}</td>
-					<td>$ {{ viaje.precio }}</td>
-					<td>{{ viaje.duracion }} horas</td>
-					<td>{{ viaje.distancia }} kms</td>
-					<td>						
-						<form method="post" class="pull-left" action="index.php?action=modificar_viaje_ocasional">
-							<input type="hidden" name="id" value="{{ viaje.id }}">
-							<input type="submit" class="btn btn-primaryPink"  value="Modificar">
-						</form>
-						<form method="post" class="pull-center" action="index.php?action=eliminar_viaje&id={{ viaje.id }}">
-							<input type="hidden" name="id" value="{{ viaje.id }}">
-							<input type="submit" class="btn btn-primaryPink"  value="Eliminar">
-						</form>
-					</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-{% else %}
-	<h1>No hay viajes para mostrar</h1>
-{% endif %}
-
-</ul>
-</div>
-</div>
+	</div>
+	<div id="viajes_futuros">
+		<div class="row">
+			<div class="col-sm-12 col-sm-offset-0 text-center well">
+				<ul>
+				{% if viajes %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Origen</th>
+								<th scope="col">Destino</th>
+								<th scope="col">Fecha</th>
+								<th scope="col">Precio</th>
+								<th scope="col">Duracion</th>
+								<th scope="col">Distancia</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for viaje in viajes %}
+								<tr>
+									<td>{{ ciudades[viaje.id_origen - 1].nombre }}</td>
+									<td>{{ ciudades[viaje.id_destino - 1].nombre }}</td>
+									<td>{{ viaje.fecha }}</td>
+									<td>$ {{ viaje.precio }}</td>
+									<td>{{ viaje.duracion }} horas</td>
+									<td>{{ viaje.distancia }} kms</td>
+									<td>
+										<form method="post" class="pull-left" action="index.php?action=modificar_viaje_ocasional">
+											<input type="hidden" name="id" value="{{ viaje.id }}">
+											<input type="submit" class="btn btn-primaryPink"  value="Modificar">
+										</form>
+									</td>
+									<td>
+										<form method="post" class="pull-center" action="index.php?action=eliminar_viaje&id={{ viaje.id }}">
+											<input type="hidden" name="id" value="{{ viaje.id }}">
+											<input type="submit" class="btn btn-primaryPink"  value="Eliminar">
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<h1>No hay viajes para mostrar</h1>
+				{% endif %}
+				</ul>
+			</div>
+		</div>
 	</div>
 </div>
+
 
 {% endblock %}

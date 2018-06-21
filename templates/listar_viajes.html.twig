@@ -20,18 +20,19 @@ Inicio
 				<th scope="col">Precio</th>
 				<th scope="col">Duracion</th>
 				<th scope="col">Distancia</th>
+				<th> </th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for viaje in viajes %}
 				<tr>
-					<td>{{ viaje.id_origen }}</td>
-					<td>{{ viaje.id_destino }}</td>
+					<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
+					<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
 					<td>{{ viaje.fecha }}</td>
 					<td>$ {{ viaje.precio }}</td>
 					<td>{{ viaje.duracion }} horas</td>
 					<td>{{ viaje.distancia }} kms</td>
-					<td>						
+					<td>
 						<form method="post" class="pull-left" action="#">
 							<input type="hidden" name="id" value="postularse">
 							<input type="submit" class="btn btn-primaryPink"  value="Postularme!">
