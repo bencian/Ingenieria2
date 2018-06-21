@@ -61,9 +61,23 @@ class AppControllerViajes {
     }
 
     public function eliminarViaje($idViaje){
-        $this->eliminarViajeDeLaBD($idViaje);
-        Echo "el viaje se eliminó con exito";
+        if($this->hayAceptados($idViaje)){
+            $this->eliminarViajeDeLaBD($idViaje);
+            Echo "el viaje se eliminó con exito";
+        }else{
+            Echo"Hay gente aceptada en este viaje, no se puede eliminar";
+        }
         AppControllerUsuario::getInstance()->mostrarPerfil();
+    }
+
+    public function hayAceptados($idViaje){
+        $bd = AppModelViaje::getInstance();
+        $aceptados = $bd->aceptadosParaEsteViaje($idViaje);
+        if(count($aceptados) == 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function eliminarViajeDeLaBD($idViaje){  
@@ -528,9 +542,9 @@ class AppControllerViajes {
         $dbViaje=AppModelViaje::getInstance();
         $viaje=$dbViaje->getViaje($viaje_id);
         $calificaciones=$model->getCalificaciones();
-        $vehiculo=($model->getVehiculo($viaje["viaje"]["vehiculo_id"]))[0];
+        $vehiculo=$model->getVehiculo($viaje["viaje"]["vehiculo_id"])[0];
         $ciudades=$model->getCiudades();
-        $piloto=(AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"]))[0];
+        $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"])[0];
         if(isset($_SESSION["id"])){
             $postulado=$dbViaje->yaMePostule($viaje_id);
             $postulados=$dbViaje->getPostulados($viaje_id);
@@ -555,6 +569,7 @@ class AppControllerViajes {
 
     public function cancelar_postulacion($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
+        var_dump($datos);
         $this->ver_publicacion_viaje($datos);
     }
 
@@ -584,4 +599,15 @@ class AppControllerViajes {
         */
         $this->ver_publicacion_viaje($datos);
     }
+
+    public function aceptarPostulacionAViaje($datos){
+        $bd= AppModelViaje::getInstance();
+        $postulado=$datos["id"];
+        $viaje=$datos["id_viaje"];
+        $bd->cambiarEstadoParaAceptado($viaje, $postulado);
+        Echo "Se acepto al Usuario correctamente";
+        $this->ver_publicacion_viaje($datos);
+    }
+
+
 }

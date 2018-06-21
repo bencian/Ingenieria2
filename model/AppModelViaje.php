@@ -152,7 +152,7 @@ class AppModelViaje extends PDORepository {
 
 
     public function getViaje($viaje_id){
-        $viaje = ($this->queryList("SELECT * FROM viaje where id=?;", [ $viaje_id["id"] ]))[0];
+        $viaje =    $this->queryList("SELECT * FROM viaje where id=?;", [ $viaje_id["id"] ])[0];
         $answer["viaje"]=$viaje;
         $ocasional = ($this->queryList("SELECT * FROM viaje_ocasional where viaje_id=?;", [$viaje_id["id"]]));
         if(!$ocasional){
@@ -186,6 +186,11 @@ class AppModelViaje extends PDORepository {
         $answer2 = $this->queryList("UPDATE viaje_ocasional SET hora_salida=:hora WHERE viaje_id=:id",["hora"=>$datos["hora_salida"], "id"=>$datos["id"]]);
         return $answer;
     }
+
+    public function cambiarEstadoParaAceptado($idViaje, $postulado){
+        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
+        return $answer;
+    }
     
     public function getViajesConPatenteFecha($patente,$fecha){
         $answer = $this->queryList("SELECT vj.id FROM viaje vj INNER JOIN vehiculo vh ON (vj.vehiculo_id = vh.id) WHERE (vh.patente=:patente AND vj.fecha=:fecha)",["patente"=>$patente,"fecha"=>$fecha]);
@@ -203,4 +208,13 @@ class AppModelViaje extends PDORepository {
             WHERE (viaje_id=:viaje)", ["viaje"=>$viaje_id["id"]]);
         return $answer;
     }
+
+    public function aceptadosParaEsteViaje($viajeId){
+        $answer = $this->queryList("SELECT * FROM usuario_viaje uv
+            WHERE (uv.viaje_id=:viaje and uv.estado='aceptado')", ["viaje"=>$viajeId]);
+        return $answer;
+    }
+
+
+
 }

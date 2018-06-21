@@ -86,5 +86,7 @@ if(!isset($_GET["action"])){
 	$viaje->cancelar_postulacion_aceptada($_POST);
 } elseif ($_GET["action"] == "borrar_postulacion_aceptada"){
 	$viaje->borrar_postulacion_aceptada($_POST);
-}
+} elseif ($_GET["action"] == "aceptarPostulado"){
+	$viaje->aceptarPostulacionAViaje($_POST);
+} 
 

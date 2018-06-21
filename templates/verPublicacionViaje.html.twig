@@ -67,8 +67,8 @@ Detalles de viaje
                             <td>CALIFICACIONES</td>
                             <td>{{ postulado.estado }}</td>
                             <td>
-                                <form method="post" class="pull-left" action="#"> {# ACA SE ACEPTA UN POSTULANTE #}
-                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                <form method="post" class="pull-left" action="./?action=aceptarPostulado"> {# ACA SE ACEPTA UN POSTULANTE #}
+                                    <input type="hidden" name="id_viaje" value="{{ viaje.viaje.id }}">
                                     <input type="hidden" name="id" value="{{ postulado.id }}">
                                     <input type="submit" class="btn btn-primaryPink"  value="Aceptar">
                                 </form>
