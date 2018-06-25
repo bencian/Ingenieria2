@@ -8,7 +8,6 @@ Detalles de viaje
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 text-center well">
-            
             <div>
                 <table class="table table-striped">
                     <tr> 
@@ -35,10 +34,11 @@ Detalles de viaje
                         <td>Marca: {{ vehiculo.marca }}</td>
                         <td>Modelo: {{ vehiculo.modelo }}</td>
                     </tr>
-                {#    <tr>
+                    {#<tr>
                         <td></td><td></td><td></td><td></td>
                     </tr>#}
                     <tr>
+                        <td></td>
                         {% if usuario == piloto.id %}
                             <td>
                                 <div>
@@ -67,11 +67,11 @@ Detalles de viaje
                         {% else %}    
                             <td></td><td></td>
                         {% endif %}
-                        <td></td><td></td>
+                        <td></td>
                     </tr>
                 </table>
                 {% if viaje.viaje.comentarios %}
-                           Comentarios: {{ viaje.viaje.comentarios }}
+                    <h4> Comentarios: {{ viaje.viaje.comentarios }} </h4>
                 {% endif %}
             </div>
             <br>
@@ -137,8 +137,6 @@ Detalles de viaje
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion">
                         <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
-
-
                     </form>
                     <h5>Estado: {{ postulado.0.estado }}</h5>
                 {% elseif postulado.0.estado=="aceptado" %}
