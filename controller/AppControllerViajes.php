@@ -570,7 +570,11 @@ class AppControllerViajes {
 
     public function cancelar_postulacion($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
-        var_dump($datos);
+        /* 
+
+        ACA SE TIENE QUE DESCONTAR PUNTOS!!! 
+
+        */
         $this->ver_publicacion_viaje($datos);
     }
 

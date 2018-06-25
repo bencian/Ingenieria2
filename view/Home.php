@@ -75,7 +75,6 @@ class Home extends TwigView {
     }
 
     public function cancelarPostulacionAceptada($datos){
-        var_dump($datos);
         echo self::getTwig()->render("cancelarPostulacionAceptada.html.twig", array("viaje"=>$datos));
     }
 }
