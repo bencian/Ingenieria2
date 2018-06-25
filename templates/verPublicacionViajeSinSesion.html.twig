@@ -44,28 +44,25 @@ Detalles de viaje
             </div>
             <cr>
             <div id="preguntas">
-                <div class="well text-left">
-                    <h4>UN USUARIO</h4>
-                    <p>hola, queria saber algo...</p>
-                    <div class="well">
-                        <p>yo solo se que no se nada</p>
+{% if viaje.viaje.id % 2 == 0 %}
+                <div>
+                    <div class="well text-left">
+                        <h4>UN USUARIO</h4>
+                        <p>hola, queria saber algo...</p>
+                        <div class="well">
+                            <p>yo solo se que no se nada</p>
+                        </div>
+                    </div>
+                    <div class="well text-left">
+                        <h4>Otro gato</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc elit est, maximus ut egestas sed, porttitor id mauris. Sed facilisis faucibus rhoncus. Etiam volutpat, quam quis posuere varius, ligula risus sodales est, vel luctus turpis nisl quis ante. In dapibus leo purus, id posuere ligula tincidunt sed. Maecenas dui lacus, tristique eu nibh eget, facilisis maximus augue. Integer eget mauris id dui congue lacinia. Sed nec fringilla mauris, vel sodales massa. Pellentesque magna felis, varius eu tristique non, ultricies non tellus. Nunc facilisis pulvinar varius. Quisque vel volutpat libero, et hendrerit arcu. Nunc id eleifend nisl. </p>
                     </div>
                 </div>
-                <div class="well text-left">
-                    <h4>Otro gato</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc elit est, maximus ut egestas sed, porttitor id mauris. Sed facilisis faucibus rhoncus. Etiam volutpat, quam quis posuere varius, ligula risus sodales est, vel luctus turpis nisl quis ante. In dapibus leo purus, id posuere ligula tincidunt sed. Maecenas dui lacus, tristique eu nibh eget, facilisis maximus augue. Integer eget mauris id dui congue lacinia. Sed nec fringilla mauris, vel sodales massa. Pellentesque magna felis, varius eu tristique non, ultricies non tellus. Nunc facilisis pulvinar varius. Quisque vel volutpat libero, et hendrerit arcu. Nunc id eleifend nisl. </p>
-                    {% if usuario == piloto.id %}
-                        <div class="well">
-                            <form method="post" class="text-left" action="#">
-                                <div class="form-group">
-                                    <label for="respuesta">Respuesta:</label>
-                                    <textarea class="form-control" rows="5" id="respuesta" placeholder="Ingrese su respuesta" name="respuesta" required></textarea>
-                                </div> 
-                                <input type="submit" class="btn btn-primaryPink"  value="Responder!">
-                            </form>
-                        </div>
-                    {% endif %}
-                </div>
+{% else %}
+    <div class="well text-center">
+            <h3>Todavia no se realizaron preguntas!</h3>
+    </div>
+{% endif %}
             </div>
         </div>
     </div>

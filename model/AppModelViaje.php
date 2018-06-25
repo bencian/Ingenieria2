@@ -215,6 +215,10 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
+    public function contarAceptados($viaje_id){
+        $answer= $this->queryList("SELECT COUNT(*) FROM usuario_viaje uv WHERE (viaje_id=:viaje AND estado=:estado)", ["viaje"=>$viaje_id["id"], "estado"=>'aceptado']);
+        return $answer;
+    }
 
 
 }
