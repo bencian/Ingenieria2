@@ -17,20 +17,20 @@ Detalles de viaje
                         <td><h3>Fecha: {{ viaje.viaje.fecha }}</h3></td>
                     </tr>
                     <tr>
-                        <td><h3>Datos generales</h3></td>  
+                        <td><h4>Datos generales</h4></td>  
                         <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
-                        <td>Hora: {{ viaje.ocasional.hora_salida }}</td>
-                        <td>Precio: {{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
+                        <td>Hora de salida: {{ viaje.ocasional.hora_salida }}</td>
+                        <td>Precio: ${{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
                     </tr>
                     <tr>
-                        <td><h3>Datos extras</h3></td>
-                        <td>Duracion: {{ viaje.viaje.duracion }}</td>
-                        <td>Distancia: {{ viaje.viaje.distancia }}</td>
-                        <td>Cantidad de postulados:</td>
+                        <td><h4>Datos extras</h4></td>
+                        <td>Duracion: {{ viaje.viaje.duracion }} horas</td>
+                        <td>Distancia: {{ viaje.viaje.distancia }} kms</td>
+                        <td>Cantidad de postulados: {{ cantPostulados }}</td>
                     </tr>
                     <tr>
-                        <td><h3>Datos del vehiculo</h3></td>
-                        <td>Cantidad de asientos: {{ vehiculo.asientos }}</td>
+                        <td><h4>Datos del vehiculo</h4></td>
+                        <td>Cantidad de asientos: {{ vehiculo.asientos-1 }}</td>
                         <td>Marca: {{ vehiculo.marca }}</td>
                         <td>Modelo: {{ vehiculo.modelo }}</td>
                     </tr>
@@ -38,15 +38,17 @@ Detalles de viaje
                         <td></td><td></td><td></td><td></td>
                     </tr>
                     <tr>
-                        {% if viaje.viaje.comentarios %}
+                      {#  {% if viaje.viaje.comentarios %}
                            <td>Comentarios: {{ viaje.viaje.comentarios }}</td>
-                        {% endif %}
+                        {% endif %} #}
                     </tr>
                 </table>
                 {% if viaje.viaje.comentarios %}
                            Comentarios: {{ viaje.viaje.comentarios }}
                 {% endif %}
             </div>
+            <br>
+            <div>
             {% if usuario == piloto.id %}
                 {% if postulados %}
                 <h3>Postulados</h3>
@@ -62,16 +64,21 @@ Detalles de viaje
                         {% for postulado in postulados %}
                            
                             <td>
-                                <a href="">{{ postulado.nombre }} {{ postulado. apellido }} </a>
+                                <a href="">{{ postulado.nombre }} {{ postulado.apellido }} </a>
                             </td>
                             <td>CALIFICACIONES</td>
                             <td>{{ postulado.estado }}</td>
                             <td>
+                            {% if postulado.estado != 'aceptado' %}
+                            
                                 <form method="post" class="pull-left" action="./?action=aceptarPostulado"> {# ACA SE ACEPTA UN POSTULANTE #}
                                     <input type="hidden" name="id_viaje" value="{{ viaje.viaje.id }}">
                                     <input type="hidden" name="id" value="{{ postulado.id }}">
                                     <input type="submit" class="btn btn-primaryPink"  value="Aceptar">
                                 </form>
+                            {% else %}
+                                <h5>Ya fue aceptado</h5>
+                            {% endif %}
                             </td>
                             <td>
                                 <form method="post" class="pull-left" action="#"> {# ACA SE RECHAZA UN POSTULANTE #}
@@ -90,24 +97,24 @@ Detalles de viaje
                 {% endif %}
             {% elseif postulado %}
                 {% if postulado.0.estado=="pendiente" %}
-                    <p>Mostrar boton para cancelar postulacion</p>
-                    <h3>SI SE FUE ACEPTADO SE TIENE QUE DESCONTAR UN PUNTO...</h3>
-                    <form method="post" class="pull-left" action="./?action=cancelar_postulacion">
+
+                    {#<h3>SI SE FUE ACEPTADO SE TIENE QUE DESCONTAR UN PUNTO...</h3>#}
+                    <form method="post" class="text-center" action="./?action=cancelar_postulacion">
                         <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
 
 
                     </form>
-                    <p>{{ postulado.0.estado }}</p>
+                    <h5>Estado: {{ postulado.0.estado }}</h5>
                 {% elseif postulado.0.estado=="aceptado" %}
-                    <p>ACEPTADO!!!</p>
-                    <form method="post" class="pull-left" action="./?action=cancelar_postulacion_aceptada">
+                    <h5>Aceptado!</h5>
+                    <form method="post" class="text-center" action="./?action=cancelar_postulacion_aceptada">
                         <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
                     </form>
                 {% endif %}
             {% else %}
-                <form method="post" class="pull-left" action="./?action=postularse">
+                <form method="post" class="text-center" action="./?action=postularse">
                     <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                     <input type="submit" class="btn btn-primaryPink"  value="Postularme!">
 
@@ -117,6 +124,45 @@ Detalles de viaje
 
                 </form>
             {% endif %}
+            </div>
+            <p>
+
+            </p>
+            <div id="preguntas">
+                <div class="well text-left">
+                    <h4>UN USUARIO</h4>
+                    <p>hola, queria saber algo...</p>
+                    <div class="well">
+                        <p>yo solo se que no se nada</p>
+                    </div>
+                </div>
+                <div class="well text-left">
+                    <h4>Otro gato</h4>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc elit est, maximus ut egestas sed, porttitor id mauris. Sed facilisis faucibus rhoncus. Etiam volutpat, quam quis posuere varius, ligula risus sodales est, vel luctus turpis nisl quis ante. In dapibus leo purus, id posuere ligula tincidunt sed. Maecenas dui lacus, tristique eu nibh eget, facilisis maximus augue. Integer eget mauris id dui congue lacinia. Sed nec fringilla mauris, vel sodales massa. Pellentesque magna felis, varius eu tristique non, ultricies non tellus. Nunc facilisis pulvinar varius. Quisque vel volutpat libero, et hendrerit arcu. Nunc id eleifend nisl. </p>
+                    {% if usuario == piloto.id %}
+                        <div class="well">
+                            <form method="post" class="text-left" action="#">
+                                <div class="form-group">
+                                    <label for="respuesta">Respuesta:</label>
+                                    <textarea class="form-control" rows="5" id="respuesta" placeholder="Ingrese su respuesta" name="respuesta" required></textarea>
+                                </div> 
+                                <input type="submit" class="btn btn-primaryPink"  value="Responder!">
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if usuario != piloto.id %}
+                    <div class="well text-left">
+                        <form method="post" class="text-center" action="#">
+                            <div class="form-group">
+                                <label for="respuesta">Pregunta:</label>
+                                <textarea class="form-control" rows="5" id="respuesta" placeholder="Ingrese su pregunta" name="pregunta" required></textarea>
+                            </div> 
+                            <input type="submit" class="btn btn-primaryPink"  value="Preguntar!">
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

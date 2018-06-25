@@ -17,6 +17,7 @@ Inicio
 				<th scope="col">Origen</th>
 				<th scope="col">Destino</th>
 				<th scope="col">Fecha</th>
+				<th scope="col">Hora de salida</th>
 				<th scope="col">Precio</th>
 				<th scope="col">Duracion</th>
 				<th scope="col">Distancia</th>
@@ -29,6 +30,7 @@ Inicio
 					<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
 					<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
 					<td>{{ viaje.fecha }}</td>
+					<td>{{ viaje.hora_salida }}hs</td>
 					<td>$ {{ viaje.precio }}</td>
 					<td>{{ viaje.duracion }} horas</td>
 					<td>{{ viaje.distancia }} kms</td>
