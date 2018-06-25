@@ -35,7 +35,7 @@ class AppController {
 			$view = new Home();
 			$viajes = $this->accesoAPaginaQueLista();
 			$parametros['ciudades'] = AppModel::getInstance()->getCiudades();
-			$view->mostrarMenuSinSesion("index.html.twig", $viajes,$parametros);
+            $view->mostrarMenuSinSesion("index.html.twig", $viajes,$parametros);
 		} else {
 			$this->mostrarMenuConSesion();  
 		}

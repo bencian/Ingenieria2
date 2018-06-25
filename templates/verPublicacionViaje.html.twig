@@ -49,42 +49,41 @@ Detalles de viaje
             </div>
             {% if usuario == piloto.id %}
                 {% if postulados %}
-                <h3>Postulados</h3>
-                <table class="table table-striped">
-                    <thead>
-                        <td>Nombre y Apellido</td>
-                        <td>Calificaciones</td>
-                        <td>Estado</td>
-                        <td>Aceptar</td>
-                        <td>Cancelar</td>
-                    </thead>
-                    <tbody>
-                        {% for postulado in postulados %}
-                           
-                            <td>
-                                <a href="">{{ postulado.nombre }} {{ postulado. apellido }} </a>
-                            </td>
-                            <td>CALIFICACIONES</td>
-                            <td>{{ postulado.estado }}</td>
-                            <td>
-                                <form method="post" class="pull-left" action="./?action=aceptarPostulado"> {# ACA SE ACEPTA UN POSTULANTE #}
-                                    <input type="hidden" name="id_viaje" value="{{ viaje.viaje.id }}">
-                                    <input type="hidden" name="id" value="{{ postulado.id }}">
-                                    <input type="submit" class="btn btn-primaryPink"  value="Aceptar">
-                                </form>
-                            </td>
-                            <td>
-                                <form method="post" class="pull-left" action="#"> {# ACA SE RECHAZA UN POSTULANTE #}
-                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
-                                    <input type="hidden" name="id" value="{{ postulado.id }}">
-                                    <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
-                                </form>
-                            </td>
-                            
-                        
-                        {% endfor %}
-                    </tbody>
-                </table>
+                    <h3>Postulados</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <td>Nombre y Apellido</td>
+                            <td>Calificaciones</td>
+                            <td>Estado</td>
+                            <td>Aceptar</td>
+                            <td>Cancelar</td>
+                        </thead>
+                        <tbody>
+                            {% for postulado in postulados %}
+                                <td>
+                                    <a href="">{{ postulado.nombre }} {{ postulado. apellido }} </a>
+                                </td>
+                                <td>CALIFICACIONES</td>
+                                <td>{{ postulado.estado }}</td>
+                                {% if postulado.estado != "aceptado"%}
+                                    <td>
+                                        <form method="post" class="pull-left" action="./?action=aceptarPostulado"> {# ACA SE ACEPTA UN POSTULANTE #}
+                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                            <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
+                                            <input type="submit" class="btn btn-primaryPink"  value="Aceptar">
+                                        </form>
+                                    </td>
+                                {% endif %}
+                                <td>
+                                    <form method="post" class="pull-left" action="#"> {# ACA SE RECHAZA UN POSTULANTE #}
+                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                        <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
+                                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                                    </form>
+                                </td>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 {% else %}
                     <h3>No se poseen postulantes para este viaje</h3>
                 {% endif %}
@@ -95,8 +94,6 @@ Detalles de viaje
                     <form method="post" class="pull-left" action="./?action=cancelar_postulacion">
                         <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
-
-
                     </form>
                     <p>{{ postulado.0.estado }}</p>
                 {% elseif postulado.0.estado=="aceptado" %}

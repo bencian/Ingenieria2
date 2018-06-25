@@ -41,6 +41,9 @@ Inicio
 										<th scope="col">Origen</th>
 										<th scope="col">Destino</th>
 										<th scope="col">Fecha</th>
+										<th scope="col">Precio</th>
+										<th scope="col">Hora de Salida</th>
+										<th scope="col"></th>
 									</tr>
 									</thead>
 									<tbody>
@@ -49,6 +52,8 @@ Inicio
 										<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
 										<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
+										<td>${{ viaje.precio }}</td>
+										<td>{{ viaje.hora_salida }}</td>
 										<td>
 											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
 												<input type="hidden" name="id" value="{{ viaje.id }}">

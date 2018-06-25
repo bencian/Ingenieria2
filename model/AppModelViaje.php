@@ -28,14 +28,9 @@ class AppModelViaje extends PDORepository {
     }
 
     public function getViajes($dato){
-        $answer = $this->queryList("SELECT id, fecha, id_origen, id_destino FROM viaje WHERE fecha<?", [$dato]);
+        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.id_origen, vj.id_destino, vj.precio, vo.hora_salida FROM viaje vj inner join viaje_ocasional vo on (vj.id = vo.viaje_id) WHERE fecha<?", [$dato]);
         return $answer;
     }    
-    
-    public function existeMail($datos){
-		$answer = $this->queryList("SELECT nombre FROM usuario where email=?;", [ $datos ]);
-		return $answer;
-	}
 
     public function getCiudad($datos){
         $answer= $this->queryList("SELECT id FROM ciudad WHERE nombre=?",[$datos]);
@@ -119,8 +114,6 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
-
-
     public function eliminarViajesFuturosEnCascada($datos){
        /* $this->queryList("DELETE FROM viaje_ocasional WHERE vehiculo_id=:vehiculo", ["vehiculo"=>$datos["id"]]);
         $this->queryList("DELETE FROM viaje_periodico WHERE vehiculo_id=:vehiculo", ["vehiculo"=>$datos["id"]]);*/
@@ -150,19 +143,18 @@ class AppModelViaje extends PDORepository {
 */
     }
 
-
     public function getViaje($viaje_id){
-        $viaje =    $this->queryList("SELECT * FROM viaje where id=?;", [ $viaje_id["id"] ])[0];
-        $answer["viaje"]=$viaje;
+        $viaje = $this->queryList("SELECT * FROM viaje where id=?;", [ $viaje_id["id"] ]);
+        $answer["viaje"]=$viaje[0];
         $ocasional = ($this->queryList("SELECT * FROM viaje_ocasional where viaje_id=?;", [$viaje_id["id"]]));
-        if(!$ocasional){
+        /*if(!$ocasional){
             $periodico=($this->queryList("SELECT * FROM viaje_periodico where viaje_id=?;", [$viaje_id["id"]]));
             $diaHora=($this->queryList("SELECT * FROM dia_horario where viaje_periodico_viaje_id=?;", [$viaje_id["id"]]));
             $answer["periodico"]=$periodico[0];
             $answer["diaHora"]=$diaHora[0];
-        } else {
-            $answer["ocasional"]=$ocasional[0];
-        }
+        } else {*/
+        $answer["ocasional"]=$ocasional[0];
+        //}
         return $answer;
     }
 
@@ -188,7 +180,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function cambiarEstadoParaAceptado($idViaje, $postulado){
-        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
+        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE (viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
         return $answer;
     }
     

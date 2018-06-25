@@ -37,6 +37,11 @@ class AppModelUsuario extends PDORepository {
         return $answer;
     }
 
+    public function existeMail($datos){
+        $answer = $this->queryList("SELECT nombre FROM usuario where email=?;", [ $datos ]);
+        return $answer;
+    }
+
     public function existeUsuario($mail,$contraseña){
         //Busca en la bd el usuario con mail y contraseña ingresado
         $answer = $this->queryList("SELECT id FROM usuario WHERE email=:mail AND password=:contra", ['mail'=>$mail,'contra'=>$contraseña]);
