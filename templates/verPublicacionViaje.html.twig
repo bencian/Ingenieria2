@@ -107,15 +107,23 @@ Detalles de viaje
                                 <h5>Ya fue aceptado</h5>
                             {% endif %}
                             </td>
-                            <td>
-                                <form method="post" class="pull-left" action="#"> {# ACA SE RECHAZA UN POSTULANTE #}
-                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
-                                    <input type="hidden" name="id" value="{{ postulado.id }}">
-                                    <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
-                                </form>
-                            </td>
-                            
-                        
+                            {% if postulado.estado == 'pendiente' %}
+                                <td>
+                                    <form method="post" class="pull-left" action="./index.php"> {# ACA SE RECHAZA UN POSTULANTE #}
+                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                        <input type="hidden" name="id" value="{{ postulado.id }}">
+                                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                                    </form>
+                                </td>
+                            {% elseif postulado.estado == 'aceptado' %}
+                                <td>
+                                    <form method="post" class="pull-left" action="./index.php"> 
+                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                        <input type="hidden" name="id" value="{{ postulado.id }}">
+                                        <input type="submit" class="btn btn-primaryPink"  value="Rechazar">
+                                    </form>
+                                </td>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>

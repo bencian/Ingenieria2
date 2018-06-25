@@ -36,7 +36,11 @@ class Home extends TwigView {
     }
 
     public function listarViajes($datos, $ciudades){
-        echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades));
+        if(isSet($_SESSION["id"])){
+            echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades, "usuario" => $_SESSION));
+        } else {
+            echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades)); 
+        }
     }
 
     public function listarVehiculosPropios($vehiculos){
