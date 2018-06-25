@@ -125,6 +125,8 @@ class AppControllerUsuario {
             $mostrarDatos["viajes"]=$viajes;
             $ciudades = AppModel::getInstance()->getCiudades();
             $mostrarDatos["ciudades"]=$ciudades;
+            $misPostulaciones = AppModelUsuario::getInstance()->getMisPostulaciones($_SESSION['id']);
+            $mostrarDatos["postulaciones"]=$misPostulaciones;
             $view->mostrarNombre($mostrarDatos); //falta
         }
     }

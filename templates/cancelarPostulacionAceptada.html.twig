@@ -10,15 +10,16 @@ Confirmar cancelar
 		<div class="col-sm-12 col-sm-offset-0 text-center well">
 
 			<h3>Si lo elimina se le descontara 1 punto</h3>
-			<form method="post" class="pull-left" action="./?action=borrar_postulacion_aceptada">
-				<input type="hidden" name="id" value="{{ viaje.id }}">
-				<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
-			</form>
-			<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
-				<input type="hidden" name="id" value="{{ viaje.id }}">
-				<input type="submit" class="btn btn-primaryPink"  value="Cancelar">
-			</form>
-
+			<div class="text-center col-sm-offset-5 col-lg-12">
+				<form method="post" class="pull-left" action="./?action=borrar_postulacion_aceptada" style="margin:0.5em;margin-left:0px">
+					<input type="hidden" name="id" value="{{ viaje.id }}">
+					<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
+				</form>
+				<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje" style="margin:0.5em;">
+					<input type="hidden" name="id" value="{{ viaje.id }}">
+					<input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

@@ -359,12 +359,15 @@ class AppControllerViajes {
         $vehiculo=$model->getVehiculo($viaje["viaje"]["vehiculo_id"])[0];
         $ciudades=$model->getCiudades();
         $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"])[0];
+        $cantidadAceptados=$dbViaje->contarAceptados($viaje_id);
+        $cantidadAceptados=$cantidadAceptados[0]["COUNT(*)"];
         if(isset($_SESSION["id"])){
             $postulado=$dbViaje->yaMePostule($viaje_id);
             $postulados=$dbViaje->getPostulados($viaje_id);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados, $cantidadAceptados);
         } else {
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', '');
+            $postulados=$dbViaje->getPostulados($viaje_id);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', $postulados, $cantidadAceptados);
             /*
 
             REVISAR COMO TRATA EL STRING VACIO!!! CREO QUE ESTA FUNCIONANDO POR EL IF EN EL VIEW, QUE HACE QUE COMO SESSION NO ESTA SETEADO NO ENVIA $POSTULADO COMO PARAMETRO!
@@ -383,6 +386,12 @@ class AppControllerViajes {
 
     public function cancelar_postulacion($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
+
+        /* 
+
+        ACA SE TIENE QUE DESCONTAR PUNTOS!!! 
+
+        */
         $this->ver_publicacion_viaje($datos);
     }
 
@@ -395,7 +404,8 @@ class AppControllerViajes {
             $db = AppModelViaje::getInstance();
             $db-> actualizarViajeOcasional($datos,$asientos);
         }
-        AppController::getInstance()->mostrarMenuConSesion();    
+        //AppController::getInstance()->mostrarMenuConSesion(); 
+        $this->ver_publicacion_viaje($datos);  
     }
 
     public function cancelar_postulacion_aceptada($datos){
