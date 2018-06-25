@@ -66,4 +66,12 @@ class AppModelUsuario extends PDORepository {
         $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
         return $answer;
     }    
+
+    public function getMisPostulaciones($usuario){
+        $answer = $this->queryList("SELECT * FROM usuario_viaje uv
+        INNER JOIN viaje v ON (uv.viaje_id=v.id)
+        INNER JOIN viaje_ocasional vo ON (v.id=vo.viaje_id) 
+        WHERE (uv.usuarios_id=:id AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME() )))", [ "id"=>$usuario ]);
+        return $answer;
+    }
 }

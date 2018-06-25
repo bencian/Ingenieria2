@@ -44,7 +44,7 @@ Mi perfil
 	<div id="viajes_futuros">
 		<div class="row">
 			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<ul>
+				
 				{% if viajes %}
 					<table class="table table-striped">
 						<thead>
@@ -56,7 +56,7 @@ Mi perfil
 								<th scope="col">Precio</th>
 								<th scope="col">Duracion</th>
 								<th scope="col">Distancia</th>
-								<th scope="col"></th>
+								<th scope="col">Ver detalles</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -92,7 +92,53 @@ Mi perfil
 				{% else %}
 					<h1>No hay viajes para mostrar</h1>
 				{% endif %}
-				</ul>
+				
+			</div>
+		</div>
+	</div>
+	<div id="viajes_postulados">
+		<div class="row">
+			<div class="col-sm-12 col-sm-offset-0 text-center well">
+
+				{% if postulaciones %}
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Origen</th>
+								<th scope="col">Destino</th>
+								<th scope="col">Fecha</th>
+								<th scope="col">Hora de salida</th>
+								<th scope="col">Precio</th>
+								<th scope="col">Duracion</th>
+								<th scope="col">Distancia</th>
+								<th scope="col">Estado de la postulacion</th>
+								<th scope="col">Ver</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for postulacion in postulaciones %}
+								<tr>
+									<td>{{ ciudades[postulacion.id_origen - 1].nombre }}</td>
+									<td>{{ ciudades[postulacion.id_destino - 1].nombre }}</td>
+									<td>{{ postulacion.fecha }}</td>
+									<td>{{ postulacion.hora_salida }}hs</td>
+									<td>$ {{ postulacion.precio }}</td>
+									<td>{{ postulacion.duracion }} horas</td>
+									<td>{{ postulacion.distancia }} kms</td>
+									<td>{{ postulacion.estado }}</td>
+									<td>
+										<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+											<input type="hidden" name="id" value="{{ postulacion.viaje_id }}">
+											<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<h1>No tienes postulaciones</h1>
+				{% endif %}
 			</div>
 		</div>
 	</div>
