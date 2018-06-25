@@ -35,9 +35,13 @@ Inicio
 					<td>{{ viaje.duracion }} horas</td>
 					<td>{{ viaje.distancia }} kms</td>
 					<td>
-						<form method="post" class="pull-left" action="#">
+					<!--	<form method="post" class="pull-left" action="#">
 							<input type="hidden" name="id" value="postularse">
 							<input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+						</form>-->
+						<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+							<input type="hidden" name="id" value="{{ viaje.id }}">
+							<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
 						</form>
 					</td>
 				</tr>
