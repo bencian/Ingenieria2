@@ -112,22 +112,24 @@ class AppModelViaje extends PDORepository {
     }
 
     public function viajesConAceptados($datos){
-        $answer= $this->queryList("SELECT COUNT(vj.id) FROM vehiculo vh INNER JOIN viaje vj ON (vh.id=vj.vehiculo_id) INNER JOIN usuario_viaje uv ON (vj.id=uv.viaje_id) WHERE (vh.id=:vehiculo AND vj.fecha> CURDATE() AND  uv.estado='Aceptado') GROUP BY (vj.id)", [ "vehiculo"=>$datos["id"]]);
+        $answer= $this->queryList("SELECT COUNT(vj.id) FROM vehiculo vh 
+            INNER JOIN viaje vj ON (vh.id=vj.vehiculo_id) 
+            INNER JOIN usuario_viaje uv ON (vj.id=uv.viaje_id) 
+            INNER JOIN viaje_ocasional vo ON (vo.viaje_id=vj.id)
+            WHERE (vh.id=:vehiculo AND uv.estado='Aceptado' AND (vj.fecha> CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())) GROUP BY (vj.id)", [ "vehiculo"=>$datos["id"]]);
         return $answer;
     }
 
     public function eliminarViajesFuturosEnCascada($datos){
-        /*$answer=$this->queryList("DELETE dh FROM viaje_periodico vp INNER JOIN dia_horario dh ON (vp.viaje_id= dh.viaje_periodico_viaje_id) WHERE vp.viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE());", ["vehiculo"=>$datos["id"]]);
-        
-        $answer=$this->queryList("DELETE FROM viaje_periodico WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE())", ["vehiculo"=>$datos["id"]]);
-        
-        $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE())", ["vehiculo"=>$datos["id"]]);
-
-        $answer=$this->queryList("DELETE FROM viaje WHERE vehiculo_id=:vehiculo AND fecha>CURDATE()", ["vehiculo"=>$datos["id"]]);*/
-        $answer=$this->queryList("DELETE FROM usuario_viaje WHERE viaje_id IN (
+        $answer=$this->queryList("UPDATE usuario_viaje SET estado='Viaje eliminado' WHERE viaje_id IN (
             SELECT id FROM viaje
             INNER JOIN viaje_ocasional ON (viaje_ocasional.viaje_id=viaje.id) 
             WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]);
+
+        /*$answer=$this->queryList("DELETE FROM usuario_viaje WHERE viaje_id IN (
+            SELECT id FROM viaje
+            INNER JOIN viaje_ocasional ON (viaje_ocasional.viaje_id=viaje.id) 
+            WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]);*/
 
         $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (
             SELECT id FROM viaje
@@ -139,31 +141,13 @@ class AppModelViaje extends PDORepository {
         WHERE (vehiculo_id=:vehiculo AND vo.hora_salida is NULL)", ["vehiculo"=>$datos["id"]]);
         
         return $answer;
-/*        
-        $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (SELECT id FROM viaje WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) || (fecha=CURDATE() && hora_salida>CURTIME() )))", ["vehiculo"=>$datos["id"]]);    CON ESTA SI!
-        
-        $answer=$this->queryList("DELETE v FROM viaje v 
-        LEFT JOIN viaje_periodico vp ON (vp.viaje_id= v.id) 
-        LEFT JOIN viaje_ocasional vo ON (vo.viaje_id= v.id)
-        WHERE vehiculo_id=:vehiculo AND (horario=NULL && hora_salida=NULL)", ["vehiculo"=>$datos["id"]]);
-
-    HAY QUE BORRAR DE LA TABLA USUARIO_VIAJE!!!
-
-*/
     }
 
     public function getViaje($viaje_id){
         $viaje = $this->queryList("SELECT * FROM viaje where id=?;", [ $viaje_id["id"] ]);
         $answer["viaje"]=$viaje[0];
         $ocasional = ($this->queryList("SELECT * FROM viaje_ocasional where viaje_id=?;", [$viaje_id["id"]]));
-        /*if(!$ocasional){
-            $periodico=($this->queryList("SELECT * FROM viaje_periodico where viaje_id=?;", [$viaje_id["id"]]));
-            $diaHora=($this->queryList("SELECT * FROM dia_horario where viaje_periodico_viaje_id=?;", [$viaje_id["id"]]));
-            $answer["periodico"]=$periodico[0];
-            $answer["diaHora"]=$diaHora[0];
-        } else {*/
         $answer["ocasional"]=$ocasional[0];
-        //}
         return $answer;
     }
 

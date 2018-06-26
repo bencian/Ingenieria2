@@ -77,39 +77,13 @@ class AppControllerVehiculo {
     }
 
     public function eliminar_vehiculo($datos){
-/*
-DEBERIAMOS PREGUNTAR SI AL ELIMINAR VIAJES SIN VEHICULOS QUE HACER!!!
-*/
-/*
-
-        $bdViaje = AppModelViaje::getInstance();
-        $bd = AppModel::getInstance();
-        $tieneViajes=(($bdViaje->noPoseeViajesFuturos($datos))[0]["COUNT(*)"]>0);
-        if(!$tieneViajes){
-
-            $viajes=$bdViaje->poseeViajesEchos($datos);
-            if(!$viajes){
-                //borrar de usuarios_has_vehiculo y de vehiculos
-                $bd->borrarVehiculo($datos);
-            }
-            $bd->eliminarRelacionUsuarioVehiculo($datos);
-            $view = new Home();
-            $this->listar_vehiculos();
-        } else {*/
             $this->confirmarEliminacionCascada($datos);
-        //}
     }
 
     public function confirmar_eliminacion_en_cascada($datos){
         $bdViaje = AppModelViaje::getInstance();
         $bd = AppModel::getInstance();
         $bdViaje->eliminarViajesFuturosEnCascada($datos);
-        /*$viajes=$bdViaje->poseeViajesEchos($datos);
-        if(!$viajes){
-            $bd->borrarVehiculo($datos);
-        }
-        $bd->eliminarRelacionUsuarioVehiculo($datos);*/
-        //$view = new Home();
         $viajes=$bdViaje->poseeViajesEchos($datos);
         if(!$viajes){
               //borrar de usuarios_has_vehiculo y de vehiculos
@@ -122,10 +96,13 @@ DEBERIAMOS PREGUNTAR SI AL ELIMINAR VIAJES SIN VEHICULOS QUE HACER!!!
     public function confirmarEliminacionCascada($datos){
         $view = new Home();
         $bdViaje = AppModelViaje::getInstance();
-        $cant_viajes=$bdViaje->noPoseeViajesFuturos($datos);
-        /*$cant_viajes=$bdViaje->viajesConAceptados($datos);*/
+        $cant_viajes=$bdViaje->viajesConAceptados($datos);
         $vehiculo=AppModel::getInstance()->getVehiculo($datos["id"]);
-        $parametros["viajes"]=$cant_viajes;
+        if(isset($cant_viajes[0]["COUNT(vj.id)"])){
+            $parametros["viajes"]=$cant_viajes[0]["COUNT(vj.id)"];
+        } else {
+            $parametros["viajes"]=0;
+        }
         $parametros["vehiculo"]=$vehiculo[0]["id"];
         $view->eliminarEnCascada($parametros);
 
