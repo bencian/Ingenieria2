@@ -37,6 +37,7 @@ Detalles de viaje
                     {#<tr>
                         <td></td><td></td><td></td><td></td>
                     </tr>#}
+                    
                     <tr>
                         <td></td>
                         {% if usuario == piloto.id %}
@@ -75,10 +76,10 @@ Detalles de viaje
                 {% endif %}
             </div>
             <br>
-            <div>
+            <div class="well">
             {% if usuario == piloto.id %}
-                {% if postulados %}
                 <h3>Postulados</h3>
+                {% if postulados %}
                 <table class="table table-striped">
                     <thead>
                         <td>Nombre y Apellido</td>
@@ -122,6 +123,8 @@ Detalles de viaje
                                         <input type="submit" class="btn btn-primaryPink"  value="Rechazar">
                                     </form>
                                 </td>
+                            {% else %}
+                                <td></td>
                             {% endif %}
                         {% endfor %}
                     </tbody>
@@ -159,6 +162,7 @@ Detalles de viaje
 
             </p>
             <div id="preguntas">
+                <h3>Preguntas</h3>
 {% if viaje.viaje.id % 2 == 0 %}
                 <div>
                     <div class="well text-left">
