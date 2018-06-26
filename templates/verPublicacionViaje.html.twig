@@ -95,30 +95,30 @@ Detalles de viaje
                             <td>CALIFICACIONES</td>
                             <td>{{ postulado.estado }}</td>
                             <td>
-                            {% if postulado.estado != 'aceptado' %}
+                            {% if postulado.estado != 'Aceptado' %}
                             
-                                <form method="post" class="pull-left" action="./?action=aceptarPostulado"> {# ACA SE ACEPTA UN POSTULANTE #}
-                                    <input type="hidden" name="id_viaje" value="{{ viaje.viaje.id }}">
-                                    <input type="hidden" name="id" value="{{ postulado.id }}">
+                                <form method="post" class="" action="./?action=aceptarPostulado"> {# ACA SE ACEPTA UN POSTULANTE #}
+                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                    <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
                                     <input type="submit" class="btn btn-primaryPink"  value="Aceptar">
                                 </form>
                             {% else %}
                                 <h5>Ya fue aceptado</h5>
                             {% endif %}
                             </td>
-                            {% if postulado.estado == 'pendiente' %}
+                            {% if postulado.estado == 'Pendiente' %}
                                 <td>
-                                    <form method="post" class="pull-left" action="./index.php"> {# ACA SE RECHAZA UN POSTULANTE #}
-                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
-                                        <input type="hidden" name="id" value="{{ postulado.id }}">
+                                    <form method="post" class="" action="./index.php"> {# ACA SE RECHAZA UN POSTULANTE #}
+                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}"> {# falta #}
+                                        <input type="hidden" name="id" value="{{ postulado.id }}"> {# falta #}
                                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
                                     </form>
                                 </td>
-                            {% elseif postulado.estado == 'aceptado' %}
+                            {% elseif postulado.estado == 'Aceptado' %}
                                 <td>
-                                    <form method="post" class="pull-left" action="./index.php"> 
-                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
-                                        <input type="hidden" name="id" value="{{ postulado.id }}">
+                                    <form method="post" class="" action="./index.php"> {# ACA SE RECHAZA UN POSTULANTE YA ACEPTADO#}
+                                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}"> {# falta #}
+                                        <input type="hidden" name="id" value="{{ postulado.id }}"> {# falta #}
                                         <input type="submit" class="btn btn-primaryPink"  value="Rechazar">
                                     </form>
                                 </td>
