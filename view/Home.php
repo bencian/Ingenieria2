@@ -81,4 +81,8 @@ class Home extends TwigView {
     public function cancelarPostulacionAceptada($datos){
         echo self::getTwig()->render("cancelarPostulacionAceptada.html.twig", array("viaje"=>$datos));
     }
+
+    public function eliminarViaje($datos,$cantidad){
+        echo self::getTwig()->render("confirmacionEliminacionViaje.html.twig", array("viaje"=>$datos, "cantidadAceptados"=>$cantidad));
+    }
 }

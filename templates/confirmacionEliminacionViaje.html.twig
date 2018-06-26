@@ -1,0 +1,33 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+Confirmar cancelar
+{% endblock %}
+
+{% block container %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center well">
+			<h3>Si elimina este viaje se le 
+				{% if cantidadAceptados > 1 %} 
+					descontaran {{ cantidadAceptados }} puntos 
+				{% elseif cantidadAceptados == 1 %} descontara 1 punto
+				{% else %}
+					descontaran 0 puntos
+				{% endif %}
+			</h3>
+			<div class="text-center col-sm-offset-5 col-lg-12">
+				<form method="post" class="pull-left" action="./?action=eliminar_viaje" style="margin:0.5em;margin-left:0px">
+					<input type="hidden" name="id" value="{{ viaje.id }}">
+					<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
+				</form>
+				<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje" style="margin:0.5em;">
+					<input type="hidden" name="id" value="{{ viaje.id }}">
+					<input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

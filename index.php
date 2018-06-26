@@ -53,14 +53,14 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "eliminar_vehiculo"){
 	$vehiculo->eliminar_vehiculo($_POST);
 } elseif ($_GET['action'] == "eliminar_viaje"){
-    if(isset($_GET['id'])){
-        if(is_numeric($_GET['id'])){
-            $viaje->eliminarViaje($_GET['id']);
+    if(isset($_POST['id'])){
+        if(is_numeric($_POST['id'])){
+            $viaje->eliminarViaje($_POST['id']);
         } else {
             $usuario->mostrarPerfil();
         }
     } else {
-        $usuario->mostrarPerfil();
+    	$usuario->mostrarPerfil();
     }
 } elseif ($_GET['action'] == "modificar_vehiculo"){
 	$vehiculo->modificar_vehiculo($_POST);
@@ -88,5 +88,7 @@ if(!isset($_GET["action"])){
 	$viaje->borrar_postulacion_aceptada($_POST);
 } elseif ($_GET["action"] == "aceptarPostulado"){
 	$viaje->aceptarPostulacionAViaje($_POST);
-} 
+} elseif ($_GET["action"] == "confirmarEliminarViaje"){
+	$viaje->confirmarEliminacionViaje($_POST);
+}
 

@@ -42,7 +42,7 @@ Detalles de viaje
                         {% if usuario == piloto.id %}
                             <td>
                                 <div>
-                                    <form method="post" class="" action="index.php?action=eliminar_viaje&id={{ viaje.viaje.id }}">
+                                    <form method="post" class="" action="index.php?action=confirmarEliminarViaje&id={{ viaje.viaje.id }}">
                                     <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                                     <input type="submit" class="btn btn-primaryPink"  value="Eliminar">
                                     </form>

@@ -61,11 +61,10 @@ class AppControllerViajes {
     }
 
     public function eliminarViaje($idViaje){
-        if($this->hayAceptados($idViaje)){
+        if(!$this->hayAceptados($idViaje)){
             $this->eliminarViajeDeLaBD($idViaje);
-            Echo "el viaje se eliminó con exito";
         }else{
-            Echo"Hay gente aceptada en este viaje, no se puede eliminar";
+            //aca va el eliminar en cascada
         }
         AppControllerUsuario::getInstance()->mostrarPerfil();
     }
@@ -74,17 +73,15 @@ class AppControllerViajes {
         $bd = AppModelViaje::getInstance();
         $aceptados = $bd->aceptadosParaEsteViaje($idViaje);
         if(count($aceptados) == 0){
-            return true;
-        }else{
             return false;
+        }else{
+            return true;
         }
     }
 
     public function eliminarViajeDeLaBD($idViaje){  
         $bd = AppModelViaje::getInstance();
         $bd->eliminarViajeOcasional($idViaje);
-        $bd->eliminarViajePeriodicoDias($idViaje);
-        $bd->eliminarViajePeriodico($idViaje);
         $bd->eliminarViaje($idViaje);
     }
 
@@ -426,5 +423,16 @@ class AppControllerViajes {
         $bd->cambiarEstadoParaAceptado($viaje, $postulado);
         Echo "Se acepto al Usuario correctamente";
         $this->ver_publicacion_viaje($datos);
+    }
+
+    public function confirmarEliminacionViaje($datos){
+        $view = new Home();
+        $bdViaje = AppModelViaje::getInstance();
+        $aceptados=$bdViaje->aceptadosParaEsteViaje($datos["id"]);
+        $cantidadAceptados = count($aceptados);
+        if($cantidadAceptados!=0){
+            //pierde 1 punto, llamar a funcion de calificaciones
+        }
+        $view->eliminarViaje($datos, $cantidadAceptados);
     }
 }
