@@ -42,16 +42,16 @@ Detalles de viaje
                         {% if usuario == piloto.id %}
                             <td>
                                 <div>
-                                    <form method="post" class="pull-left" action="index.php?action=eliminar_viaje&id={{ viaje.viaje.id }}">
+                                    <form method="post" class="" action="index.php?action=eliminar_viaje&id={{ viaje.viaje.id }}">
                                     <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                                     <input type="submit" class="btn btn-primaryPink"  value="Eliminar">
                                     </form>
                                 </div>
                             </td>
-                            {% if cantidadAceptados == 0 %}
+                            {% if postulados|length == 0 %}
                                 <td>
                                     <div>
-                                        <form method="post" class="pull-left" action="index.php?action=modificar_viaje_ocasional">
+                                        <form method="post" class="" action="index.php?action=modificar_viaje_ocasional">
                                             <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
                                             <input type="submit" class="btn btn-primaryPink"  value="Modificar">
                                         </form>
@@ -60,7 +60,7 @@ Detalles de viaje
                             {% else %}
                                 <td>
                                     <div>
-                                        <h5>Este viaje tiene copilotos aceptados, no puede ser modificado</h5>
+                                        <h5>Este viaje tiene postulantes, no puede ser modificado</h5>
                                     </div>
                                 </td>
                             {% endif %}
