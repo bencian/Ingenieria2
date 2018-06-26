@@ -415,15 +415,11 @@ class AppControllerViajes {
 
     public function borrar_postulacion_aceptada($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
-        /*
-
-        ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
-
-        */
+        // ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
         $this->ver_publicacion_viaje($datos);
     }
 
-    public function aceptarPostulacionAViaje($datos){
+    public function aceptarPostulacionAViaje($datos){   
         $bd= AppModelViaje::getInstance();
         $postulado=$datos["id_usuario"];
         $viaje=$datos["id"];

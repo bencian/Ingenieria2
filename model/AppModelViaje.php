@@ -28,7 +28,9 @@ class AppModelViaje extends PDORepository {
     }
 
     public function getViajes($dato){
-        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.id_origen, vj.id_destino, vj.precio, vo.hora_salida FROM viaje vj inner join viaje_ocasional vo on (vj.id = vo.viaje_id) WHERE fecha<?", [$dato]);
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $fecha = date('Y-m-d');
+        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.id_origen, vj.id_destino, vj.precio, vo.hora_salida FROM viaje vj inner join viaje_ocasional vo on (vj.id = vo.viaje_id) WHERE vj.fecha<:fecha_futuro and vj.fecha>=:fecha_hoy order by vj.fecha", ["fecha_futuro"=>$dato, "fecha_hoy"=>$fecha]);
         return $answer;
     }    
 
@@ -166,7 +168,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function postularme($datos){
-        $answer= $this->queryList("INSERT INTO usuario_viaje  (usuarios_id, viaje_id, estado) VALUES (:usuario, :viaje, :estado)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"], "estado"=>'pendiente']);
+        $answer= $this->queryList("INSERT INTO usuario_viaje  (usuarios_id, viaje_id, estado) VALUES (:usuario, :viaje, :estado)", ["usuario"=>$_SESSION["id"], "viaje"=>$datos["id"], "estado"=>'Pendiente']);
         return $answer;
     }
 
@@ -187,7 +189,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function cambiarEstadoParaAceptado($idViaje, $postulado){
-        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE (viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
+        $answer = $this->queryList("UPDATE usuario_viaje SET estado='Aceptado' WHERE (viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
         return $answer;
     }
     
@@ -210,12 +212,12 @@ class AppModelViaje extends PDORepository {
 
     public function aceptadosParaEsteViaje($viajeId){
         $answer = $this->queryList("SELECT * FROM usuario_viaje uv
-            WHERE (uv.viaje_id=:viaje and uv.estado='aceptado')", ["viaje"=>$viajeId]);
+            WHERE (uv.viaje_id=:viaje and uv.estado='Aceptado')", ["viaje"=>$viajeId]);
         return $answer;
     }
 
     public function contarAceptados($viaje_id){
-        $answer= $this->queryList("SELECT COUNT(*) FROM usuario_viaje uv WHERE (viaje_id=:viaje AND estado=:estado)", ["viaje"=>$viaje_id["id"], "estado"=>'aceptado']);
+        $answer= $this->queryList("SELECT COUNT(*) FROM usuario_viaje uv WHERE (viaje_id=:viaje AND estado=:estado)", ["viaje"=>$viaje_id["id"], "estado"=>'Aceptado']);
         return $answer;
     }
 
