@@ -130,7 +130,7 @@ Detalles de viaje
                     <h3>No se poseen postulantes para este viaje</h3>
                 {% endif %}
             {% elseif postulado %}
-                {% if postulado.0.estado=="pendiente" %}
+                {% if postulado.0.estado=="Pendiente" %}
 
                     {#<h3>SI SE FUE ACEPTADO SE TIENE QUE DESCONTAR UN PUNTO...</h3>#}
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion">
@@ -138,7 +138,7 @@ Detalles de viaje
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
                     </form>
                     <h5>Estado: {{ postulado.0.estado }}</h5>
-                {% elseif postulado.0.estado=="aceptado" %}
+                {% elseif postulado.0.estado=="Aceptado" %}
                     <h5>Aceptado!</h5>
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion_aceptada">
                         <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
