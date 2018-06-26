@@ -430,4 +430,13 @@ class AppControllerViajes {
         }
         $view->eliminarViaje($datos, $cantidadAceptados);
     }
+
+    public function rechazarPostulacion($datos){
+        $view = new Home();
+        $bdViaje = AppModelViaje::getInstance();
+        $postulado=$datos["id_usuario"];
+        $viaje=$datos["id"];
+        $bdViaje->cambiarEstadoARechazado($viaje, $postulado);
+        $this->ver_publicacion_viaje($datos);
+    }
 }

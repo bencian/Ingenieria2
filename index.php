@@ -16,9 +16,7 @@ require_once('model/AppModelUsuario.php');
 require_once('model/AppModelViaje.php');
 
 require_once('view/TwigView.php');
-require_once('view/Home.php');/*
-require_once('controller/UsuariosController.php');
-require_once('controller/ViajeController.php');*/
+require_once('view/Home.php');
 
 $controller = AppController::getInstance();
 $usuario = AppControllerUsuario::getInstance();
@@ -90,5 +88,7 @@ if(!isset($_GET["action"])){
 	$viaje->aceptarPostulacionAViaje($_POST);
 } elseif ($_GET["action"] == "confirmarEliminarViaje"){
 	$viaje->confirmarEliminacionViaje($_POST);
+} elseif($_GET["action"] == "rechazarPostulado"){
+	$viaje->rechazarPostulacion($_POST);
 }
 
