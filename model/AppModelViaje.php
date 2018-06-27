@@ -30,7 +30,7 @@ class AppModelViaje extends PDORepository {
     public function getViajes($dato){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $fecha = date('Y-m-d');
-        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.id_origen, vj.id_destino, vj.precio, vo.hora_salida FROM viaje vj inner join viaje_ocasional vo on (vj.id = vo.viaje_id) WHERE vj.fecha<:fecha_futuro and vj.fecha>=:fecha_hoy order by vj.fecha", ["fecha_futuro"=>$dato, "fecha_hoy"=>$fecha]);
+        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.id_origen, vj.id_destino, vj.precio, vo.hora_salida, vj.lugares FROM viaje vj inner join viaje_ocasional vo on (vj.id = vo.viaje_id) WHERE vj.fecha<:fecha_futuro and vj.fecha>=:fecha_hoy order by vj.fecha", ["fecha_futuro"=>$dato, "fecha_hoy"=>$fecha]);
         return $answer;
     }    
 

@@ -273,7 +273,7 @@ Inicio
 										<td>{{ vectorForm.ciudades[viaje.id_origen - 1].nombre }}</td>
 										<td>{{ vectorForm.ciudades[viaje.id_destino - 1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
-										<td>${{ viaje.precio }}</td>
+										<td>${{ viaje.precio/viaje.lugares | round(2, 'floor') }} por persona</td>
 										<td>{{ viaje.hora_salida }}</td>
 										<td>
 											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">

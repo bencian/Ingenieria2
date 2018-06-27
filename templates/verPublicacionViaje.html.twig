@@ -20,7 +20,7 @@ Detalles de viaje
                         <td><h4>Datos generales</h4></td>  
                         <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
                         <td>Hora de salida: {{ viaje.ocasional.hora_salida }}</td>
-                        <td>Precio: ${{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
+                        <td>Precio: ${{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }} por persona</td>
                     </tr>
                     <tr>
                         <td><h4>Datos extras</h4></td>
@@ -100,8 +100,16 @@ Detalles de viaje
                                 <td>{{ postulado.estado }}</td>
                                 {% if postulado.estado == 'Aceptado' %}
                                     <td>Ya fue aceptado</td>
+                                    <td>
+                                        {# ACA SE RECHAZA UN POSTULANTE YA ACEPTADO #}
+                                        <form method="post" class="" action="./?action=rechazarPostulado"> 
+                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                            <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
+                                            <input type="submit" class="btn btn-primaryPink" value="Rechazar" onclick="return confirm('Esta seguro que quiere rechazar la postulacion? Se le restara 1 punto de calificacion como piloto')">
+                                        </form>
+                                    </td>
                                 {% elseif postulado.estado == 'Rechazado' %}
-                                    <td>Ya fue rechazado</td>
+                                    <td>Ya fue rechazado</td><td></td>
                                 {% elseif postulado.estado == 'Pendiente' %}
                                     <td>
                                         {# ACA SE ACEPTA UN POSTULANTE #}
@@ -119,17 +127,8 @@ Detalles de viaje
                                             <input type="submit" class="btn btn-primaryPink" value="Cancelar" onclick="return confirm('Esta seguro que quiere rechazar la postulacion?')">
                                         </form>
                                     </td>
-                                {% elseif postulado.estado == 'Aceptado' %}
-                                    <td>
-                                        {# ACA SE RECHAZA UN POSTULANTE YA ACEPTADO #}
-                                        <form method="post" class="" action="./?action=rechazarPostulado"> 
-                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
-                                            <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
-                                            <input type="submit" class="btn btn-primaryPink" value="Rechazar" onclick="return confirm('Esta seguro que quiere rechazar la postulacion? Se le restara 1 punto de calificacion como piloto')">
-                                        </form>
-                                    </td>
                                 {% else %}
-                                    <td></td>
+                                    <td></td><td></td>
                                 {% endif %}
                             </tr>
                         {% endfor %}
