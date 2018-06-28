@@ -79,7 +79,11 @@ class AppController {
                     $usuario_id = (int)$vector_usuario[0][0];
                     $_SESSION["id"]= $usuario_id;
                     $view = new Home();
-                    $this->mostrarMenuConSesion();
+                    if($usuario_id==3){
+                        $view->pagar();
+                    } else {
+                        $this->mostrarMenuConSesion();
+                    }
             }
         }
     }

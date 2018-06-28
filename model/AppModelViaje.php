@@ -139,6 +139,10 @@ class AppModelViaje extends PDORepository {
         $answer=$this->queryList("DELETE v FROM viaje v  
         LEFT JOIN viaje_ocasional vo ON (vo.viaje_id= v.id)
         WHERE (vehiculo_id=:vehiculo AND vo.hora_salida is NULL)", ["vehiculo"=>$datos["id"]]);
+
+        /*$answer=$this->queryList("UPDATE viaje v SET v.usuarios_id=-1, v.vehiculo_id=-1
+        LEFT JOIN viaje_ocasional vo ON (vo.viaje_id= v.id)
+        WHERE (vehiculo_id=:vehiculo AND vo.hora_salida is NULL)", ["vehiculo"=>$datos["id"]]);*/        
         
         return $answer;
     }

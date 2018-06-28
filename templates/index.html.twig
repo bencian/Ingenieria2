@@ -38,12 +38,12 @@ Inicio
   							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th scope="col">Origen</th>
-										<th scope="col">Destino</th>
-										<th scope="col">Fecha</th>
-										<th scope="col">Precio</th>
-										<th scope="col">Hora de Salida</th>
-										<th scope="col"></th>
+										<td scope="col"><strong>Origen</strong></td>
+										<td scope="col"><strong>Destino</strong></td>
+										<td scope="col"><strong>Fecha</strong></td>
+										<td scope="col"><strong>Precio</strong></td>
+										<td scope="col"><strong>Hora de Salida</strong></td>
+										<td scope="col"></td>
 									</tr>
 									</thead>
 									<tbody>
@@ -53,7 +53,7 @@ Inicio
 										<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
 										<td>${{ viaje.precio/viaje.lugares | round(2, 'floor') }} por persona</td>
-										<td>{{ viaje.hora_salida }}</td>
+										<td>{{ viaje.hora_salida }} hs</td>
 										<td>
 											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
 												<input type="hidden" name="id" value="{{ viaje.id }}">

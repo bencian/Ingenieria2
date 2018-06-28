@@ -9,6 +9,11 @@ Detalles de viaje
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 text-center well">
             <div>
+                <h3>Debe autenticarse para postularse o realizar preguntas!</h3>
+                <a class="nav-link btn btn-primaryPink" href="index.php?action=registrarse">Registrarse</a>
+            </div>
+            <br>
+            <div>
                 <table class="table table-striped">
                     <tr> 
                         <td><h2>Datos basicos</h2></td> 
@@ -42,7 +47,7 @@ Detalles de viaje
                            Comentarios: {{ viaje.viaje.comentarios }}
                 {% endif %}
             </div>
-            <cr>
+            <br>
             <div id="preguntas">
 {% if viaje.viaje.id % 2 == 0 %}
                 <div>

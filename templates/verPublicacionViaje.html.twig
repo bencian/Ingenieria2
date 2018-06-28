@@ -98,6 +98,7 @@ Detalles de viaje
                                 </td>
                                 <td>CALIFICACIONES</td>
                                 <td>{{ postulado.estado }}</td>
+            {% if viaje.viaje.usuarios_id != 2 %}
                                 {% if postulado.estado == 'Aceptado' %}
                                     <td>Ya fue aceptado</td>
                                     <td>
@@ -130,6 +131,10 @@ Detalles de viaje
                                 {% else %}
                                     <td></td><td></td>
                                 {% endif %}
+                {% else %}
+                    <td>Debe realizar calificaciones viejas primero</td>
+                    <td></td>
+                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>
