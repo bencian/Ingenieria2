@@ -431,8 +431,6 @@ class AppControllerViajes {
         $vector["id"]=$idViaje;
         $viaje = $bd->getViaje($vector);
         $cantidadAceptados = $bd->contarAceptados($vector);
-        var_dump($cantidadAceptados[0][0]);
-        var_dump($viaje["viaje"]["lugares"]);
         if($cantidadAceptados[0][0] >= $viaje["viaje"]["lugares"]-1){
             $lugar = false;
         }
