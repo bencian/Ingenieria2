@@ -4,6 +4,43 @@
 Inicio
 {% endblock %}
 
+{% block navbar %}
+	{% if usuario is defined %}
+		<nav class="nav" id="navbar">
+			<ul class="nav nav-pills">
+			  <li class="nav-item">
+			    <a class="nav-link active" href="index.php">Inicio</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="index.php?action=mostrar_perfil">Mostrar Perfil</a>
+			  </li>
+			  <li class="nav-item" id="register">
+			    <a class="nav-link disabled" href="index.php?action=cerrar_sesion">Cerrar Sesion</a>
+			  </li>
+			  <li class="nav-item" id="modificar_perfil">
+			    <a class="nav-link disabled" href="index.php?action=modificar_perfil">Modificar perfil</a>
+			  </li>
+			</ul>
+		</nav>
+	{% else %}
+		<nav class="nav" id="navbar">
+			<ul class="nav nav-pills">
+			  <li class="nav-item">
+			    <a class="nav-link active" href="index.php">Inicio</a>
+			  </li>
+
+			  <li class="nav-item">
+			    <a class="nav-link active" href="index.php?action=login">Login</a>
+			  </li>
+			  <li class="nav-item" id="register">
+			    <a class="nav-link disabled" href="index.php?action=registrarse">Registrarse</a>
+			  </li> 
+			   </li>
+			</ul>
+		</nav>
+	{% endif %}
+{% endblock %}
+
 {% block container %}
 
 <div class="container">
@@ -17,6 +54,7 @@ Inicio
 				<th scope="col">Origen</th>
 				<th scope="col">Destino</th>
 				<th scope="col">Fecha</th>
+				<th scope="col">Hora de salida</th>
 				<th scope="col">Precio</th>
 				<th scope="col">Duracion</th>
 				<th scope="col">Distancia</th>
@@ -29,13 +67,18 @@ Inicio
 					<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
 					<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
 					<td>{{ viaje.fecha }}</td>
+					<td>{{ viaje.hora_salida }}hs</td>
 					<td>$ {{ viaje.precio }}</td>
 					<td>{{ viaje.duracion }} horas</td>
 					<td>{{ viaje.distancia }} kms</td>
 					<td>
-						<form method="post" class="pull-left" action="#">
+					<!--	<form method="post" class="pull-left" action="#">
 							<input type="hidden" name="id" value="postularse">
 							<input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+						</form>-->
+						<form method="post" class="" action="index.php?action=ver_publicacion_viaje">
+							<input type="hidden" name="id" value="{{ viaje.id }}">
+							<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
 						</form>
 					</td>
 				</tr>

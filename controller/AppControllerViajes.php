@@ -61,11 +61,10 @@ class AppControllerViajes {
     }
 
     public function eliminarViaje($idViaje){
-        if($this->hayAceptados($idViaje)){
+        if(!$this->hayAceptados($idViaje)){
             $this->eliminarViajeDeLaBD($idViaje);
-            Echo "el viaje se eliminó con exito";
         }else{
-            Echo"Hay gente aceptada en este viaje, no se puede eliminar";
+            //aca va el eliminar en cascada
         }
         AppControllerUsuario::getInstance()->mostrarPerfil();
     }
@@ -74,17 +73,15 @@ class AppControllerViajes {
         $bd = AppModelViaje::getInstance();
         $aceptados = $bd->aceptadosParaEsteViaje($idViaje);
         if(count($aceptados) == 0){
-            return true;
-        }else{
             return false;
+        }else{
+            return true;
         }
     }
 
     public function eliminarViajeDeLaBD($idViaje){  
         $bd = AppModelViaje::getInstance();
         $bd->eliminarViajeOcasional($idViaje);
-        $bd->eliminarViajePeriodicoDias($idViaje);
-        $bd->eliminarViajePeriodico($idViaje);
         $bd->eliminarViaje($idViaje);
     }
 
@@ -224,26 +221,7 @@ class AppControllerViajes {
                 echo "Debes seleccionar al menos un dia de la semana entre la fecha inicial y la final";
             }
         }
-        AppController::getInstance()->mostrarMenuConSesion(); 
-        /*$test = $this->validarViajePeriodico($datos);
-        if($test){  
-            $bd = AppModel::getInstance();
-            $bdViaje = AppModelViaje::getInstance();
-            $asientos = $bd->getAsientos($datos["vehiculo"]);
-            $datos["asientos"] = $asientos[0]["asientos"];
-            $fechas = $this->diasViajePeriodico($datos);            
-            $vectorFechas = $this->acomodarVectorFechas($fechas,$datos);
-            foreach(array_keys($vectorFechas) as $fecha){
-                $datos["fecha"] = $fecha;
-                $datosPeriodico["viajeId"] = $bdViaje->getViajeId($datos);
-                $datosPeriodico["fechaFinal"] = $fecha;
-                $datosDiaHorario["horario"] = $vectorFechas[$fecha];
-                $datosDiaHorario["fecha"] = $datosPeriodico["fechaFinal"];
-                $datosDiaHorario["idViaje"] = $datosPeriodico["viajeId"];
-                $bdViaje->asociarPeriodico($datosPeriodico);
-                $bdViaje->asociarDiaHorario($datosDiaHorario);
-            }
-        }*/     
+        AppController::getInstance()->mostrarMenuConSesion();      
     }
     
     public function validarViajePeriodico($datos){
@@ -369,173 +347,6 @@ class AppControllerViajes {
         return $diasConViaje;
     }
     
-    /*public function acomodarVectorFechas($vector,$datos){
-        if($datos["hora_lunes"] != ""){
-            $vector[$vector[1]->format('Y-m-d')] = $datos["hora_lunes"];
-        }
-        unset($vector[1]);
-        if($datos["hora_martes"] != ""){
-            $vector[$vector[2]->format('Y-m-d')] = $datos["hora_martes"];
-        }
-        unset($vector[2]);
-        if($datos["hora_miercoles"] != ""){
-            $vector[$vector[3]->format('Y-m-d')] = $datos["hora_miercoles"];
-        }
-        unset($vector[3]);
-        if($datos["hora_jueves"] != ""){
-            $vector[$vector[4]->format('Y-m-d')] = $datos["hora_jueves"];
-        }
-        unset($vector[4]);
-        if($datos["hora_viernes"] != ""){
-            $vector[$vector[5]->format('Y-m-d')] = $datos["hora_viernes"];
-        }
-        unset($vector[5]);
-        if($datos["hora_sabado"] != ""){
-            $vector[$vector[6]->format('Y-m-d')] = $datos["hora_sabado"];
-        }   
-        unset($vector[6]);
-        if($datos["hora_domingo"] != ""){
-            $vector[$vector[0]->format('Y-m-d')] = $datos["hora_domingo"];
-        }
-        unset($vector[0]);
-        return $vector;
-    }
-    
-    public function diasViajePeriodico($datos){
-        if($this->esHoy($datos["fecha"])){            
-            $numDia = date('w',strtotime($datos["fecha"]));
-            switch ($numDia){
-                case "0":
-                    if($datos["hora_domingo"]=!""){
-                        //controlar horario, crear viaje para hoy o doming que viene
-                        if($this->masTarde($datos["hora_domingo"])){
-                            $vector[0]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Sunday');
-                            $vector[0]= $date;
-                        }
-                    } 
-                    //$datos["hora_domingo"] = "";
-                break;
-                case "1":
-                    if($datos["hora_lunes"]=!""){
-                        //controlar horario, crear viaje para hoy o lunes que viene
-                        if($this->masTarde($datos["hora_lunes"])){
-                            $vector[1]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Monday');
-                            $vector[1]= $date;
-                        }
-                    }
-                    $datos["hora_lunes"] = "";
-                break;
-                case "2":
-                    if($datos["hora_martes"]=!""){
-                        //controlar horario, crear viaje para hoy o martes que viene
-                        if($this->masTarde($datos["hora_martes"])){
-                            $vector[2]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Tuesday');
-                            $vector[2]= $date;
-                        }
-                    }
-                    $datos["hora_martes"] = "";
-                break;
-                case "3":
-                    if($datos["hora_miercoles"]=!""){
-                        //controlar horario, crear viaje para hoy o mier que viene
-                        if($this->masTarde($datos["hora_miercoles"])){
-                            $vector[3]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Wednesday');
-                            $vector[3]= $date;
-                        }
-                    }
-                    $datos["hora_miercoles"]="";
-                break;
-                case "4":
-                    if($datos["hora_jueves"]=!""){
-                        //controlar horario, crear viaje para hoy o jueves que viene
-                        if($this->masTarde($datos["hora_jueves"])){
-                            $vector[4]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Thursday');
-                            $vector[4]= $date;
-                        }
-                    }
-                    $datos["hora_jueves"]="";
-                break;
-                case "5":
-                    if($datos["hora_viernes"]=!""){
-                        //controlar horario, crear viaje para hoy o viernes que viene
-                        if($this->masTarde($datos["hora_viernes"])){
-                            $vector[5]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Friday');
-                            $vector[5]= $date;
-                        }
-                    }
-                    $datos["hora_viernes"]="";
-                break;
-                case "6":
-                    if($datos["hora_sabado"]=!""){
-                        //controlar horario, crear viaje para hoy o sabado que viene
-                        if($this->masTarde($datos["hora_sabado"])){
-                            $vector[6]= $datos["fecha"];
-                        } else {
-                            $date = new DateTime($datos["fecha"]);
-                            $date->modify('next Saturday');
-                            $vector[6]= $date;
-                        }
-                    }
-                    $datos["hora_sabado"]="";
-                break;
-            }
-        }
-        if($datos["hora_lunes"]=!""){
-            //viaje el lunes
-            $date = new DateTime($datos["fecha"]);
-            $vector[1]= $date;
-        }
-        if($datos["hora_martes"]=!""){
-            //viaje el martes
-            $date = new DateTime($datos["fecha"]);
-            $vector[2]= $date;
-        }
-        if($datos["hora_miercoles"]=!""){
-            //viaje el miercoles
-            $date = new DateTime($datos["fecha"]);
-            $vector[3]= $date;
-        }
-        if($datos["hora_jueves"]=!""){
-            //viaje el jueves
-            $date = new DateTime($datos["fecha"]);
-            $vector[4]= $date;
-        }
-        if($datos["hora_viernes"]=!""){
-            //viaje el viernes
-            $date = new DateTime($datos["fecha"]);
-            $vector[5]= $date;
-        }
-        if($datos["hora_sabado"]=!""){
-            //viaje el sabado
-            $date = new DateTime($datos["fecha"]);
-            $vector[6]= $date;
-        }
-        if($datos["hora_domingo"]=!""){
-            //viaje el domingo
-            $date = new DateTime($datos["fecha"]);
-            $vector[0]= $date;
-        }
-        return $vector;
-    }*/
-
     public function ver_publicacion_viaje($viaje_id){
         $view=new Home();
         $model=AppModel::getInstance();
@@ -545,17 +356,15 @@ class AppControllerViajes {
         $vehiculo=$model->getVehiculo($viaje["viaje"]["vehiculo_id"])[0];
         $ciudades=$model->getCiudades();
         $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"])[0];
+        $cantidadAceptados=$dbViaje->contarAceptados($viaje_id);
+        $cantidadAceptados=$cantidadAceptados[0]["COUNT(*)"];
         if(isset($_SESSION["id"])){
             $postulado=$dbViaje->yaMePostule($viaje_id);
             $postulados=$dbViaje->getPostulados($viaje_id);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados, $cantidadAceptados);
         } else {
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', '');
-            /*
-
-            REVISAR COMO TRATA EL STRING VACIO!!! CREO QUE ESTA FUNCIONANDO POR EL IF EN EL VIEW, QUE HACE QUE COMO SESSION NO ESTA SETEADO NO ENVIA $POSTULADO COMO PARAMETRO!
-
-            */
+            $postulados=$dbViaje->getPostulados($viaje_id);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', $postulados, $cantidadAceptados);
         }
     }
 
@@ -569,7 +378,12 @@ class AppControllerViajes {
 
     public function cancelar_postulacion($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
-        var_dump($datos);
+
+        /* 
+
+        ACA SE TIENE QUE DESCONTAR PUNTOS!!! 
+
+        */
         $this->ver_publicacion_viaje($datos);
     }
 
@@ -582,7 +396,8 @@ class AppControllerViajes {
             $db = AppModelViaje::getInstance();
             $db-> actualizarViajeOcasional($datos,$asientos);
         }
-        AppController::getInstance()->mostrarMenuConSesion();    
+        //AppController::getInstance()->mostrarMenuConSesion(); 
+        $this->ver_publicacion_viaje($datos);  
     }
 
     public function cancelar_postulacion_aceptada($datos){
@@ -592,22 +407,36 @@ class AppControllerViajes {
 
     public function borrar_postulacion_aceptada($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
-        /*
-
-        ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
-
-        */
+        // ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
         $this->ver_publicacion_viaje($datos);
     }
 
-    public function aceptarPostulacionAViaje($datos){
+    public function aceptarPostulacionAViaje($datos){   
         $bd= AppModelViaje::getInstance();
-        $postulado=$datos["id"];
-        $viaje=$datos["id_viaje"];
+        $postulado=$datos["id_usuario"];
+        $viaje=$datos["id"];
         $bd->cambiarEstadoParaAceptado($viaje, $postulado);
         Echo "Se acepto al Usuario correctamente";
         $this->ver_publicacion_viaje($datos);
     }
 
+    public function confirmarEliminacionViaje($datos){
+        $view = new Home();
+        $bdViaje = AppModelViaje::getInstance();
+        $aceptados=$bdViaje->aceptadosParaEsteViaje($datos["id"]);
+        $cantidadAceptados = count($aceptados);
+        if($cantidadAceptados!=0){
+            //pierde 1 punto, llamar a funcion de calificaciones
+        }
+        $view->eliminarViaje($datos, $cantidadAceptados);
+    }
 
+    public function rechazarPostulacion($datos){
+        $view = new Home();
+        $bdViaje = AppModelViaje::getInstance();
+        $postulado=$datos["id_usuario"];
+        $viaje=$datos["id"];
+        $bdViaje->cambiarEstadoARechazado($viaje, $postulado);
+        $this->ver_publicacion_viaje($datos);
+    }
 }

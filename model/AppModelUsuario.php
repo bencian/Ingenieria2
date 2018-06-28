@@ -37,6 +37,11 @@ class AppModelUsuario extends PDORepository {
         return $answer;
     }
 
+    public function existeMail($datos){
+        $answer = $this->queryList("SELECT nombre FROM usuario where email=?;", [ $datos ]);
+        return $answer;
+    }
+
     public function existeUsuario($mail,$contraseña){
         //Busca en la bd el usuario con mail y contraseña ingresado
         $answer = $this->queryList("SELECT id FROM usuario WHERE email=:mail AND password=:contra", ['mail'=>$mail,'contra'=>$contraseña]);
@@ -49,21 +54,22 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function getViajesPropios($id){
-        $answer = $this->queryList("SELECT * FROM viaje vj INNER JOIN viaje_ocasional vo ON vj.id=vo.viaje_id WHERE usuarios_id=:id", ["id"=>$_SESSION["id"]]);
-        if($answer){
-            return $answer;
-        } else {
-            $sql="SELECT * FROM viaje vj 
-            INNER JOIN viaje_periodico vp ON vj.id=vp.viaje_id 
-            INNER JOIN dia_horario dh ON dh.viaje_periodico_viaje_id=vj.id 
-            WHERE id_usuario=:id";
-            $answer = $this->queryList($sql, ["id"=>$id]);
-            return $answer;
-        }        
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $fecha = date('Y-m-d');
+        $answer = $this->queryList("SELECT * FROM viaje vj INNER JOIN viaje_ocasional vo ON vj.id=vo.viaje_id WHERE usuarios_id=:id and vj.fecha>=:fecha", ["id"=>$_SESSION["id"],"fecha"=>$fecha]);
+        return $answer;        
     }
 
     public function actualizarUsuario($datos){
         $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
         return $answer;
     }    
+
+    public function getMisPostulaciones($usuario){
+        $answer = $this->queryList("SELECT * FROM usuario_viaje uv
+        INNER JOIN viaje v ON (uv.viaje_id=v.id)
+        INNER JOIN viaje_ocasional vo ON (v.id=vo.viaje_id) 
+        WHERE (uv.usuarios_id=:id AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME() )))", [ "id"=>$usuario ]);
+        return $answer;
+    }
 }

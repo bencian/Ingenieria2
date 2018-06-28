@@ -8,10 +8,16 @@ Confirmar cancelar
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-sm-offset-0 text-center well">
-
-			<h3>Si lo elimina se le descontara 1 punto</h3>
+			<h3>Si elimina este viaje se le 
+				{% if cantidadAceptados > 1 %} 
+					descontaran {{ cantidadAceptados }} puntos 
+				{% elseif cantidadAceptados == 1 %} descontara 1 punto
+				{% else %}
+					descontaran 0 puntos
+				{% endif %}
+			</h3>
 			<div class="text-center col-sm-offset-5 col-lg-12">
-				<form method="post" class="pull-left" action="./?action=borrar_postulacion_aceptada" style="margin:0.5em;margin-left:0px">
+				<form method="post" class="pull-left" action="./?action=eliminar_viaje" style="margin:0.5em;margin-left:0px">
 					<input type="hidden" name="id" value="{{ viaje.id }}">
 					<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
 				</form>

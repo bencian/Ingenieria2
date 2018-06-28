@@ -78,7 +78,7 @@ Inicio
 									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios">
 								</div>
 								<cr>
-								<button type="submit" class="btn btn-primaryPink">Submit</button>
+								<button type="submit" class="btn btn-primaryPink">Publicar!</button>
 							</form>
 						</div>
 						<div id="periodico" style="display: none">
@@ -223,7 +223,7 @@ Inicio
 									<input type="textarea" class="form-control" id="comentarios" name="comentarios" placeholder="comentarios">
 								</div>
 								<cr>
-								<button type="submit" class="btn btn-primaryPink">Submit</button>
+								<button type="submit" class="btn btn-primaryPink">Publicar!</button>
 							</form>
 						</div>
 					</div>
@@ -259,10 +259,12 @@ Inicio
 							<table class="table table-striped">
 								<thead>
 									<tr>
-										<td scope="col">Origen</td>
-										<td scope="col">Destino</td>
-										<td scope="col">Fecha</td>
-										<td></td>
+										<th scope="col">Origen</th>
+										<th scope="col">Destino</th>
+										<th scope="col">Fecha</th>
+										<th scope="col">Precio</th>
+										<th scope="col">Hora de Salida</th>
+										<th scope="col"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -271,6 +273,8 @@ Inicio
 										<td>{{ vectorForm.ciudades[viaje.id_origen - 1].nombre }}</td>
 										<td>{{ vectorForm.ciudades[viaje.id_destino - 1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
+										<td>${{ viaje.precio/viaje.lugares | round(2, 'floor') }} por persona</td>
+										<td>{{ viaje.hora_salida }}</td>
 										<td>
 											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
 												<input type="hidden" name="id" value="{{ viaje.id }}">
