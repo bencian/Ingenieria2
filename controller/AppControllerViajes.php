@@ -64,7 +64,8 @@ class AppControllerViajes {
         if(!$this->hayAceptados($idViaje)){
             $this->eliminarViajeDeLaBD($idViaje);
         }else{
-            //aca va el eliminar en cascada
+            //aca va el eliminar en cascada pero por el momento elimina asi nomas...
+            $this->eliminarViajeDeLaBD($idViaje);
         }
         AppControllerUsuario::getInstance()->mostrarPerfil();
     }
