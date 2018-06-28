@@ -70,11 +70,11 @@ class AppModelViaje extends PDORepository {
         $this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
         
-    public function eliminarViajePeriodico($idViaje){
+    public function eliminarViajePeriodico($idViaje){ //no sirve
         $this->queryList("DELETE FROM viaje_periodico WHERE viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
 
-    public function eliminarViajePeriodicoDias($idViaje){
+    public function eliminarViajePeriodicoDias($idViaje){ //no sirve
         $this->queryList("DELETE FROM dia_horario WHERE viaje_periodico_viaje_id=:id_viaje", ['id_viaje'=>$idViaje]);
     }
 
@@ -95,12 +95,12 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
-    public function asociarPeriodico($datos){
+    public function asociarPeriodico($datos){ //no sirve
         $answer = $this->queryList("INSERT INTO viaje_periodico (viaje_id, fecha_fin) VALUES (:viaje_id, :hora_salida)",["viaje_id" => $datos["viajeId"], "hora_salida" => $datos["fechaFinal"]]);
         return $answer;
     }
     
-    public function asociarDiaHorario($datos){
+    public function asociarDiaHorario($datos){ //no sirve
         $answer = $this->queryList("INSERT INTO dia_horario (dia, viaje_periodico_viaje_id, horario) VALUES (:dia, :viaje_periodico_viaje_id, :horario)", [ "dia" =>$datos["fecha"] , "viaje_periodico_viaje_id" => $datos["idViaje"], "horario" => $datos["horario"] ]);
     }
 
@@ -173,7 +173,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function cambiarEstadoParaAceptado($idViaje, $postulado){
-        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE (viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
+        $answer = $this->queryList("UPDATE usuario_viaje SET estado='Aceptado' WHERE (viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
         return $answer;
     }
     

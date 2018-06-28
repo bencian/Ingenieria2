@@ -416,9 +416,27 @@ class AppControllerViajes {
         $bd= AppModelViaje::getInstance();
         $postulado=$datos["id_usuario"];
         $viaje=$datos["id"];
-        $bd->cambiarEstadoParaAceptado($viaje, $postulado);
-        Echo "Se acepto al Usuario correctamente";
+        if($this->viajeTieneLugar($viaje)){
+            $bd->cambiarEstadoParaAceptado($viaje, $postulado);
+            Echo "Se acepto al usuario correctamente";
+        } else {
+            Echo "Ya no puedes aceptar mas usuarios!";
+        }
         $this->ver_publicacion_viaje($datos);
+    }
+
+    public function viajeTieneLugar($idViaje){
+        $lugar = true;
+        $bd = AppModelViaje::getInstance();
+        $vector["id"]=$idViaje;
+        $viaje = $bd->getViaje($vector);
+        $cantidadAceptados = $bd->contarAceptados($vector);
+        var_dump($cantidadAceptados[0][0]);
+        var_dump($viaje["viaje"]["lugares"]);
+        if($cantidadAceptados[0][0] >= $viaje["viaje"]["lugares"]-1){
+            $lugar = false;
+        }
+        return $lugar;
     }
 
     public function confirmarEliminacionViaje($datos){
