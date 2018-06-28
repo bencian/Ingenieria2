@@ -188,7 +188,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function cambiarEstadoParaAceptado($idViaje, $postulado){
-        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
+        $answer = $this->queryList("UPDATE usuario_viaje SET estado='aceptado' WHERE (viaje_id=:viaje and usuarios_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
         return $answer;
     }
     
