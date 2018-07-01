@@ -145,9 +145,11 @@ class AppControllerViajes {
                 $entra = false;
             }
         }
-        if(!AppControllerVehiculo::getInstance()->vehiculoViaja($datos)){
-            echo "El vehiculo tiene un viaje para ese horario";
-            $entra = false;
+        if($entra){
+            if(!AppControllerVehiculo::getInstance()->vehiculoViaja($datos)){
+                echo "El vehiculo tiene un viaje para ese horario";
+                $entra = false;
+            }
         }
         return $entra;
     }
@@ -198,22 +200,13 @@ class AppControllerViajes {
     
     public function masTarde($hora){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
-        $tempArray = explode(':',$hora);
-        for ($i=0;$i<count($tempArray);$i++){
-            $tempArray[$i] = (int)$tempArray[$i];
+        $datetime = new DateTime();
+        $horaInicio = $datetime->createFromFormat('H:i',$hora);
+        if($horaInicio->getTimestamp()>=time()){
+            return false;
+        } else {
+            return true;
         }
-        $hours = (int)date("G");
-        $minutes = (int)date("i");
-        if($tempArray[0]>=$hours){
-            if($tempArray[0]==$hours){
-                if ($tempArray[1]>$minutes){
-                    return true;
-                }
-            } else {
-                return true;
-            }
-        }
-        return false;
     }
 
     public function publicarViajePeriodico($datos){

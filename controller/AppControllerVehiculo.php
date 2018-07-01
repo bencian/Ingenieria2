@@ -146,12 +146,12 @@ class AppControllerVehiculo {
         $bd = AppModel::getInstance();
         $viaje = AppModelViaje::getInstance();
         $patente = $bd->getPatente($datos["vehiculo"]);
-        $viajesVehiculo = $viaje->getViajesConPatenteFecha($patente[0][0],$datos["fecha"]);
+        $viajesVehiculo = $viaje->getViajesConPatenteFecha($patente[0][0]);
         $viajesConflicto = 0;
         foreach (array_keys($viajesVehiculo) as $idViaje){
-            if($this->viajeHorario($viajesVehiculo[$idViaje][0],$datos["hora_salida"],$datos["duracion"])){
+            if($this->viajeHorario($viajesVehiculo[$idViaje][0],$datos)){
                 $viajesConflicto++;
-            } 
+            }
         }
         if($viajesConflicto == 0){
             $puede = true;
@@ -159,27 +159,43 @@ class AppControllerVehiculo {
         return $puede;
     }
 
-    public function viajeHorario($datosViaje,$hora_salida,$duracion){
+    public function viajeHorario($datosViaje,$datosViajeNuevo){
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $datetime = new DateTime();
         $noPuede = false;
         $horario = AppModelViaje::getInstance()->getHorariosViaje($datosViaje);
-        //$horario[0][0] es la hora salida del viaje existente
-        //$horario[0][1] es la duracion del viaje existente
-        $viaje_existente_hora_ini = date('h:i', strtotime($horario[0][0]));
-        $viaje_existente_hora_fin = date('h:i', strtotime($horario[0][0])+60*60*$horario[0][1]);
-        $viaje_nuevo_hora_ini = date('h:i', strtotime($hora_salida));
-        $viaje_nuevo_hora_fin = date('h:i', strtotime($hora_salida)+60*60*$duracion);
-        if($viaje_existente_hora_ini<=$viaje_nuevo_hora_fin&&$viaje_nuevo_hora_fin<=$viaje_existente_hora_fin){
+        $horaInicialNueva = $datosViajeNuevo["fecha"]." ".$datosViajeNuevo["hora_salida"];
+        $horaInicialAnterior = $horario[0]["fecha"]." ".$horario[0]["hora_salida"];
+        $viaje_existente_hora_ini = $datetime->createFromFormat('Y-m-d H:i',$horaInicialAnterior);
+        $viaje_existente_hora_fin = $datetime->createFromFormat('Y-m-d H:i',$horaInicialAnterior);
+        $viaje_existente_hora_fin = $viaje_existente_hora_fin->add(new DateInterval('PT'.$horario[0]["duracion"].'H'));
+        $viaje_nuevo_hora_ini = $datetime->createFromFormat('Y-m-d H:i',$horaInicialNueva);
+        $viaje_nuevo_hora_fin = $datetime->createFromFormat('Y-m-d H:i',$horaInicialNueva);
+        $viaje_nuevo_hora_fin = $viaje_nuevo_hora_fin->add(new DateInterval('PT'.$datosViajeNuevo["duracion"].'H'));
+        var_dump($viaje_nuevo_hora_ini);
+        var_dump($viaje_nuevo_hora_fin);
+        var_dump($viaje_existente_hora_ini);
+        var_dump($viaje_existente_hora_fin);
+        if($this->enUnIntervalo($viaje_nuevo_hora_ini,$viaje_existente_hora_ini,$viaje_existente_hora_fin)){
             $noPuede = true;
         }
-        if($viaje_existente_hora_ini<=$viaje_nuevo_hora_ini&&$viaje_nuevo_hora_ini<=$viaje_existente_hora_fin){
+        if($this->enUnIntervalo($viaje_nuevo_hora_fin,$viaje_existente_hora_ini,$viaje_existente_hora_fin)){
             $noPuede = true;
         }
-        if($viaje_nuevo_hora_ini<=$viaje_existente_hora_ini&&$viaje_existente_hora_ini<=$viaje_nuevo_hora_fin){
+        if($this->enUnIntervalo($viaje_existente_hora_ini,$viaje_nuevo_hora_ini,$viaje_nuevo_hora_fin)){
             $noPuede = true;
         }
-        if($viaje_nuevo_hora_ini<=$viaje_existente_hora_fin&&$viaje_existente_hora_fin<=$viaje_nuevo_hora_fin){
+        if($this->enUnIntervalo($viaje_existente_hora_fin,$viaje_nuevo_hora_ini,$viaje_nuevo_hora_fin)){
             $noPuede = true;
-        }
+        }  
         return $noPuede;
+    }
+
+    public function enUnIntervalo($tiempo,$bordeInferior,$bordeSuperior){
+        $adentro = false;
+        if($tiempo->getTimestamp()>=$bordeInferior->getTimestamp()&&$tiempo->getTimestamp()<=$bordeSuperior->getTimestamp()){
+            $adentro = true;
+        }
+        return $adentro;
     }
 }
