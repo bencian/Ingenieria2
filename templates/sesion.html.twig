@@ -47,7 +47,7 @@ Inicio
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
 										{% if vectorForm is defined %}
-											{% for each in vectorForm.ciudades %}
+											{% for each in ciudadesOrdenadas %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
 										{% endif %}
@@ -55,9 +55,9 @@ Inicio
 								</div>
 								<div class="form-group">
 									<label for="">Destino</label>
-									<select class="form-control" id="destino" name="destino">
+									<select class="form-control" id="destino" name="destino" required>
 										{% if vectorForm is defined %}
-											{% for each in vectorForm.ciudades %}
+											{% for each in ciudadesOrdenadas %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
 										{% endif %}
@@ -110,7 +110,7 @@ Inicio
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
 										{% if vectorForm is defined %}
-											{% for each in vectorForm.ciudades %}
+											{% for each in ciudadesOrdenadas %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
 										{% endif %}
@@ -118,9 +118,9 @@ Inicio
 								</div>
 								<div class="form-group">
 									<label for="">Destino</label>
-									<select class="form-control" id="destino" name="destino">
+									<select class="form-control" id="destino" name="destino" required>
 										{% if vectorForm is defined %}
-											{% for each in vectorForm.ciudades %}
+											{% for each in ciudadesOrdenadas %}
 												<option value="{{ each.id }}">{{ each.nombre }}</option>
 											{% endfor %}
 										{% endif %}
@@ -234,12 +234,23 @@ Inicio
 					<div class="col-sm-11 col-sm-offset-11 pull-right well">
 						<form id="buscador" action="./?action=buscando" method="POST">
 							<div class="form-group col-lg-3">
-								<label for="exampleInputPassword1">Origen</label>
-								<input type="text" class="form-control" id="origen" name="origen" placeholder="Origen" required>
+									<label for="">Origen</label>
+									<select class="form-control" id="origen" name="origen" required>
+										<option value="" selected></option>
+										{% for each in ciudadesOrdenadas %}
+
+											<option value="{{ each.id }}">{{ each.nombre }}</option>
+										{% endfor %}
+									</select>
 							</div>
 							<div class="form-group col-lg-3">
-								<label for="exampleInputPassword1">Destino</label>
-								<input type="text" class="form-control" id="destino" name="destino" placeholder="Donde quieres ir?">
+									<label for="">Destino</label>
+									<select class="form-control" id="destino" name="destino">
+										<option value="" selected></option>
+										{% for each in ciudadesOrdenadas %}
+											<option value="{{ each.id }}">{{ each.nombre }}</option>
+										{% endfor %}
+									</select>
 							</div>
 							<div class="form-check col-lg-3">
 								<label for="exampleCheck1">Fecha de salida</label>
@@ -273,7 +284,7 @@ Inicio
 										<td>{{ vectorForm.ciudades[viaje.id_origen - 1].nombre }}</td>
 										<td>{{ vectorForm.ciudades[viaje.id_destino - 1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
-										<td>${{ viaje.precio/viaje.lugares | round(2, 'floor') }} por persona</td>
+										<td>${{ (viaje.precio/(viaje.lugares)) | round(2, 'floor') }} por persona</td>
 										<td>{{ viaje.hora_salida }} hs</td>
 										<td>
 											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">

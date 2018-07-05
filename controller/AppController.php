@@ -35,6 +35,7 @@ class AppController {
 			$view = new Home();
 			$viajes = $this->accesoAPaginaQueLista();
 			$parametros['ciudades'] = AppModel::getInstance()->getCiudades();
+            $parametros['ciudadesOrdenadas'] = AppModel::getInstance()->getCiudadesOrdenadas();
             $view->mostrarMenuSinSesion("index.html.twig", $viajes,$parametros);
 		} else {
 			$this->mostrarMenuConSesion();  
@@ -49,7 +50,8 @@ class AppController {
         $vehiculosUsuario = $bd->getVehiculos();
         $vectorFormulario["vehiculos"] = $vehiculosUsuario;
         $viajes = $this->accesoAPaginaQueLista();
-        $view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes);
+        $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
+        $view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes, $ciudadesOrdenadas);
     }
 
     public function accesoAPaginaQueLista(){

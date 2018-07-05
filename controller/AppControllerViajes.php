@@ -47,16 +47,24 @@ class AppControllerViajes {
     public function buscador($datos){
         $view = new Home();
         $viajes= AppModelViaje::getInstance();
+        $viajes_hechos=0; //ESTO DESPUES HAY QUE BORRARLO CUANDO TENGAMOS PAGINA PARA ERRORES
         if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){
-            if(isset($datos["destino"]) && $datos["destino"]!=""){
-                $viajes_hechos=$viajes->busqueda_completa($datos);
+var_dump($datos["destino"]);
+            if(isset($datos["destino"]) && $datos["destino"]!=""){ /* podria ser -1 */
+                if($datos["destino"]!=$datos["origen"]){
+                    $viajes_hechos=$viajes->busqueda_completa($datos);
+                    var_dump("aca hay que controlar que destino != origen");
+                } else {
+                    var_dump("aca hay que controlar que destino != origen");
+                }
             } else {
                 $viajes_hechos=$viajes->busqueda_parcial($datos);
             }
             $ciudades= AppModel::getInstance()->getCiudades();
-            $view->listarViajes($viajes_hechos, $ciudades); //falta
+            $view->listarViajes($viajes_hechos, $ciudades, $datos); //falta
         } else {
             echo "Faltan ingresar datos";
+            var_dump("necesitamos una pagina para errores");
         }
     }
 
@@ -341,24 +349,24 @@ class AppControllerViajes {
         return $diasConViaje;
     }
     
-    public function ver_publicacion_viaje($viaje_id){
+    public function ver_publicacion_viaje($datos){
         $view=new Home();
         $model=AppModel::getInstance();
         $dbViaje=AppModelViaje::getInstance();
-        $viaje=$dbViaje->getViaje($viaje_id);
+        $viaje=$dbViaje->getViaje($datos);
         $calificaciones=$model->getCalificaciones();
         $vehiculo=$model->getVehiculo($viaje["viaje"]["vehiculo_id"])[0];
         $ciudades=$model->getCiudades();
         $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"])[0];
-        $cantidadAceptados=$dbViaje->contarAceptados($viaje_id);
+        $cantidadAceptados=$dbViaje->contarAceptados($datos);
         $cantidadAceptados=$cantidadAceptados[0]["COUNT(*)"];
         if(isset($_SESSION["id"])){
-            $postulado=$dbViaje->yaMePostule($viaje_id);
-            $postulados=$dbViaje->getPostulados($viaje_id);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados, $cantidadAceptados);
+            $postulado=$dbViaje->yaMePostule($datos);
+            $postulados=$dbViaje->getPostulados($datos);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados, $cantidadAceptados, $datos);
         } else {
-            $postulados=$dbViaje->getPostulados($viaje_id);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', $postulados, $cantidadAceptados);
+            $postulados=$dbViaje->getPostulados($datos);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', $postulados, $cantidadAceptados, $datos);
         }
     }
 

@@ -28,7 +28,14 @@ class AppModel extends PDORepository {
     }
 
     public function getCiudades(){
+        /*$answer = $this->queryList("SELECT * FROM ciudad ORDER BY nombre", []);*/
         $answer = $this->queryList("SELECT * FROM ciudad", []);
+        return $answer;
+    }
+
+    public function getCiudadesOrdenadas(){
+        /*$answer = $this->queryList("SELECT * FROM ciudad ORDER BY nombre", []);*/
+        $answer = $this->queryList("SELECT * FROM ciudad ORDER BY nombre", []);
         return $answer;
     }
     

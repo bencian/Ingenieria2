@@ -8,6 +8,17 @@ Detalles de viaje
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 text-center well">
+            {% if busqueda.origen is defined %}
+                <div>
+                    <form id="buscador" action="./?action=buscando" method="POST">
+                        <input type="hidden" name="origen" value="{{ busqueda.origen }}">
+                        <input type="hidden" name="destino" value="{{ busqueda.destino }}">
+                        <input type="hidden" name="salida" value="{{ busqueda.salida }}">
+                        <input type="submit" class="btn btn-primaryPink"  value="Volver al buscador de forma fea con post">
+                    </form>
+                </div>
+                <br>
+            {% endif %}
             <div>
                 <h3>Debe autenticarse para postularse o realizar preguntas!</h3>
                 <a class="nav-link btn btn-primaryPink" href="index.php?action=registrarse">Registrarse</a>
