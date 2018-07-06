@@ -171,11 +171,7 @@ class AppControllerVehiculo {
         $viaje_existente_hora_fin = $viaje_existente_hora_fin->add(new DateInterval('PT'.$horario[0]["duracion"].'H'));
         $viaje_nuevo_hora_ini = $datetime->createFromFormat('Y-m-d H:i',$horaInicialNueva);
         $viaje_nuevo_hora_fin = $datetime->createFromFormat('Y-m-d H:i',$horaInicialNueva);
-        $viaje_nuevo_hora_fin = $viaje_nuevo_hora_fin->add(new DateInterval('PT'.$datosViajeNuevo["duracion"].'H'));
-        var_dump($viaje_nuevo_hora_ini);
-        var_dump($viaje_nuevo_hora_fin);
-        var_dump($viaje_existente_hora_ini);
-        var_dump($viaje_existente_hora_fin);
+        $viaje_nuevo_hora_fin = $viaje_nuevo_hora_fin->add(new DateInterval('PT'.$datosViajeNuevo["duracion"].'H'));        
         if($this->enUnIntervalo($viaje_nuevo_hora_ini,$viaje_existente_hora_ini,$viaje_existente_hora_fin)){
             $noPuede = true;
         }
