@@ -28,7 +28,7 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function registrar($datos){
-        $answer = $this->queryList("INSERT INTO usuario (nombre, apellido, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
+        $answer = $this->queryList("INSERT INTO usuario (nombre, apellido, calificacion_copiloto, calificacion_piloto, email, password, fecha_nacimiento) VALUES (:nombre,:apellido,0,0,:email,:password,:fecha_nacimiento)" , [ "nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"]]);
         return $answer;
     }
 
@@ -56,7 +56,7 @@ class AppModelUsuario extends PDORepository {
     public function getViajesPropios($id){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $fecha = date('Y-m-d');
-        $answer = $this->queryList("SELECT * FROM viaje vj INNER JOIN viaje_ocasional vo ON vj.id=vo.viaje_id WHERE usuarios_id=:id and vj.fecha>=:fecha", ["id"=>$_SESSION["id"],"fecha"=>$fecha]);
+        $answer = $this->queryList("SELECT * FROM viaje vj WHERE usuario_id=:id and vj.fecha>=:fecha", ["id"=>$_SESSION["id"],"fecha"=>$fecha]);
         return $answer;        
     }
 
@@ -68,8 +68,7 @@ class AppModelUsuario extends PDORepository {
     public function getMisPostulaciones($usuario){
         $answer = $this->queryList("SELECT * FROM usuario_viaje uv
         INNER JOIN viaje v ON (uv.viaje_id=v.id)
-        INNER JOIN viaje_ocasional vo ON (v.id=vo.viaje_id) 
-        WHERE (uv.usuarios_id=:id AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME() )))", [ "id"=>$usuario ]);
+        WHERE (uv.usuario_id=:id AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME() )))", [ "id"=>$usuario ]);
         return $answer;
     }
 }

@@ -48,7 +48,7 @@ class AppModel extends PDORepository {
     //VEHICULO igual aca creo que voy a poner los for y eso en el controller, y mandar la query posta a AppModelUsuario
     public function getVehiculos(){
         $id=$_SESSION["id"];
-        $answer= $this->queryList("SELECT * FROM vehiculo v INNER JOIN usuario_has_vehiculo uhv ON v.id=uhv.vehiculo_id WHERE usuarios_id=:usuario", [ "usuario"=>$_SESSION["id"]]);
+        $answer= $this->queryList("SELECT * FROM vehiculo v INNER JOIN usuario_has_vehiculo uhv ON v.id=uhv.vehiculo_id WHERE usuario_id=:usuario", [ "usuario"=>$_SESSION["id"]]);
         for ($i=0; $i < sizeof($answer) ; $i++) { 
             $a=$this->getTipoVehiculo($answer[$i]["tipo_id"])[0][0];
             $answer[$i]["tipo_id"]=$a;
@@ -91,7 +91,7 @@ class AppModel extends PDORepository {
     
     //VEHICULO
     public function asociar_vehiculo($datos){
-        $answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuarios_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
+        $answer = $this->queryList("INSERT INTO usuario_has_vehiculo (usuario_id, vehiculo_id) VALUES (:usuario, :vehiculo)" , [ "usuario"=>$datos["usuario"], "vehiculo"=>$datos["vehiculo"]]);
         return $answer;
     }
 

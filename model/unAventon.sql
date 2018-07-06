@@ -8,23 +8,25 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema un_aventon
+-- Schema un_aventon1
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema un_aventon
+-- Schema un_aventon1
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `un_aventon` DEFAULT CHARACTER SET utf8 ;
-USE `un_aventon` ;
+CREATE SCHEMA IF NOT EXISTS `un_aventon1` DEFAULT CHARACTER SET utf8 ;
+USE `un_aventon1` ;
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`usuario`
+-- Table `un_aventon1`.`usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`usuario` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`usuario` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(255) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(45) NOT NULL,
+  `calificacion_copiloto` INT NOT NULL,
+  `calificacion_piloto` INT NOT NULL,
   `password` CHAR(32) NOT NULL,
   `fecha_nacimiento` DATE NOT NULL,
   PRIMARY KEY (`id`))
@@ -32,9 +34,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`tipo`
+-- Table `un_aventon1`.`tipo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`tipo` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`tipo` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -42,9 +44,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`vehiculo`
+-- Table `un_aventon1`.`vehiculo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`vehiculo` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`vehiculo` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `asientos` VARCHAR(45) NOT NULL,
   `marca` VARCHAR(45) NOT NULL,
@@ -56,38 +58,38 @@ CREATE TABLE IF NOT EXISTS `un_aventon`.`vehiculo` (
   INDEX `fk_vehiculo_tipo1_idx` (`tipo_id` ASC),
   CONSTRAINT `fk_vehiculo_tipo1`
     FOREIGN KEY (`tipo_id`)
-    REFERENCES `un_aventon`.`tipo` (`id`)
+    REFERENCES `un_aventon1`.`tipo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`usuario_has_vehiculo`
+-- Table `un_aventon1`.`usuario_has_vehiculo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`usuario_has_vehiculo` (
-  `usuarios_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`usuario_has_vehiculo` (
+  `usuario_id` INT NOT NULL,
   `vehiculo_id` INT NOT NULL,
-  PRIMARY KEY (`usuarios_id`, `vehiculo_id`),
-  INDEX `fk_usuarios_has_vehiculo_vehiculo1_idx` (`vehiculo_id` ASC),
-  INDEX `fk_usuarios_has_vehiculo_usuarios_idx` (`usuarios_id` ASC),
-  CONSTRAINT `fk_usuarios_has_vehiculo_usuarios`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  PRIMARY KEY (`usuario_id`, `vehiculo_id`),
+  INDEX `fk_usuario_has_vehiculo_vehiculo1_idx` (`vehiculo_id` ASC),
+  INDEX `fk_usuario_has_vehiculo_usuario_idx` (`usuario_id` ASC),
+  CONSTRAINT `fk_usuario_has_vehiculo_usuario`
+    FOREIGN KEY (`usuario_id`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_usuarios_has_vehiculo_vehiculo1`
+  CONSTRAINT `fk_usuario_has_vehiculo_vehiculo1`
     FOREIGN KEY (`vehiculo_id`)
-    REFERENCES `un_aventon`.`vehiculo` (`id`)
+    REFERENCES `un_aventon1`.`vehiculo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`ciudad`
+-- Table `un_aventon1`.`ciudad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`ciudad` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`ciudad` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -95,76 +97,77 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`viaje`
+-- Table `un_aventon1`.`viaje`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`viaje` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`viaje` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `fecha` DATE NOT NULL,
   `precio` INT NOT NULL,
+  `hora_salida` VARCHAR(45) NOT NULL,
   `duracion` TINYINT NOT NULL,
   `distancia` INT NOT NULL,
   `lugares` TINYINT NOT NULL,
   `comentarios` TEXT NOT NULL,
-  `id_origen` INT NOT NULL,
-  `id_destino` INT NOT NULL,
-  `usuarios_id` INT NOT NULL,
-  `vehiculo_id` INT NOT NULL,
+  `origen_id` INT NOT NULL,
+  `destino_id` INT NOT NULL,
+  `usuario_id` INT NULL,
+  `vehiculo_id` INT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_viaje_usuarios1_idx` (`usuarios_id` ASC),
+  INDEX `fk_viaje_usuario1_idx` (`usuario_id` ASC),
   INDEX `fk_viaje_vehiculo1_idx` (`vehiculo_id` ASC),
-  INDEX `fk_viaje_ciudad1_idx` (`id_origen` ASC),
-  INDEX `fk_viaje_ciudad2_idx` (`id_destino` ASC),
-  CONSTRAINT `fk_viaje_usuarios1`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  INDEX `fk_viaje_ciudad1_idx` (`origen_id` ASC),
+  INDEX `fk_viaje_ciudad2_idx` (`destino_id` ASC),
+  CONSTRAINT `fk_viaje_usuario1`
+    FOREIGN KEY (`usuario_id`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_viaje_vehiculo1`
     FOREIGN KEY (`vehiculo_id`)
-    REFERENCES `un_aventon`.`vehiculo` (`id`)
+    REFERENCES `un_aventon1`.`vehiculo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_viaje_ciudad1`
-    FOREIGN KEY (`id_origen`)
-    REFERENCES `un_aventon`.`ciudad` (`id`)
+    FOREIGN KEY (`origen_id`)
+    REFERENCES `un_aventon1`.`ciudad` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_viaje_ciudad2`
-    FOREIGN KEY (`id_destino`)
-    REFERENCES `un_aventon`.`ciudad` (`id`)
+    FOREIGN KEY (`destino_id`)
+    REFERENCES `un_aventon1`.`ciudad` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`pregunta`
+-- Table `un_aventon1`.`pregunta`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`pregunta` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`pregunta` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `pregunta` TEXT NOT NULL,
   `viaje_id` INT NOT NULL,
-  `usuarios_id` INT NOT NULL,
+  `usuario_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_pregunta_viaje1_idx` (`viaje_id` ASC),
-  INDEX `fk_pregunta_usuarios1_idx` (`usuarios_id` ASC),
+  INDEX `fk_pregunta_usuario1_idx` (`usuario_id` ASC),
   CONSTRAINT `fk_pregunta_viaje1`
     FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
+    REFERENCES `un_aventon1`.`viaje` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pregunta_usuarios1`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  CONSTRAINT `fk_pregunta_usuario1`
+    FOREIGN KEY (`usuario_id`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`respuesta`
+-- Table `un_aventon1`.`respuesta`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`respuesta` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`respuesta` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `respuesta` TEXT NOT NULL,
   `pregunta_id` INT NOT NULL,
@@ -172,178 +175,97 @@ CREATE TABLE IF NOT EXISTS `un_aventon`.`respuesta` (
   INDEX `fk_respuesta_pregunta1_idx` (`pregunta_id` ASC),
   CONSTRAINT `fk_respuesta_pregunta1`
     FOREIGN KEY (`pregunta_id`)
-    REFERENCES `un_aventon`.`pregunta` (`id`)
+    REFERENCES `un_aventon1`.`pregunta` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`usuario_viaje`
+-- Table `un_aventon1`.`usuario_viaje`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`usuario_viaje` (
-  `usuarios_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`usuario_viaje` (
+  `usuario_id` INT NOT NULL,
   `viaje_id` INT NOT NULL,
   `id` INT NOT NULL AUTO_INCREMENT,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_usuarios_has_viaje_viaje1_idx` (`viaje_id` ASC),
-  INDEX `fk_usuarios_has_viaje_usuarios1_idx` (`usuarios_id` ASC),
-  CONSTRAINT `fk_usuarios_has_viaje_usuarios1`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  INDEX `fk_usuario_has_viaje_viaje1_idx` (`viaje_id` ASC),
+  INDEX `fk_usuario_has_viaje_usuario1_idx` (`usuario_id` ASC),
+  CONSTRAINT `fk_usuario_has_viaje_usuario1`
+    FOREIGN KEY (`usuario_id`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_usuarios_has_viaje_viaje1`
+  CONSTRAINT `fk_usuario_has_viaje_viaje1`
     FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
+    REFERENCES `un_aventon1`.`viaje` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`viaje_ocasional`
+-- Table `un_aventon1`.`calificacion_piloto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`viaje_ocasional` (
-  `viaje_id` INT NOT NULL,
-  `hora_salida` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`viaje_id`),
-  CONSTRAINT `fk_viaje_ocasional_viaje1`
-    FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `un_aventon`.`viaje_periodico`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`viaje_periodico` (
-  `viaje_id` INT NOT NULL AUTO_INCREMENT,
-  `fecha_fin` DATE NOT NULL,
-  PRIMARY KEY (`viaje_id`),
-  CONSTRAINT `fk_table1_viaje1`
-    FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `un_aventon`.`dia_horario`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`dia_horario` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `dia` VARCHAR(45) NOT NULL,
-  `viaje_periodico_viaje_id` INT NOT NULL,
-  `horario` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_dia_horario_viaje_periodico1_idx` (`viaje_periodico_viaje_id` ASC),
-  CONSTRAINT `fk_dia_horario_viaje_periodico1`
-    FOREIGN KEY (`viaje_periodico_viaje_id`)
-    REFERENCES `un_aventon`.`viaje_periodico` (`viaje_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `un_aventon`.`calificacion_piloto`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`calificacion_piloto` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`calificacion_piloto` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `puntuacion` TINYINT NOT NULL,
   `comentarios` TEXT NOT NULL,
   `fecha` DATE NOT NULL,
-  `piloto_id` INT NOT NULL,
+  `piloto_calificado` INT NOT NULL,
   `copiloto_califica` INT NOT NULL,
   `viaje_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_calificacion_piloto_usuarios1_idx` (`piloto_id` ASC),
-  INDEX `fk_calificacion_piloto_usuarios2_idx` (`copiloto_califica` ASC),
+  INDEX `fk_calificacion_piloto_usuario1_idx` (`piloto_calificado` ASC),
+  INDEX `fk_calificacion_piloto_usuario2_idx` (`copiloto_califica` ASC),
   INDEX `fk_calificacion_piloto_viaje1_idx` (`viaje_id` ASC),
-  CONSTRAINT `fk_calificacion_piloto_usuarios1`
-    FOREIGN KEY (`piloto_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  CONSTRAINT `fk_calificacion_piloto_usuario1`
+    FOREIGN KEY (`piloto_calificado`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_calificacion_piloto_usuarios2`
+  CONSTRAINT `fk_calificacion_piloto_usuario2`
     FOREIGN KEY (`copiloto_califica`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_calificacion_piloto_viaje1`
     FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
+    REFERENCES `un_aventon1`.`viaje` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `un_aventon`.`calificacion_piloto`
+-- Table `un_aventon1`.`calificacion_copiloto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`calificacion_piloto` (
+CREATE TABLE IF NOT EXISTS `un_aventon1`.`calificacion_copiloto` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `puntuacion` TINYINT NOT NULL,
   `comentarios` TEXT NOT NULL,
   `fecha` DATE NOT NULL,
-  `piloto_id` INT NOT NULL,
-  `copiloto_califica` INT NOT NULL,
+  `copiloto_calificado` INT NOT NULL,
   `viaje_id` INT NOT NULL,
+  `piloto_califica` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_calificacion_piloto_usuarios1_idx` (`piloto_id` ASC),
-  INDEX `fk_calificacion_piloto_usuarios2_idx` (`copiloto_califica` ASC),
-  INDEX `fk_calificacion_piloto_viaje1_idx` (`viaje_id` ASC),
-  CONSTRAINT `fk_calificacion_piloto_usuarios1`
-    FOREIGN KEY (`piloto_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_calificacion_piloto_usuarios2`
-    FOREIGN KEY (`copiloto_califica`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_calificacion_piloto_viaje1`
-    FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `un_aventon`.`calificacion_copiloto`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `un_aventon`.`calificacion_copiloto` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `puntuacion` TINYINT NOT NULL,
-  `comentarios` TEXT NOT NULL,
-  `fecha` DATE NOT NULL,
-  `copiloto_id` INT NOT NULL,
-  `viaje_id` INT NOT NULL,
-  `usuarios_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_calificacion_copiloto_usuarios1_idx` (`copiloto_id` ASC),
+  INDEX `fk_calificacion_copiloto_usuario1_idx` (`copiloto_calificado` ASC),
   INDEX `fk_calificacion_copiloto_viaje1_idx` (`viaje_id` ASC),
-  INDEX `fk_calificacion_copiloto_usuarios2_idx` (`usuarios_id` ASC),
-  CONSTRAINT `fk_calificacion_copiloto_usuarios1`
-    FOREIGN KEY (`copiloto_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  INDEX `fk_calificacion_copiloto_usuario2_idx` (`piloto_califica` ASC),
+  CONSTRAINT `fk_calificacion_copiloto_usuario1`
+    FOREIGN KEY (`copiloto_calificado`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_calificacion_copiloto_viaje1`
     FOREIGN KEY (`viaje_id`)
-    REFERENCES `un_aventon`.`viaje` (`id`)
+    REFERENCES `un_aventon1`.`viaje` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_calificacion_copiloto_usuarios2`
-    FOREIGN KEY (`usuarios_id`)
-    REFERENCES `un_aventon`.`usuario` (`id`)
+  CONSTRAINT `fk_calificacion_copiloto_usuario2`
+    FOREIGN KEY (`piloto_califica`)
+    REFERENCES `un_aventon1`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

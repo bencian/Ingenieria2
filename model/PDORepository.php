@@ -16,7 +16,7 @@ abstract class PDORepository {
     const USERNAME = "root";
     const PASSWORD = "";
 	const HOST ="localhost";
-	const DB = "un_aventon";
+	const DB = "un_aventon1";
     
 //poner ahi arriba los datos de la BD para que quede linkeada
 
