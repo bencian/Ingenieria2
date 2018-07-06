@@ -47,6 +47,8 @@ Inicio
 <div class="row">
 <div class="col-sm-12 col-sm-offset-0 text-center well">
 <ul>
+
+<a class="btn btn-primaryPink" href="./">Volver a inicio</a>
 {% if viajes %}
 	<table class="table table-striped">
 		<thead>
@@ -77,6 +79,9 @@ Inicio
 							<input type="submit" class="btn btn-primaryPink"  value="Postularme!">
 						</form>-->
 						<form method="post" class="" action="index.php?action=ver_publicacion_viaje">
+							<input type="hidden" name="origen" value="{{ busqueda.origen }}">
+							<input type="hidden" name="destino" value="{{ busqueda.destino }}">
+							<input type="hidden" name="salida" value="{{ busqueda.salida }}">
 							<input type="hidden" name="id" value="{{ viaje.id }}">
 							<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
 						</form>

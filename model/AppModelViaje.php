@@ -40,19 +40,12 @@ class AppModelViaje extends PDORepository {
     }
     
     public function busqueda_completa($datos){
-        $origen= $this->getCiudad($datos["origen"]);
-        $destino= $this->getCiudad($datos["destino"]);
-        $fecha= $datos["salida"];
-        $answer= $this->queryList("SELECT * FROM viaje INNER JOIN viaje_ocasional ON (viaje.id=viaje_ocasional.viaje_id) WHERE id_origen=:origen AND id_destino=:destino AND fecha=:fecha", ["origen"=>$origen[0]["id"], "destino"=>$destino[0]["id"], "fecha"=>$fecha]);
-        $answer[0]["origen"]=$origen;
-        $answer[0]["destino"]=$destino;
+        $answer= $this->queryList("SELECT * FROM viaje INNER JOIN viaje_ocasional ON (viaje.id=viaje_ocasional.viaje_id) WHERE id_origen=:origen AND id_destino=:destino AND fecha=:fecha", ["origen"=>$datos["origen"], "destino"=>$datos["destino"], "fecha"=>$datos["salida"]]);
         return $answer;
     }
 
     public function busqueda_parcial($datos){
-        $origen= $this->getCiudad($datos["origen"]);
-        $fecha= $datos["salida"];
-        $answer= $this->queryList("SELECT * FROM viaje INNER JOIN viaje_ocasional ON (viaje.id=viaje_ocasional.viaje_id) WHERE id_origen=:origen AND fecha=:fecha", ["origen"=>$origen[0]["id"], "fecha"=>$fecha]);
+        $answer= $this->queryList("SELECT * FROM viaje INNER JOIN viaje_ocasional ON (viaje.id=viaje_ocasional.viaje_id) WHERE id_origen=:origen AND fecha=:fecha", ["origen"=>$datos["origen"], "fecha"=>$datos["salida"]]);
         return $answer;
     }
 
