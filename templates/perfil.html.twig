@@ -62,8 +62,8 @@ Mi perfil
 						<tbody>
 							{% for viaje in viajes %}
 								<tr>
-									<td>{{ ciudades[viaje.id_origen - 1].nombre }}</td>
-									<td>{{ ciudades[viaje.id_destino - 1].nombre }}</td>
+									<td>{{ ciudades[viaje.origen_id - 1].nombre }}</td>
+									<td>{{ ciudades[viaje.destino_id - 1].nombre }}</td>
 									<td>{{ viaje.fecha }}</td>
 									<td>{{ viaje.hora_salida }}hs</td>
 									<td>$ {{ viaje.precio }}</td>
@@ -120,8 +120,8 @@ Mi perfil
 						<tbody>
 							{% for postulacion in postulaciones %}
 								<tr>
-									<td>{{ ciudades[postulacion.id_origen - 1].nombre }}</td>
-									<td>{{ ciudades[postulacion.id_destino - 1].nombre }}</td>
+									<td>{{ ciudades[postulacion.origen_id - 1].nombre }}</td>
+									<td>{{ ciudades[postulacion.destino_id - 1].nombre }}</td>
 									<td>{{ postulacion.fecha }}</td>
 									<td>{{ postulacion.hora_salida }}hs</td>
 									<td>$ {{ postulacion.precio }}</td>

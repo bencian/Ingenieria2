@@ -56,7 +56,7 @@ Inicio
 					<select class="form-control" id="origen" name="origen" required>
 						{% if vectorForm is defined %} 
 							{% for each in vectorForm.ciudades %}
-				                {% if viaje.0.id_origen==each.id %}
+				                {% if viaje.0.origen_id==each.id %}
 				                    <option selected="true" value={{ each.id }}>{{ each.nombre }}</option>
 				                {% else %}
 				                  	<option value={{ each.id }}>{{ each.nombre }}</option>
@@ -70,11 +70,12 @@ Inicio
 					<select class="form-control" id="destino" name="destino">
 						{% if vectorForm is defined %} 
 							{% for each in vectorForm.ciudades %}
-				                {% if viaje.0.id_destino==each.id %}
+				                {% if viaje.0.destino_id==each.id %}
 				                    <option selected="true" value={{ each.id }}>{{ each.nombre }}</option>
 				                {% else %}
 				                  	<option value={{ each.id }}>{{ each.nombre }}</option>
-				                {% endif %}							{% endfor %}
+				                {% endif %}							
+				            {% endfor %}
 						{% endif %}
 					</select>
 				</div>

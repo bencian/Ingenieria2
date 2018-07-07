@@ -59,8 +59,8 @@ Inicio
 									<tbody>
 									{% for viaje in datos.listadoCompletoDeViajes %}
 									<tr>
-										<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
-										<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
+										<td>{{ ciudades[viaje.origen_id-1].nombre }}</td>
+										<td>{{ ciudades[viaje.destino_id-1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
 										<td>${{ (viaje.precio/(viaje.lugares)) | round(2, 'floor') }} por persona</td>
 										<td>{{ viaje.hora_salida }} hs</td>

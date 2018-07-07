@@ -66,8 +66,8 @@ Inicio
 		<tbody>
 			{% for viaje in viajes %}
 				<tr>
-					<td>{{ ciudades[viaje.id_origen-1].nombre }}</td>
-					<td>{{ ciudades[viaje.id_destino-1].nombre }}</td>
+					<td>{{ ciudades[viaje.origen_id-1].nombre }}</td>
+					<td>{{ ciudades[viaje.destino_id-1].nombre }}</td>
 					<td>{{ viaje.fecha }}</td>
 					<td>{{ viaje.hora_salida }}hs</td>
 					<td>$ {{ viaje.precio }}</td>
