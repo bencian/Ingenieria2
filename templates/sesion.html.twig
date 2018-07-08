@@ -68,7 +68,7 @@ Inicio
 									<select class="form-control" id="vehiculo" name="vehiculo" required>
 										{% if vectorForm is defined %}
 											{% for each in vectorForm.vehiculos %}
-												<option value="{{ each.id }}">{{ each.marca }} - {{ each.patente }} - con {{ each.asientos }} asientos</option>
+												<option value="{{ each.id }}">{{ each.marca }}-{{ each.patente }}-con {{ each.asientos }} asientos</option>
 											{% endfor %}
 										{% endif %}
 									</select>
@@ -131,7 +131,7 @@ Inicio
 									<select class="form-control" id="vehiculo" name="vehiculo" required>
 										{% if vectorForm is defined %}
 											{% for each in vectorForm.vehiculos %}
-												<option value="{{ each.id }}">{{ each.marca }} - {{ each.patente }} - con {{ each.asientos }} asientos</option>
+												<option value="{{ each.id }}">{{ each.marca }}-{{ each.patente }}-con {{ each.asientos }} asientos</option>
 											{% endfor %}
 										{% endif %}
 									</select>
@@ -238,7 +238,6 @@ Inicio
 									<select class="form-control" id="origen" name="origen" required>
 										<option value="" selected></option>
 										{% for each in ciudadesOrdenadas %}
-
 											<option value="{{ each.id }}">{{ each.nombre }}</option>
 										{% endfor %}
 									</select>
@@ -281,8 +280,8 @@ Inicio
 								<tbody>
 								{% for viaje in datos.listadoCompletoDeViajes %}
 									<tr>
-										<td>{{ vectorForm.ciudades[viaje.id_origen - 1].nombre }}</td>
-										<td>{{ vectorForm.ciudades[viaje.id_destino - 1].nombre }}</td>
+										<td>{{ vectorForm.ciudades[viaje.origen_id - 1].nombre }}</td>
+										<td>{{ vectorForm.ciudades[viaje.destino_id - 1].nombre }}</td>
 										<td>{{ viaje.fecha }}</td>
 										<td>${{ (viaje.precio/(viaje.lugares)) | round(2, 'floor') }} por persona</td>
 										<td>{{ viaje.hora_salida }} hs</td>

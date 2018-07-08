@@ -39,20 +39,20 @@ Detalles de viaje
                 <table class="table table-striped">
                     <tr> 
                         <td><h2>Datos basicos</h2></td> 
-                        <td><h3>Origen: {{ ciudades[viaje.viaje.id_origen -1].nombre }}</h3></td>
-                        <td><h3>Destino: {{ ciudades[viaje.viaje.id_destino -1].nombre }}</h3></td>
+                        <td><h3>Origen: {{ ciudades[viaje.id_origen_id -1].nombre }}</h3></td>
+                        <td><h3>Destino: {{ ciudades[viaje.destino_id -1].nombre }}</h3></td>
                         <td><h3>Fecha: {{ viaje.viaje.fecha }}</h3></td>
                     </tr>
                     <tr>
                         <td><h4>Datos generales</h4></td>  
                         <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
-                        <td>Hora de salida: {{ viaje.ocasional.hora_salida }}</td>
-                        <td>Precio: ${{ (viaje.viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }} por persona</td>
+                        <td>Hora de salida: {{ viaje.hora_salida }}</td>
+                        <td>Precio: ${{ (viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }} por persona</td>
                     </tr>
                     <tr>
                         <td><h4>Datos extras</h4></td>
-                        <td>Duracion: {{ viaje.viaje.duracion }} horas</td>
-                        <td>Distancia: {{ viaje.viaje.distancia }} kms</td>
+                        <td>Duracion: {{ viaje.duracion }} horas</td>
+                        <td>Distancia: {{ viaje.distancia }} kms</td>
                         <td>Cantidad de postulados: {{ cantPostulados }}</td>
                     </tr>
                     <tr>
@@ -66,8 +66,8 @@ Detalles de viaje
                         {% if usuario == piloto.id %}
                             <td>
                                 <div>
-                                    <form method="post" class="" action="index.php?action=confirmarEliminarViaje&id={{ viaje.viaje.id }}">
-                                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                    <form method="post" class="" action="index.php?action=confirmarEliminarViaje&id={{ viaje.id }}">
+                                    <input type="hidden" name="id" value="{{ viaje.id }}">
                                     <input type="submit" class="btn btn-primaryPink"  value="Eliminar">
                                     </form>
                                 </div>
@@ -88,7 +88,7 @@ Detalles de viaje
                                 <td>
                                     <div>
                                         <form method="post" class="" action="index.php?action=modificar_viaje_ocasional">
-                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                            <input type="hidden" name="id" value="{{ viaje.id }}">
                                             <input type="submit" class="btn btn-primaryPink"  value="Modificar">
                                         </form>
                                     </div>
@@ -101,7 +101,7 @@ Detalles de viaje
                     </tr>
                 </table>
                 {% if viaje.viaje.comentarios %}
-                    <h4> Comentarios: {{ viaje.viaje.comentarios }} </h4>
+                    <h4> Comentarios: {{ viaje.comentarios }} </h4>
                 {% endif %}
             </div>
             <br>
@@ -125,13 +125,13 @@ Detalles de viaje
                                 </td>
                                 <td>CALIFICACIONES</td>
                                 <td>{{ postulado.estado }}</td>
-            {% if viaje.viaje.usuarios_id != 2 %}
+            {% if viaje.usuario_id != 2 %}
                                 {% if postulado.estado == 'Aceptado' %}
                                     <td>Ya fue aceptado</td>
                                     <td>
                                         {# ACA SE RECHAZA UN POSTULANTE YA ACEPTADO #}
                                         <form method="post" class="" action="./?action=rechazarPostulado"> 
-                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                            <input type="hidden" name="id" value="{{ viaje.id }}">
                                             <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
                                             <input type="submit" class="btn btn-primaryPink" value="Rechazar" onclick="return confirm('Esta seguro que quiere rechazar la postulacion? Se le restara 1 punto de calificacion como piloto')">
                                         </form>
@@ -142,7 +142,7 @@ Detalles de viaje
                                     <td>
                                         {# ACA SE ACEPTA UN POSTULANTE #}
                                         <form method="post" class="" action="./?action=aceptarPostulado">
-                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                            <input type="hidden" name="id" value="{{ viaje.id }}">
                                             <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
                                             <input type="submit" class="btn btn-primaryPink" value="Aceptar">
                                         </form>
@@ -150,7 +150,7 @@ Detalles de viaje
                                     <td>
                                         {# ACA SE RECHAZA UN POSTULANTE #}
                                         <form method="post" class="" action="./?action=rechazarPostulado">
-                                            <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                                            <input type="hidden" name="id" value="{{ viaje.id }}">
                                             <input type="hidden" name="id_usuario" value="{{ postulado.id }}">
                                             <input type="submit" class="btn btn-primaryPink" value="Cancelar" onclick="return confirm('Esta seguro que quiere rechazar la postulacion?')">
                                         </form>
@@ -172,20 +172,20 @@ Detalles de viaje
             {% elseif postulado %}
                 {% if postulado.0.estado=="Pendiente" %}
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion">
-                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                        <input type="hidden" name="id" value="{{ viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
                     </form>
                     <h5>Estado: {{ postulado.0.estado }}</h5>
                 {% elseif postulado.0.estado=="Aceptado" %}
                     <h5>Aceptado!</h5>
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion_aceptada">
-                        <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                        <input type="hidden" name="id" value="{{ viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
                     </form>
                 {% endif %}
             {% else %}
                 <form method="post" class="text-center" action="./?action=postularse">
-                    <input type="hidden" name="id" value="{{ viaje.viaje.id }}">
+                    <input type="hidden" name="id" value="{{ viaje.id }}">
                     <input type="submit" class="btn btn-primaryPink"  value="Postularme!">
 
 
@@ -200,7 +200,7 @@ Detalles de viaje
             </p>
             <div id="preguntas">
                 <h3>Preguntas</h3>
-{% if viaje.viaje.id % 2 == 0 %}
+{% if viaje.id % 2 == 0 %}
                 <div>
                     <div class="well text-left">
                         <h4>UN USUARIO</h4>

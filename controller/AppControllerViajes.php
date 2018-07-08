@@ -49,7 +49,7 @@ class AppControllerViajes {
         $viajes= AppModelViaje::getInstance();
         $viajes_hechos=0; //ESTO DESPUES HAY QUE BORRARLO CUANDO TENGAMOS PAGINA PARA ERRORES
         if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){
-var_dump($datos["destino"]);
+        var_dump($datos["destino"]);
             if(isset($datos["destino"]) && $datos["destino"]!=""){ /* podria ser -1 */
                 if($datos["destino"]!=$datos["origen"]){
                     $viajes_hechos=$viajes->busqueda_completa($datos);
@@ -116,9 +116,9 @@ var_dump($datos["destino"]);
         $bd = AppModelViaje::getInstance();
         $asientos = AppModel::getInstance()->getAsientos($datos["vehiculo"]);
         $datos["asientos"] = $asientos[0]["asientos"];
-        $idViaje = $bd->getViajeId($datos);
-        $datos["id_viaje"] = $idViaje;
-        $bd->crearOcasional($datos);
+        $bd->getViajeId($datos);
+        //$datos["id_viaje"] = $idViaje;
+        //$bd->crearOcasional($datos);
     }
 
     public function validarViajeOcasional($datos){
@@ -355,9 +355,9 @@ var_dump($datos["destino"]);
         $dbViaje=AppModelViaje::getInstance();
         $viaje=$dbViaje->getViaje($datos);
         $calificaciones=$model->getCalificaciones();
-        $vehiculo=$model->getVehiculo($viaje["viaje"]["vehiculo_id"])[0];
+        $vehiculo=$model->getVehiculo($viaje["vehiculo_id"])[0];
         $ciudades=$model->getCiudades();
-        $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["viaje"]["usuarios_id"])[0];
+        $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["usuario_id"])[0];
         $cantidadAceptados=$dbViaje->contarAceptados($datos);
         $cantidadAceptados=$cantidadAceptados[0]["COUNT(*)"];
         if(isset($_SESSION["id"])){
