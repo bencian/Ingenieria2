@@ -158,4 +158,15 @@ class AppControllerUsuario {
         }
     }
 
+    public function publicar_pregunta($datos){
+        AppModelUsuario::getInstance()->publicarPregunta($datos);
+        AppControllerViajes::getInstance()->ver_publicacion_viaje($datos);
+    }
+
+    public function responder_pregunta($datos){
+        var_dump($datos);
+        AppModelUsuario::getInstance()->publicarRespuesta($datos);
+        AppControllerViajes::getInstance()->ver_publicacion_viaje($datos);
+    }
+
 }

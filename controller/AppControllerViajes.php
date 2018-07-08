@@ -49,7 +49,6 @@ class AppControllerViajes {
         $viajes= AppModelViaje::getInstance();
         $viajes_hechos=0; //ESTO DESPUES HAY QUE BORRARLO CUANDO TENGAMOS PAGINA PARA ERRORES
         if(isset($datos["origen"]) && isset($datos["salida"]) && (($datos["origen"]!="")&& $datos["salida"]!="")){
-        var_dump($datos["destino"]);
             if(isset($datos["destino"]) && $datos["destino"]!=""){ /* podria ser -1 */
                 if($datos["destino"]!=$datos["origen"]){
                     $viajes_hechos=$viajes->busqueda_completa($datos);
@@ -61,7 +60,8 @@ class AppControllerViajes {
                 $viajes_hechos=$viajes->busqueda_parcial($datos);
             }
             $ciudades= AppModel::getInstance()->getCiudades();
-            $view->listarViajes($viajes_hechos, $ciudades, $datos); //falta
+            $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
+            $view->listarViajes($viajes_hechos, $ciudades, $datos, $ciudadesOrdenadas); //falta
         } else {
             echo "Faltan ingresar datos";
             var_dump("necesitamos una pagina para errores");
@@ -360,13 +360,14 @@ class AppControllerViajes {
         $piloto=AppModelUsuario::getInstance()->getPerfil($viaje["usuario_id"])[0];
         $cantidadAceptados=$dbViaje->contarAceptados($datos);
         $cantidadAceptados=$cantidadAceptados[0]["COUNT(*)"];
+        $preguntasYrespuestas = AppModelUsuario::getInstance()->preguntasYRespuestas($datos["id"]);
         if(isset($_SESSION["id"])){
             $postulado=$dbViaje->yaMePostule($datos);
             $postulados=$dbViaje->getPostulados($datos);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados, $cantidadAceptados, $datos);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, $postulado, $postulados, $cantidadAceptados, $datos, $preguntasYrespuestas);
         } else {
             $postulados=$dbViaje->getPostulados($datos);
-            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', $postulados, $cantidadAceptados, $datos);
+            $view->verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades, $piloto, '', $postulados, $cantidadAceptados, $datos, $preguntasYrespuestas);
         }
     }
 
@@ -432,7 +433,7 @@ class AppControllerViajes {
         $vector["id"]=$idViaje;
         $viaje = $bd->getViaje($vector);
         $cantidadAceptados = $bd->contarAceptados($vector);
-        if($cantidadAceptados[0][0] >= $viaje["viaje"]["lugares"]-1){
+        if($cantidadAceptados[0][0] >= $viaje["lugares"]-1){
             $lugar = false;
         }
         return $lugar;

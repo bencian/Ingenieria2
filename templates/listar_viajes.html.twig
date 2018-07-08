@@ -1,7 +1,7 @@
 {% extends "base_session.html.twig" %}
 
 {% block title %}
-Inicio
+Buscando
 {% endblock %}
 
 {% block navbar %}
@@ -52,10 +52,12 @@ Inicio
 							<div class="form-group col-lg-3">
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>
-										<option value="" selected></option>
 										{% for each in ciudadesOrdenadas %}
-
-											<option value="{{ each.id }}">{{ each.nombre }}</option>
+											{% if each.id == busqueda.origen %}
+												<option value="{{ each.id }}" selected>{{ each.nombre }}</option>
+											{% else %}
+												<option value="{{ each.id }}">{{ each.nombre }}</option>
+											{% endif %}
 										{% endfor %}
 									</select>
 							</div>
@@ -64,13 +66,17 @@ Inicio
 									<select class="form-control" id="destino" name="destino">
 										<option value="" selected></option>
 										{% for each in ciudadesOrdenadas %}
-											<option value="{{ each.id }}">{{ each.nombre }}</option>
+											{% if each.id == busqueda.destino %}
+												<option value="{{ each.id }}" selected>{{ each.nombre }}</option>
+											{% else %}
+												<option value="{{ each.id }}">{{ each.nombre }}</option>
+											{% endif %}
 										{% endfor %}
 									</select>
 							</div>
 							<div class="form-check col-lg-3">
 								<label class="col-lg-12" for="exampleCheck1">Fecha de salida</label>
-								<input class="col-lg-12" type="date" class="form-check-input" id="salida" name="salida" required>
+								<input class="col-lg-12" type="date" class="form-check-input" id="salida" name="salida" value="{{ busqueda.salida }}" required>
 							</div>
 							<br>
 							<button type="submit" class="btn btn-primaryPink col-lg-3">Buscar!</button>

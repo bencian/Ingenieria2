@@ -71,4 +71,24 @@ class AppModelUsuario extends PDORepository {
         WHERE (uv.usuario_id=:id AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME() )))", [ "id"=>$usuario ]);
         return $answer;
     }
+
+    public function publicarPregunta($datos){
+        $answer = $this->queryList("INSERT INTO pregunta (pregunta, viaje_id, usuario_id) VALUES (:pregunta, :viaje, :usuario)", ["pregunta"=>$datos["pregunta"], "usuario"=>$datos["usuario"], "viaje"=>$datos["id"] ]);
+        return $answer;
+    }
+
+    public function preguntasYRespuestas($viaje){
+        $answer = $this->queryList("SELECT p.id, p.pregunta, p.viaje_id, p.usuario_id, r.respuesta, r.pregunta_id, u.nombre, u.apellido, u.email 
+        FROM pregunta p
+        INNER JOIN usuario u ON u.id=p.usuario_id
+        LEFT JOIN respuesta r ON p.id=r.pregunta_id
+        WHERE p.viaje_id=:viaje", ["viaje"=>$viaje ]);
+        return $answer;
+    }
+
+    public function publicarRespuesta($datos){
+        $answer = $this->queryList("INSERT INTO respuesta (pregunta_id, respuesta) 
+            VALUES (:pregunta_id, :respuesta)", ["pregunta_id"=>$datos["pregunta_id"], "respuesta"=>$datos["respuesta"]]);
+        return $answer;
+    }
 }

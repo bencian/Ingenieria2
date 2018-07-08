@@ -72,19 +72,13 @@ Detalles de viaje
                                     </form>
                                 </div>
                             </td>
-                            {% set cantPostuladosSinRechazar = 0 %}
+                            {% set cantPostuladosRechazados = 0 %}
                             {% for postulacion in postulados %}
                                 {% if postulacion.estado == 'Rechazado' %}
-                                    {% set cantPostuladosSinRechazar = cantPostuladosSinRechazar+1 %}
+                                    {% set cantPostuladosRechazados = cantPostuladosRechazados+1 %}
                                 {% endif %}
                             {% endfor %}
-                            {% if cantPostuladosSinRechazar != 0 or postulados|length != 0 %}
-                                <td>
-                                    <div>
-                                        <p>Este viaje tiene postulantes, no puede ser modificado</p>
-                                    </div>
-                                </td>
-                            {% else %}
+                            {% if (cantPostuladosRechazados == (postulados|length)) or ((postulados|length) == 0) %}
                                 <td>
                                     <div>
                                         <form method="post" class="" action="index.php?action=modificar_viaje_ocasional">
@@ -93,6 +87,14 @@ Detalles de viaje
                                         </form>
                                     </div>
                                 </td>
+                            {% else %}
+                                <td>
+                                    <div>
+                                        <p>{{ cantPostuladosRechazados }} == {{ postulados|length }}</p>
+                                        <p>Este viaje tiene postulantes, no puede ser modificado </p>
+                                    </div>
+                                </td>
+
                             {% endif %}
                         {% else %}    
                             <td></td><td></td>
@@ -182,6 +184,8 @@ Detalles de viaje
                         <input type="hidden" name="id" value="{{ viaje.id }}">
                         <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
                     </form>
+                {% elseif postulado.0.estado=="Rechazado" %}
+                    <h3>Fuiste rechazado como copiloto</h3>
                 {% endif %}
             {% else %}
                 <form method="post" class="text-center" action="./?action=postularse">
@@ -200,42 +204,48 @@ Detalles de viaje
             </p>
             <div id="preguntas">
                 <h3>Preguntas</h3>
-{% if viaje.id % 2 == 0 %}
-                <div>
-                    <div class="well text-left">
-                        <h4>UN USUARIO</h4>
-                        <p>hola, queria saber algo...</p>
-                        <div class="well">
-                            <p>yo solo se que no se nada</p>
-                        </div>
-                    </div>
-                    <div class="well text-left">
-                        <h4>Otro gato</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc elit est, maximus ut egestas sed, porttitor id mauris. Sed facilisis faucibus rhoncus. Etiam volutpat, quam quis posuere varius, ligula risus sodales est, vel luctus turpis nisl quis ante. In dapibus leo purus, id posuere ligula tincidunt sed. Maecenas dui lacus, tristique eu nibh eget, facilisis maximus augue. Integer eget mauris id dui congue lacinia. Sed nec fringilla mauris, vel sodales massa. Pellentesque magna felis, varius eu tristique non, ultricies non tellus. Nunc facilisis pulvinar varius. Quisque vel volutpat libero, et hendrerit arcu. Nunc id eleifend nisl. </p>
-                        {% if usuario == piloto.id %}
-                            <div class="well">
-                                <form method="post" class="text-left" action="#">
-                                    <div class="form-group">
-                                        <label for="respuesta">Respuesta:</label>
-                                        <textarea class="form-control" rows="5" id="respuesta" placeholder="Ingrese su respuesta" name="respuesta" required></textarea>
-                                    </div> 
-                                    <input type="submit" class="btn btn-primaryPink"  value="Responder!">
-                                </form>
+                {% if preguntasYrespuestas|length > 0 %}
+                    <div>
+                        {% for pyr in preguntasYrespuestas %}
+
+                            <div class="well text-left">
+                                <h4>{{ pyr.nombre}} {{ pyr.apellido }} - {{ pyr.email}}</h4>
+                                <p>{{ pyr.pregunta }}</p>
+                                {% if pyr.respuesta is null %}
+                                    {% if usuario == piloto.id %}
+                                        <div class="well">
+                                            <form method="post" class="text-left" action="./?action=responder_pregunta">
+                                                <input type="hidden" name="pregunta_id" value="{{ pyr.id }}">
+                                                <input type="hidden" name="id" value="{{ viaje.id }}">
+                                                <div class="form-group">
+                                                    <label for="respuesta">Respuesta:</label>
+                                                    <textarea class="form-control" rows="3" id="respuesta" placeholder="Ingrese su respuesta" name="respuesta" required></textarea>
+                                                </div> 
+                                                <input type="submit" class="btn btn-primaryPink"  value="Responder!">
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="well">
+                                        <p>{{ pyr.respuesta }}</p>
+                                    </div>
+                                {% endif %}
                             </div>
-                        {% endif %}
+                        {% endfor %}
                     </div>
-                </div>
-{% else %}
-    <div class="well text-center">
-            <h3>Todavia no se realizaron preguntas!</h3>
-    </div>
-{% endif %}
-                {% if usuario != piloto.id %}
+                {% else %}
+                    <div class="well text-center">
+                        <h3>Todavia no se realizaron preguntas!</h3>
+                    </div>
+                {% endif %}
+                {% if usuario != piloto.id and postulado.0.estado != "Rechazado" and postulado.0.estado != "Viaje eliminado" %}
                     <div class="well text-left">
-                        <form method="post" class="text-center" action="#">
+                        <form method="post" class="text-center" action="./?action=publicar_pregunta">
+                            <input type="hidden" name="id" value="{{ viaje.id }}">
+                            <input type="hidden" name="usuario" value="{{ usuario }}">
                             <div class="form-group">
                                 <label for="respuesta">Pregunta:</label>
-                                <textarea class="form-control" rows="5" id="respuesta" placeholder="Ingrese su pregunta" name="pregunta" required></textarea>
+                                <textarea class="form-control" rows="3" id="respuesta" placeholder="Ingrese su pregunta" name="pregunta" required></textarea>
                             </div> 
                             <input type="submit" class="btn btn-primaryPink"  value="Preguntar!">
                         </form>
