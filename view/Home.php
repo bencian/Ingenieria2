@@ -35,12 +35,11 @@ class Home extends TwigView {
         echo self::getTwig()->render("modificar_perfil.html.twig", array("campoPerfil" => $datos));
     }
 
-    public function listarViajes($datos, $ciudades, $busqueda){
-        var_dump($busqueda);
+    public function listarViajes($datos, $ciudades, $busqueda, $ciudadesOrdenadas){
         if(isSet($_SESSION["id"])){
-            echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades, "usuario" => $_SESSION, "busqueda"=>$busqueda));
+            echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades, "usuario" => $_SESSION, "busqueda"=>$busqueda, "ciudadesOrdenadas"=>$ciudadesOrdenadas));
         } else {
-            echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades, "busqueda"=>$busqueda)); 
+            echo self::getTwig()->render("listar_viajes.html.twig", array("viajes" => $datos, "ciudades"=> $ciudades, "busqueda"=>$busqueda, "ciudadesOrdenadas"=>$ciudadesOrdenadas)); 
         }
     }
 
@@ -68,14 +67,14 @@ class Home extends TwigView {
         echo self::getTwig()->render("eliminarEnCascada.html.twig", array("viajes"=>$parametros["viajes"], "vehiculo"=>$parametros["vehiculo"]));
     }
 
-    public function verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades,$piloto,$postulado,$postulados,$cantidadAceptados, $datos){
+    public function verPublicacionViaje($viaje,$calificaciones,$vehiculo,$ciudades,$piloto,$postulado,$postulados,$cantidadAceptados, $datos, $preguntasYrespuestas){
         /* capaz conviene partir esta funcion en dos... 
         var_dump($postulado); */
         $cant_postulados=sizeof($postulados);
         if(isSet($_SESSION["id"])){
-            echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto, "usuario"=>$_SESSION["id"], "postulado"=>$postulado, "postulados"=>$postulados, "cantPostulados"=>$cant_postulados, "cantidadAceptados"=>$cantidadAceptados, "busqueda"=>$datos));
+            echo self::getTwig()->render("verPublicacionViaje.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto, "usuario"=>$_SESSION["id"], "postulado"=>$postulado, "postulados"=>$postulados, "cantPostulados"=>$cant_postulados, "cantidadAceptados"=>$cantidadAceptados, "busqueda"=>$datos, "preguntasYrespuestas"=>$preguntasYrespuestas));
         } else {
-            echo self::getTwig()->render("verPublicacionViajeSinSesion.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto, "cantPostulados"=>$cant_postulados, "busqueda"=>$datos));
+            echo self::getTwig()->render("verPublicacionViajeSinSesion.html.twig", array("viaje"=>$viaje, "vehiculo"=>$vehiculo, "calificaciones"=>$calificaciones, "ciudades"=>$ciudades, "piloto"=>$piloto, "cantPostulados"=>$cant_postulados, "busqueda"=>$datos, "preguntasYrespuestas"=>$preguntasYrespuestas));
         }
     }
 

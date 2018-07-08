@@ -90,5 +90,9 @@ if(!isset($_GET["action"])){
 	$viaje->confirmarEliminacionViaje($_POST);
 } elseif($_GET["action"] == "rechazarPostulado"){
 	$viaje->rechazarPostulacion($_POST);
+} elseif($_GET["action"] == "publicar_pregunta"){
+	$usuario->publicar_pregunta($_POST);
+} elseif($_GET["action"] == "responder_pregunta"){
+	$usuario->responder_pregunta($_POST);
 }
 
