@@ -302,26 +302,27 @@ class AppControllerViajes {
 
     public function cargarViaje($datos,$tempArray){
         $viaja = false;
-        $vehiculoViaja = AppControllerVehiculo::getInstance()->vehiculoViaja($datos);
-        if(($datos["hora_salida"]!=="")&&($vehiculoViaja)){
-            if($this->esHoy($tempArray)){
-                if($this->masTarde($datosEnviar["hora_salida"])){
+        if($datos["hora_salida"]!==""){    
+            $vehiculoViaja = AppControllerVehiculo::getInstance()->vehiculoViaja($datos);
+            if($vehiculoViaja){
+                if($this->esHoy($tempArray)){
+                    if(!$this->masTarde($datos["hora_salida"])){
+                        //cargar viaje
+                        $this->publicar_viaje_ocasional($datos);
+                        $viaja = true;
+                    } else {
+                        echo "El viaje del dia ".$datos["fecha"]." debe ser para mas tarde";
+                        $viaja = false;
+                    }  
+                } else {
                     //cargar viaje
                     $this->publicar_viaje_ocasional($datos);
                     $viaja = true;
-                } else {
-                    $viaja = false;
-                }  
+                } 
             } else {
-                //cargar viaje
-                $this->publicar_viaje_ocasional($datos);
-                $viaja = true;
-            } 
-        } else {
-            if(!($vehiculoViaja)){
                 echo "El vehiculo tiene un viaje programado para el dia ".$datos["fecha"]." ";
+                $viaja = false;
             }
-            $viaja = false;
         }
         return $viaja;
     }

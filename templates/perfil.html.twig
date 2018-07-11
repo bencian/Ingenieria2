@@ -16,7 +16,7 @@ Mi perfil
 </div>
 <div class="container well">
 	<div class="row row-list">
-		<div id="calificaciones" class="col-xs-3 col-md-3 col-lg-3">
+		<div id="calificaciones" class="col-xs-2 col-md-2 col-lg-3">
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion">Ver calificaciones detalladas</a>
 			<br>
 			<br>
@@ -31,20 +31,23 @@ Mi perfil
 			{% endif %}
 			<br>
 		</div>
-		<div id="historialViajes" class="col-xs-3 col-md-3 col-lg-3">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_historial">Ver historial de viajes</a>
+		<div id="historialViajes" class="col-xs-2 col-md-2 col-lg-2">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil">Ver proximos viajes</a>
 		</div>
-		<div id="listaVehiculos" class="col-xs-3 col-md-3 col-lg-3">
+		<div id="historialViajesPiloto" class="col-xs-2 col-md-2 col-lg-3">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_viajes_hechos">Mi historial de viajes</a>
+		</div>
+		<div id="listaVehiculos" class="col-xs-2 col-md-2 col-lg-2">
 			<a class="btn btn-primaryPink" href="index.php?action=lista_vehiculos">Ver vehiculos</a>
 		</div>
-		<div id="registrarVehiculo" class="col-xs-3 col-md-3 col-lg-3">
+		<div id="registrarVehiculo" class="col-xs-2 col-md-2 col-lg-2">
 			<a class="btn btn-primaryPink" href="index.php?action=registrar_vehiculo">Registrar Vehiculo</a>
 		</div>
 	</div>
 	<div id="viajes_futuros">
 		<div class="row">
 			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>Mis publicaciones futuros</h2>
+				<h2>{{ tituloDinamico }}</h2>
 				{% if viajes %}
 					<table class="table table-striped">
 						<thead>
@@ -101,7 +104,7 @@ Mi perfil
 	<div id="viajes_postulados">
 		<div class="row">
 			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>Mis postulaciones</h2>
+				<h2>{{ tituloDinamico2 }}</h2>
 				{% if postulaciones %}
 					<table class="table table-striped">
 						<thead>
