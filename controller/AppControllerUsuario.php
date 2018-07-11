@@ -113,7 +113,7 @@ class AppControllerUsuario {
         return $valor;
     }
 
-    public function mostrarPerfil(){
+    public function mostrarPerfil($guia){
         //busca los datos a mostrar para el perfil del usuario
         if(isset($_SESSION)){
             $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
@@ -121,7 +121,17 @@ class AppControllerUsuario {
             $mostrarDatos["nombre"] = $nombre;
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
             $view = new Home();
-            $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
+            $mostrarDatos["tituloPorDefecto"] = "Mis viajes como piloto";
+            $mostrarDatos["tituloPorDefecto2"] = "Mis viajes como copiloto";
+            if ($guia == "todo"){
+                $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
+                $mostrarDatos["tituloPorDefecto"] = "Mis viajes futuros";
+                $mostrarDatos["tituloPorDefecto2"] = "Mis postulaciones actualales";
+            } elseif ($guia == "soloPiloto"){
+                $viajes = AppModelUsuario::getInstance()->getViajesPiloto($_SESSION['id']);
+            } elseif ($guia == "soloCoPiloto"){
+                $viajes = AppModelUsuario::getInstance()->getViajesCopiloto($_SESSION['id']);
+            }
             $mostrarDatos["viajes"]=$viajes;
             $ciudades = AppModel::getInstance()->getCiudades();
             $mostrarDatos["ciudades"]=$ciudades;
@@ -129,6 +139,9 @@ class AppControllerUsuario {
             $mostrarDatos["postulaciones"]=$misPostulaciones;
             $view->mostrarNombre($mostrarDatos); //falta
         }
+
+        //Utilice el else if para mostrar el listado de viajes tanto de piloto como de copiloto
+        //muestra TODOS los viajes que realice, tanto de piloto como copiloto
     }
 
     public function modificar_perfil(){

@@ -60,6 +60,17 @@ class AppModelUsuario extends PDORepository {
         return $answer;        
     }
 
+    public function getViajesPiloto($id){
+        $answer = $this->queryList("SELECT * FROM viaje WHERE usuario_id=:id", ["id"=>$_SESSION["id"]]);
+        return $answer;        
+    }
+
+    public function getViajesCopiloto($id){
+        //falta el estado del viaje, que sea finalizado
+        $answer = $this->queryList("SELECT * FROM usuario_viaje WHERE usuario_id=:id", ["id"=>$_SESSION["id"]]);
+        return $answer;        
+    }
+
     public function actualizarUsuario($datos){
         $answer = $this->queryList("UPDATE usuario SET nombre=:nombre, apellido=:apellido, email=:email, password=:password, fecha_nacimiento=:fecha_nacimiento WHERE id=:id", ["nombre" => $datos["nombre"], "apellido" => $datos["apellido"], "email" => $datos["email"], "password" => $datos["pass"], "fecha_nacimiento" => $datos["nacimiento"], "id" => $datos["id"]]);
         return $answer;
