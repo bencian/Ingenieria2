@@ -31,15 +31,11 @@ Mi perfil
 			{% endif %}
 			<br>
 		</div>
-		<!-- No tiene funcionalidad
-		<div id="historialViajes" class="col-xs-3 col-md-2 col-lg-2">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_historial">Ver historial de viajes</a>
-		</div>-->
-		<div id="historialViajesPiloto" class="col-xs-2 col-md-2 col-lg-2">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_viajes_como_piloto">Mis viajes como piloto</a>
+		<div id="historialViajes" class="col-xs-2 col-md-2 col-lg-2">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil">Ver proximos viajes</a>
 		</div>
-		<div id="historialViajesAcompañante" class="col-xs-2 col-md-2 col-lg-3">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_viajes_como_copiloto">Mis viajes como copiloto</a>
+		<div id="historialViajesPiloto" class="col-xs-2 col-md-2 col-lg-3">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_viajes_hechos">Mi historial de viajes</a>
 		</div>
 		<div id="listaVehiculos" class="col-xs-2 col-md-2 col-lg-2">
 			<a class="btn btn-primaryPink" href="index.php?action=lista_vehiculos">Ver vehiculos</a>
@@ -51,7 +47,7 @@ Mi perfil
 	<div id="viajes_futuros">
 		<div class="row">
 			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>Mis publicaciones futuros</h2>
+				<h2>{{ tituloDinamico }}</h2>
 				{% if viajes %}
 					<table class="table table-striped">
 						<thead>
@@ -108,7 +104,7 @@ Mi perfil
 	<div id="viajes_postulados">
 		<div class="row">
 			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>Mis postulaciones</h2>
+				<h2>{{ tituloDinamico2 }}</h2>
 				{% if postulaciones %}
 					<table class="table table-striped">
 						<thead>

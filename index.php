@@ -37,12 +37,10 @@ if(!isset($_GET["action"])){
 } elseif ($_GET["action"] == "cerrar_sesion"){
 	$controller->cerrarSesion();
 } elseif ($_GET["action"] == "mostrar_perfil"){
-	$usuario->mostrarPerfil("todo");
-} elseif($_GET["action"] == "mostrar_viajes_como_piloto"){
-	$usuario->mostrarPerfil("soloPiloto");
-} elseif($_GET["action"] == "mostrar_viajes_como_copiloto"){
-	$usuario->mostrarPerfil("soloCoPiloto");
-} elseif ($_GET["action"] == "crear_vehiculo"){
+	$usuario->mostrarPerfil("futuro");
+} elseif($_GET["action"] == "mostrar_viajes_hechos"){
+	$usuario->mostrarPerfil("totales");
+}elseif ($_GET["action"] == "crear_vehiculo"){
 	$vehiculo->crear_vehiculo($_POST);
 } elseif ($_GET["action"] == "modificar_perfil"){
 	$usuario->modificar_perfil();

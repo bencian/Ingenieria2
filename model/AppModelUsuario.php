@@ -61,14 +61,19 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function getViajesPiloto($id){
-        $answer = $this->queryList("SELECT * FROM viaje WHERE usuario_id=:id", ["id"=>$_SESSION["id"]]);
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $fecha = date('Y-m-d');
+        $answer = $this->queryList("SELECT * FROM viaje vj WHERE usuario_id=:id and vj.fecha<:fecha", ["id"=>$_SESSION["id"],"fecha"=>$fecha]);
         return $answer;        
     }
 
     public function getViajesCopiloto($id){
         //falta el estado del viaje, que sea finalizado
-        $answer = $this->queryList("SELECT * FROM usuario_viaje WHERE usuario_id=:id", ["id"=>$_SESSION["id"]]);
-        return $answer;        
+        //solucionado con la fecha
+        $answer = $this->queryList("SELECT * FROM usuario_viaje uv
+        INNER JOIN viaje v ON (uv.viaje_id=v.id)
+        WHERE (uv.usuario_id=:id AND (fecha<CURDATE()))", [ "id"=>$_SESSION["id"]]);
+        return $answer;      
     }
 
     public function actualizarUsuario($datos){
