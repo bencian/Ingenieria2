@@ -115,18 +115,27 @@ class AppControllerUsuario {
 
     public function mostrarPerfil(){
         //busca los datos a mostrar para el perfil del usuario
+        $bdUsuario = AppModelUsuario::getInstance();
         if(isset($_SESSION)){
-            $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
+            $datosUsuario = $bdUsuario->getPerfil($_SESSION['id']);
             $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
             $mostrarDatos["nombre"] = $nombre;
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
             $view = new Home();
-            $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
+            $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
             $mostrarDatos["viajes"]=$viajes;
             $ciudades = AppModel::getInstance()->getCiudades();
             $mostrarDatos["ciudades"]=$ciudades;
-            $misPostulaciones = AppModelUsuario::getInstance()->getMisPostulaciones($_SESSION['id']);
+            $misPostulaciones = $bdUsuario->getMisPostulaciones($_SESSION['id']);
             $mostrarDatos["postulaciones"]=$misPostulaciones;
+            $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($_SESSION['id']);
+            $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($_SESSION['id']);
+            $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($_SESSION['id']);
+            $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($_SESSION['id']);
+            $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($_SESSION['id']);
+            $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($_SESSION['id']);
+            //var_dump($mostrarDatos["calificacionesPendientesAPilotos"]);
+            //var_dump($mostrarDatos["calificacionesPendientesACopilotos"]);
             $view->mostrarNombre($mostrarDatos); //falta
         }
     }
@@ -167,6 +176,11 @@ class AppControllerUsuario {
         var_dump($datos);
         AppModelUsuario::getInstance()->publicarRespuesta($datos);
         AppControllerViajes::getInstance()->ver_publicacion_viaje($datos);
+    }
+
+    public function calificarPiloto($datos){
+        $view = new Home();
+        $view->show("calificar.html.twig");
     }
 
 }

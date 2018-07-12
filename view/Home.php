@@ -22,8 +22,8 @@ class Home extends TwigView {
     }
 
     public function mostrarNombre($dato){
-        $vector["nombre"] = $dato["nombre"];
-        $vector["email"] = $dato["email"];
+        //$vector["nombre"] = $dato["nombre"];
+        //$vector["email"] = $dato["email"];
         echo self::getTwig()->render("perfil.html.twig", $dato );   //$vector
     }
 

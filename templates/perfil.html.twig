@@ -20,15 +20,10 @@ Mi perfil
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion">Ver calificaciones detalladas</a>
 			<br>
 			<br>
-			<!--cuando este la funcion de calificar, agregar con else aca-->
-			{% if not calificacion_piloto is defined %}
-				<p style="text-align: left; color:black;"> Calificacion como piloto = 0</p><cr>
-				<p style="text-align: left; color:black;"> Total viajes = 0</p>
-			{% endif %}
-			{% if not calificacion_copiloto is defined %}
-				<p style="text-align: left; color:black;"> Calificacion como copiloto = 0</p><cr>
-				<p style="text-align: left; color:black;"> Total viajes = 0</p>
-			{% endif %}
+			<p style="text-align: left; color:black;"> Calificacion como piloto = {{ calificacion_piloto.0 }}</p><cr>
+			<p style="text-align: left; color:black;"> Total viajes = {{ cantidadViajesPiloto.0 }}</p>
+			<p style="text-align: left; color:black;"> Calificacion como copiloto = {{ calificacion_copiloto.0 }}</p><cr>
+			<p style="text-align: left; color:black;"> Total viajes = {{ cantidadViajesCopiloto.0 }}</p>
 			<br>
 		</div>
 		<div id="historialViajes" class="col-xs-3 col-md-3 col-lg-3">
@@ -41,9 +36,11 @@ Mi perfil
 			<a class="btn btn-primaryPink" href="index.php?action=registrar_vehiculo">Registrar Vehiculo</a>
 		</div>
 	</div>
+</div>
+<div class="container well">	
 	<div id="viajes_futuros">
 		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center well">
+			<div class="col-sm-12 col-sm-offset-0 text-center">
 				<h2>Mis publicaciones futuros</h2>
 				{% if viajes %}
 					<table class="table table-striped">
@@ -72,7 +69,7 @@ Mi perfil
 									<td>
 										<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
 											<input type="hidden" name="id" value="{{ viaje.id }}">
-											<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+											<input type="submit" class="btn btn-primaryPink" value="Ver viaje">
 										</form>
 									</td>
 									<!--<td>
@@ -98,9 +95,11 @@ Mi perfil
 			</div>
 		</div>
 	</div>
+</div>
+<div class="container well">
 	<div id="viajes_postulados">
 		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center well">
+			<div class="col-sm-12 col-sm-offset-0 text-center">
 				<h2>Mis postulaciones</h2>
 				{% if postulaciones %}
 					<table class="table table-striped">
@@ -131,7 +130,7 @@ Mi perfil
 									<td>
 										<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
 											<input type="hidden" name="id" value="{{ postulacion.viaje_id }}">
-											<input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+											<input type="submit" class="btn btn-primaryPink" value="Ver viaje">
 										</form>
 									</td>
 								</tr>
@@ -139,12 +138,107 @@ Mi perfil
 						</tbody>
 					</table>
 				{% else %}
-					<h1>No tienes postulaciones</h1>
+					<h3>No tienes postulaciones</h3>
 				{% endif %}
 			</div>
 		</div>
 	</div>
 </div>
-
+<div class="container well">
+	<div id="calificacionesPendientesAPilotos">
+		<div class="row">
+			<div class="col-sm-12 col-sm-offset-0 text-center">
+				<h2>Calificaciones pendientes a pilotos</h2>
+				{% if calificacionesPendientesAPilotos %}
+					<table class="table table-striped">	
+						<thead>
+							<tr>
+								<th scope="col">Piloto</th>
+								<th scope="col">Origen</th>
+								<th scope="col">Destino</th>
+								<th scope="col">Fecha</th>
+								<th scope="col">Hora de salida</th>
+								<th scope="col">Precio</th>
+								<th scope="col">Duracion</th>
+								<th scope="col">Distancia</th>
+								<th scope="col">Calificar</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for calificacion in calificacionesPendientesAPilotos %}
+								<tr>
+									<td></td>
+									<td>{{ ciudades[calificacion.origen_id - 1].nombre }}</td>
+									<td>{{ ciudades[calificacion.destino_id - 1].nombre }}</td>
+									<td>{{ calificacion.fecha }}</td>
+									<td>{{ calificacion.hora_salida }}hs</td>
+									<td>$ {{ calificacion.precio }}</td>
+									<td>{{ calificacion.duracion }} horas</td>
+									<td>{{ calificacion.distancia }} kms</td>
+									<td>
+										<form method="post" class="pull-left" action="index.php?action=calificarPiloto">
+											<input type="hidden" name="id" value="{{ calificacion.viaje_id }}">
+											<input type="submit" class="btn btn-primaryPink" value="Calificar">
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<h3>No tienes calificaciones pendientes a pilotos</h3>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container well">
+	<div id="calificacionesPendientesACopilotos">
+		<div class="row">
+			<div class="col-sm-12 col-sm-offset-0 text-center">
+				<h2>Calificaciones pendientes a copilotos</h2>
+				{% if calificacionesPendientesACopilotos %}
+					<table class="table table-striped">	
+						<thead>
+							<tr>
+								<th scope="col">Copiloto</th>
+								<th scope="col">Origen</th>
+								<th scope="col">Destino</th>
+								<th scope="col">Fecha</th>
+								<th scope="col">Hora de salida</th>
+								<th scope="col">Precio</th>
+								<th scope="col">Duracion</th>
+								<th scope="col">Distancia</th>
+								<th scope="col">Calificar</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for calificacion in calificacionesPendientesACopilotos %}
+								<tr>
+									<td></td>
+									<td>{{ ciudades[calificacion.origen_id - 1].nombre }}</td>
+									<td>{{ ciudades[calificacion.destino_id - 1].nombre }}</td>
+									<td>{{ calificacion.fecha }}</td>
+									<td>{{ calificacion.hora_salida }}hs</td>
+									<td>$ {{ calificacion.precio }}</td>
+									<td>{{ calificacion.duracion }} horas</td>
+									<td>{{ calificacion.distancia }} kms</td>
+									<td>
+										<form method="post" class="pull-left" action="index.php?action=calificarCopiloto">
+											<input type="hidden" name="id" value="{{ calificacion.viaje_id }}">
+											<input type="submit" class="btn btn-primaryPink" value="Calificar">
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<h3>No tienes calificaciones pendientes a copilotos</h3>
+				{% endif %}
+			</div>
+		</div>
+	</div>	
+</div>
 
 {% endblock %}
