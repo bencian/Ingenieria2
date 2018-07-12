@@ -96,5 +96,8 @@ if(!isset($_GET["action"])){
 	$usuario->publicar_pregunta($_POST);
 } elseif($_GET["action"] == "responder_pregunta"){
 	$usuario->responder_pregunta($_POST);
+} elseif($_GET["action"] == "calificarCopiloto"){
+	$usuario->calificarCopiloto($_POST);
+} elseif($_GET["action"] == "calificarPiloto"){
+	$usuario->calificarPiloto($_POST);
 }
-

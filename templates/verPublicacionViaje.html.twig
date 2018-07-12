@@ -14,7 +14,7 @@ Detalles de viaje
                         <input type="hidden" name="origen" value="{{ busqueda.origen }}">
                         <input type="hidden" name="destino" value="{{ busqueda.destino }}">
                         <input type="hidden" name="salida" value="{{ busqueda.salida }}">
-                        <input type="submit" class="btn btn-primaryPink"  value="Volver al buscador de forma fea con post">
+                        <input type="submit" class="btn btn-primaryPink" value="Volver al buscador de forma fea con post">
                     </form>
                 </div>
                 <br>
@@ -22,14 +22,14 @@ Detalles de viaje
               {#  {% if usuario == piloto.id %} #}
                     <div>
                         <form id="buscador" action="index.php?action=mostrar_perfil" method="POST">
-                            <input type="submit" class="btn btn-primaryPink"  value="Volver a mi perfil">
+                            <input type="submit" class="btn btn-primaryPink" value="Volver a mi perfil">
                         </form>
                     </div>
                     <br>
             {#    {% else %}
                     <div>
                         <form id="buscador" action="index.php" method="POST">
-                            <input type="submit" class="btn btn-primaryPink"  value="Volver a inicio">
+                            <input type="submit" class="btn btn-primaryPink" value="Volver a inicio">
                         </form>
                     </div>
                     <br>
@@ -68,7 +68,7 @@ Detalles de viaje
                                 <div>
                                     <form method="post" class="" action="index.php?action=confirmarEliminarViaje&id={{ viaje.id }}">
                                     <input type="hidden" name="id" value="{{ viaje.id }}">
-                                    <input type="submit" class="btn btn-primaryPink"  value="Eliminar">
+                                    <input type="submit" class="btn btn-primaryPink" value="Eliminar">
                                     </form>
                                 </div>
                             </td>
@@ -83,7 +83,7 @@ Detalles de viaje
                                     <div>
                                         <form method="post" class="" action="index.php?action=modificar_viaje_ocasional">
                                             <input type="hidden" name="id" value="{{ viaje.id }}">
-                                            <input type="submit" class="btn btn-primaryPink"  value="Modificar">
+                                            <input type="submit" class="btn btn-primaryPink" value="Modificar">
                                         </form>
                                     </div>
                                 </td>
@@ -175,14 +175,14 @@ Detalles de viaje
                 {% if postulado.0.estado=="Pendiente" %}
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion">
                         <input type="hidden" name="id" value="{{ viaje.id }}">
-                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                        <input type="submit" class="btn btn-primaryPink" value="Cancelar">
                     </form>
                     <h5>Estado: {{ postulado.0.estado }}</h5>
                 {% elseif postulado.0.estado=="Aceptado" %}
                     <h5>Aceptado!</h5>
                     <form method="post" class="text-center" action="./?action=cancelar_postulacion_aceptada">
                         <input type="hidden" name="id" value="{{ viaje.id }}">
-                        <input type="submit" class="btn btn-primaryPink"  value="Cancelar">
+                        <input type="submit" class="btn btn-primaryPink" value="Cancelar">
                     </form>
                 {% elseif postulado.0.estado=="Rechazado" %}
                     <h3>Fuiste rechazado como copiloto</h3>
@@ -190,7 +190,7 @@ Detalles de viaje
             {% else %}
                 <form method="post" class="text-center" action="./?action=postularse">
                     <input type="hidden" name="id" value="{{ viaje.id }}">
-                    <input type="submit" class="btn btn-primaryPink"  value="Postularme!">
+                    <input type="submit" class="btn btn-primaryPink" value="Postularme!">
 
 
                     {# cuando se postula deberia revisar si ya esta postulado y en caso de estarlo mostrar despostularse #}
@@ -221,7 +221,7 @@ Detalles de viaje
                                                     <label for="respuesta">Respuesta:</label>
                                                     <textarea class="form-control" rows="3" id="respuesta" placeholder="Ingrese su respuesta" name="respuesta" required></textarea>
                                                 </div> 
-                                                <input type="submit" class="btn btn-primaryPink"  value="Responder!">
+                                                <input type="submit" class="btn btn-primaryPink" value="Responder!">
                                             </form>
                                         </div>
                                     {% endif %}
@@ -247,7 +247,7 @@ Detalles de viaje
                                 <label for="respuesta">Pregunta:</label>
                                 <textarea class="form-control" rows="3" id="respuesta" placeholder="Ingrese su pregunta" name="pregunta" required></textarea>
                             </div> 
-                            <input type="submit" class="btn btn-primaryPink"  value="Preguntar!">
+                            <input type="submit" class="btn btn-primaryPink" value="Preguntar!">
                         </form>
                     </div>
                 {% endif %}

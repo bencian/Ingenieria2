@@ -107,4 +107,44 @@ class AppModelUsuario extends PDORepository {
             VALUES (:pregunta_id, :respuesta)", ["pregunta_id"=>$datos["pregunta_id"], "respuesta"=>$datos["respuesta"]]);
         return $answer;
     }
+
+    public function calificacionPiloto($id){
+        $answer = $this->queryList("SELECT calificacion_piloto FROM usuario WHERE id=:id",["id" => $id]);
+        return $answer[0];
+    }
+
+    public function viajesHechosComoPiloto($id){
+        $answer = $this->queryList("SELECT count(viaje.id) FROM viaje WHERE usuario_id=:id AND ((fecha<CURDATE()) OR (fecha=CURDATE() AND hora_salida<CURTIME()))",["id"=> $id]);
+        return $answer[0];
+    }
+
+    public function calificacionCopiloto($id){
+        $answer = $this->queryList("SELECT calificacion_copiloto FROM usuario WHERE id=:id",["id" => $id]);
+        return $answer[0];
+    }
+
+    public function viajesHechosComoCopiloto($id){
+        $answer = $this->queryList("SELECT count(v.id) FROM usuario_viaje uv
+        INNER JOIN viaje v ON (uv.viaje_id=v.id)
+        WHERE (uv.usuario_id=:id AND (uv.estado='Aceptado') AND ((fecha<CURDATE()) OR (fecha=CURDATE() AND hora_salida<CURTIME() )))", [ "id" => $id ]);
+        return $answer[0];
+    }
+
+    public function pilotosACalificar($id){
+        $answer = $this->queryList("SELECT *
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id)
+            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and uv.usuario_id=:id and uv.estado='Aceptado' and not exists (
+            select * from calificacion_piloto where copiloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
+        return $answer;
+    }
+
+    public function copilotosACalificar($id){
+        $answer = $this->queryList("SELECT *
+            FROM viaje v 
+            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id and not exists (
+            select * from calificacion_copiloto where piloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
+        return $answer;
+    }
 }
+
+

@@ -115,13 +115,14 @@ class AppControllerUsuario {
 
     public function mostrarPerfil($guia){
         //busca los datos a mostrar para el perfil del usuario
+        $bdUsuario = AppModelUsuario::getInstance();
         if(isset($_SESSION)){
-            $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
+            $datosUsuario = $bdUsuario->getPerfil($_SESSION['id']);
             $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
             $mostrarDatos["nombre"] = $nombre;
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
             $view = new Home();
-
+            $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
             if ($guia == "futuro"){
                 $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
                 $misPostulaciones = AppModelUsuario::getInstance()->getMisPostulaciones($_SESSION['id']);
@@ -129,18 +130,25 @@ class AppControllerUsuario {
                 $mostrarDatos["tituloDinamico2"] = "Mis postulaciones actualales";
             } elseif ($guia == "totales"){
                 $viajes = AppModelUsuario::getInstance()->getViajesPiloto($_SESSION['id']);
-
                 //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
-
                 $misPostulaciones = AppModelUsuario::getInstance()->getViajesCopiloto($_SESSION['id']);
                 $mostrarDatos["tituloDinamico"] = "Mis viajes hechos como piloto";
                 $mostrarDatos["tituloDinamico2"] = "Mis viajes hechos como copiloto";
             }
-
             $mostrarDatos["viajes"]=$viajes;
             $mostrarDatos["postulaciones"]=$misPostulaciones;
             $ciudades = AppModel::getInstance()->getCiudades();
             $mostrarDatos["ciudades"]=$ciudades;
+            $misPostulaciones = $bdUsuario->getMisPostulaciones($_SESSION['id']);
+            $mostrarDatos["postulaciones"]=$misPostulaciones;
+            $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($_SESSION['id']);
+            $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($_SESSION['id']);
+            $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($_SESSION['id']);
+            $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($_SESSION['id']);
+            $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($_SESSION['id']);
+            $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($_SESSION['id']);
+            //var_dump($mostrarDatos["calificacionesPendientesAPilotos"]);
+            //var_dump($mostrarDatos["calificacionesPendientesACopilotos"]);
             $view->mostrarNombre($mostrarDatos); //falta
         }
 
@@ -184,6 +192,11 @@ class AppControllerUsuario {
         var_dump($datos);
         AppModelUsuario::getInstance()->publicarRespuesta($datos);
         AppControllerViajes::getInstance()->ver_publicacion_viaje($datos);
+    }
+
+    public function calificarPiloto($datos){
+        $view = new Home();
+        $view->show("calificar.html.twig");
     }
 
 }
