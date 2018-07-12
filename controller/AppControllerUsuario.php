@@ -183,7 +183,7 @@ class AppControllerUsuario {
     public function responder_pregunta($datos){
         var_dump($datos);
         AppModelUsuario::getInstance()->publicarRespuesta($datos);
-        AppControllerViajes::getInstance()->ver_publicacion_viaje($datos[""]);
+        AppControllerViajes::getInstance()->ver_publicacion_viaje($datos);
     }
 
 }
