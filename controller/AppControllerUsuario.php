@@ -113,7 +113,7 @@ class AppControllerUsuario {
         return $valor;
     }
 
-    public function mostrarPerfil(){
+    public function mostrarPerfil($guia){
         //busca los datos a mostrar para el perfil del usuario
         $bdUsuario = AppModelUsuario::getInstance();
         if(isset($_SESSION)){
@@ -123,7 +123,20 @@ class AppControllerUsuario {
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
             $view = new Home();
             $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
+            if ($guia == "futuro"){
+                $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
+                $misPostulaciones = AppModelUsuario::getInstance()->getMisPostulaciones($_SESSION['id']);
+                $mostrarDatos["tituloDinamico"] = "Mis viajes futuros";
+                $mostrarDatos["tituloDinamico2"] = "Mis postulaciones actualales";
+            } elseif ($guia == "totales"){
+                $viajes = AppModelUsuario::getInstance()->getViajesPiloto($_SESSION['id']);
+                //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
+                $misPostulaciones = AppModelUsuario::getInstance()->getViajesCopiloto($_SESSION['id']);
+                $mostrarDatos["tituloDinamico"] = "Mis viajes hechos como piloto";
+                $mostrarDatos["tituloDinamico2"] = "Mis viajes hechos como copiloto";
+            }
             $mostrarDatos["viajes"]=$viajes;
+            $mostrarDatos["postulaciones"]=$misPostulaciones;
             $ciudades = AppModel::getInstance()->getCiudades();
             $mostrarDatos["ciudades"]=$ciudades;
             $misPostulaciones = $bdUsuario->getMisPostulaciones($_SESSION['id']);
@@ -138,6 +151,9 @@ class AppControllerUsuario {
             //var_dump($mostrarDatos["calificacionesPendientesACopilotos"]);
             $view->mostrarNombre($mostrarDatos); //falta
         }
+
+        //Utilice el else if para mostrar el listado de viajes tanto de piloto como de copiloto
+        //muestra TODOS los viajes que realicé, tanto de piloto como copiloto
     }
 
     public function modificar_perfil(){
