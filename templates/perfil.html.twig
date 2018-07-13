@@ -27,7 +27,7 @@ Mi perfil
 			<br>
 		</div>
 		<div id="historialViajes" class="col-xs-2 col-md-2 col-lg-2">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil">Ver proximos viajes</a>
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil">Mis proximos viajes</a>
 		</div>
 		<div id="historialViajesPiloto" class="col-xs-2 col-md-2 col-lg-3">
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_viajes_hechos">Mi historial de viajes</a>
@@ -43,7 +43,7 @@ Mi perfil
 <div class="container well">	
 	<div id="viajes_futuros">
 		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center">
+			<div class="col-sm-12 col-sm-offset-0 text-center well">
 				<h2>{{ tituloDinamico }}</h2>
 				{% if viajes %}
 					<table class="table table-striped">
@@ -102,7 +102,7 @@ Mi perfil
 <div class="container well">
 	<div id="viajes_postulados">
 		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center">
+			<div class="col-sm-12 col-sm-offset-0 text-center well">
 				<h2>{{ tituloDinamico2 }}</h2>
 				{% if postulaciones %}
 					<table class="table table-striped">
@@ -141,7 +141,7 @@ Mi perfil
 						</tbody>
 					</table>
 				{% else %}
-					<h3>No tienes postulaciones</h3>
+					<h3>No hay viajes para mostrar</h3>
 				{% endif %}
 			</div>
 		</div>
@@ -150,7 +150,7 @@ Mi perfil
 <div class="container well">
 	<div id="calificacionesPendientesAPilotos">
 		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center">
+			<div class="col-sm-12 col-sm-offset-0 text-center well">
 				<h2>Calificaciones pendientes a pilotos</h2>
 				{% if calificacionesPendientesAPilotos %}
 					<table class="table table-striped">	
@@ -198,7 +198,7 @@ Mi perfil
 <div class="container well">
 	<div id="calificacionesPendientesACopilotos">
 		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center">
+			<div class="col-sm-12 col-sm-offset-0 text-center well">
 				<h2>Calificaciones pendientes a copilotos</h2>
 				{% if calificacionesPendientesACopilotos %}
 					<table class="table table-striped">	

@@ -126,8 +126,8 @@ class AppControllerUsuario {
             if ($guia == "futuro"){
                 $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
                 $misPostulaciones = AppModelUsuario::getInstance()->getMisPostulaciones($_SESSION['id']);
-                $mostrarDatos["tituloDinamico"] = "Mis viajes futuros";
-                $mostrarDatos["tituloDinamico2"] = "Mis postulaciones actualales";
+                $mostrarDatos["tituloDinamico"] = "Mis proximos viajes como piloto";
+                $mostrarDatos["tituloDinamico2"] = "Mis proximos viajes como copiloto";
             } elseif ($guia == "totales"){
                 $viajes = AppModelUsuario::getInstance()->getViajesPiloto($_SESSION['id']);
                 //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
