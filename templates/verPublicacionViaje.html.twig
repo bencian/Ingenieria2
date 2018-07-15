@@ -102,8 +102,11 @@ Detalles de viaje
                         <td></td>
                     </tr>
                 </table>
-                {% if viaje.viaje.comentarios %}
-                    <h4> Comentarios: {{ viaje.comentarios }} </h4>
+                {% if viaje.comentarios %}
+                    <div class="text-left">
+                        <h4>Comentarios: </h4>
+                        <h5>{{ viaje.comentarios }}</h5>
+                    </div>
                 {% endif %}
             </div>
             <br>

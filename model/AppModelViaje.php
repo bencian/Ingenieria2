@@ -114,7 +114,7 @@ class AppModelViaje extends PDORepository {
     public function eliminarViajesFuturosEnCascada($datos){
         /*$answer=$this->queryList("UPDATE usuario_viaje SET estado='Viaje eliminado' WHERE viaje_id IN (
             SELECT id FROM viaje 
-            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]);
+            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //ESTA ESTA BIEN
 
         $answer=$this->queryList("DELETE FROM usuario_viaje WHERE viaje_id IN (
             SELECT id FROM viaje
