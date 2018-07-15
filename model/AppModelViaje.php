@@ -158,9 +158,13 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
-    public function actualizarViajeOcasional($datos, $asientos){
-        $answer = $this->queryList("UPDATE viaje SET fecha=:fecha, precio=:precio, duracion=:duracion, distancia=:distancia, lugares=:lugares, comentarios=:comentarios, origen_id=:origen_id, destino_id=:destino_id, vehiculo_id=:vehiculo_id WHERE id=:id;",[ "fecha"=>$datos["fecha"], "precio"=>$datos["precio"], "duracion"=>$datos["duracion"], "distancia"=>$datos["distancia"], "lugares"=>$asientos[0][0], "comentarios"=>$datos["comentarios"], "origen_id"=>$datos["origen"], "destino_id"=>$datos["destino"], "vehiculo_id"=>$datos["vehiculo"], "id"=>$datos["id"]]);
-        $answer2 = $this->queryList("UPDATE viaje_ocasional SET hora_salida=:hora WHERE viaje_id=:id",["hora"=>$datos["hora_salida"], "id"=>$datos["id"]]);
+    public function actualizarViajeOcasional($datos){
+        $answer = $this->queryList("UPDATE viaje SET fecha=:fecha, precio=:precio, duracion=:duracion, distancia=:distancia, lugares=:lugares, comentarios=:comentarios, origen_id=:origen_id, destino_id=:destino_id, vehiculo_id=:vehiculo_id, hora_salida=:hora WHERE id=:id;",[ "fecha"=>$datos["fecha"], "precio"=>$datos["precio"], "duracion"=>$datos["duracion"], "distancia"=>$datos["distancia"], "lugares"=>$datos["asientos"], "comentarios"=>$datos["comentarios"], "origen_id"=>$datos["origen"], "destino_id"=>$datos["destino"], "vehiculo_id"=>$datos["vehiculo"], "id"=>$datos["id"], "hora"=>$datos["hora_salida"]]);
+        return $answer;
+    }
+
+    public function getViajesConPatenteFechaEnOtroMomento($patente, $datos){
+        $answer = $this->queryList("SELECT vj.id FROM viaje vj INNER JOIN vehiculo vh ON (vj.vehiculo_id = vh.id) WHERE (vh.patente=:patente AND vj.id!=:id)",["patente"=>$patente, "id"=>$datos["id"]]);
         return $answer;
     }
 
@@ -173,6 +177,8 @@ class AppModelViaje extends PDORepository {
         $answer = $this->queryList("SELECT vj.id FROM viaje vj INNER JOIN vehiculo vh ON (vj.vehiculo_id = vh.id) WHERE (vh.patente=:patente)",["patente"=>$patente]);
         return $answer;
     }
+
+
 
     public function getHorariosViaje($id){
         $answer = $this->queryList("SELECT vj.hora_salida,vj.duracion,vj.fecha FROM viaje vj WHERE vj.id=?",[$id]);

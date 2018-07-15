@@ -194,4 +194,22 @@ class AppControllerVehiculo {
         }
         return $adentro;
     }
+
+    public function vehiculoViajaModificado($datos){
+        $puede = false;
+        $bd = AppModel::getInstance();
+        $viaje = AppModelViaje::getInstance();
+        $patente = $bd->getPatente($datos["vehiculo"]);
+        $viajesVehiculo = $viaje->getViajesConPatenteFechaEnOtroMomento($patente[0][0],$datos);
+        $viajesConflicto = 0;
+        foreach (array_keys($viajesVehiculo) as $idViaje){
+            if($this->viajeHorario($viajesVehiculo[$idViaje][0],$datos)){
+                $viajesConflicto++;
+            }
+        }
+        if($viajesConflicto == 0){
+            $puede = true;
+        }
+        return $puede;
+    }
 }

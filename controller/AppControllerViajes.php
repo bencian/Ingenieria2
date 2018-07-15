@@ -393,16 +393,57 @@ class AppControllerViajes {
     }
 
     public function modificarViajeOcasional($datos){
-        var_dump($datos);
-        /*
-        $valido=$this->validarViajeOcasional($datos);
-        if($valido){
-            $asientos=AppModel::getInstance()->getAsientos($datos["vehiculo"]);
-            $db = AppModelViaje::getInstance();
-            $db-> actualizarViajeOcasional($datos,$asientos);
-        } */
+        if($this->validarViajeOcasionalModificado($datos)){
+            $bd = AppModelViaje::getInstance();
+            $asientos = AppModel::getInstance()->getAsientos($datos["vehiculo"]);
+            $datos["asientos"] = $asientos[0]["asientos"];
+            //var_dump($datos);
+            $bd->actualizarViajeOcasional($datos);
+        }
         $this->ver_publicacion_viaje(["id"=>$datos["id"]]);
     }
+
+    public function validarViajeOcasionalModificado($datos){
+        $tempArray = explode('-',$datos["fecha"]);
+        for ($i=0;$i<count($tempArray);$i++){
+            $tempArray[$i] = (int)$tempArray[$i];
+        }
+        $entra = true;
+        if(!$this->fechaMayor($tempArray)){
+            echo "Fecha ingresada invalida";
+            $entra = false;
+        }
+        if(!$this->esNumerico($datos["precio"])){
+            echo "El precio no puede tener letras";
+            $entra = false;
+        }
+        if(!$this->esNumerico($datos["duracion"])){
+            echo "La duracion no puede tener letras";
+            $entra = false;
+        }
+        if($datos["origen"]==$datos["destino"]){
+            echo "El origen y el destino no pueden ser los mismos";
+            $entra = false;
+        }
+        if(!$this->esNumerico($datos["distancia"])){
+            echo "La distancia no puede tener letras";
+            $entra = false;
+        }
+        if($this->esHoy($tempArray)){
+            if($this->masTarde($datos["hora_salida"])){
+                echo "Debe ser para mas tarde";
+                $entra = false;
+            }
+        }
+        if($entra){
+            if(!AppControllerVehiculo::getInstance()->vehiculoViajaModificado($datos)){
+                echo "El vehiculo tiene un viaje para ese horario";
+                $entra = false;
+            }
+        }
+        return $entra;
+    }
+    
 
     public function cancelar_postulacion_aceptada($datos){
         $view = new Home();
