@@ -51,8 +51,8 @@ class Home extends TwigView {
         echo self::getTwig()->render($html, array("vehiculo" => $datos));
     }
 
-    public function modificarViajeOcasional($viaje, $datos){
-        echo self::getTwig()->render("modificarViajeOcasional.html.twig", array("viaje" => $viaje, "vectorForm"=> $datos));
+    public function modificarViajeOcasional($viaje, $datos, $ciudadesOrdenadas){
+        echo self::getTwig()->render("modificarViajeOcasional.html.twig", array("viaje" => $viaje, "vectorForm"=> $datos, "ciudadesOrdenadas"=>$ciudadesOrdenadas));
     }
 
     public function mostrarMenuSinSesion($html,$datos,$ciudades){

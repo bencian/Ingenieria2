@@ -97,12 +97,13 @@ class AppControllerViajes {
     public function modificar_viaje_ocasional($datos){
         $view = new Home();
         $bd = AppModel::getInstance();
-        $ciudades = $bd->getCiudades();
-        $vectorFormulario["ciudades"] = $ciudades;
+        //$ciudades = $bd->getCiudades();
+        $ciudadesOrdenadas = $bd->getCiudadesOrdenadas();
+        //$vectorFormulario["ciudades"] = $ciudades;
         $vehiculosUsuario = $bd->getVehiculos();
         $vectorFormulario["vehiculos"] = $vehiculosUsuario;
         $viaje = AppModelViaje::getInstance()->getViajeOcasional($datos);        
-        $view->modificarViajeOcasional($viaje, $vectorFormulario); //falta
+        $view->modificarViajeOcasional($viaje, $vectorFormulario, $ciudadesOrdenadas); //falta
     }
 
     public function publicarViajeOcasional($datos){
@@ -392,16 +393,15 @@ class AppControllerViajes {
     }
 
     public function modificarViajeOcasional($datos){
-        $view = new Home(); //CREO QUE ESTE NO VA!
-        /*$viaje= $bd->getViajeOcasional($datos["id"]);*/
+        var_dump($datos);
+        /*
         $valido=$this->validarViajeOcasional($datos);
         if($valido){
             $asientos=AppModel::getInstance()->getAsientos($datos["vehiculo"]);
             $db = AppModelViaje::getInstance();
             $db-> actualizarViajeOcasional($datos,$asientos);
-        }
-        //AppController::getInstance()->mostrarMenuConSesion(); 
-        $this->ver_publicacion_viaje($datos);  
+        } */
+        $this->ver_publicacion_viaje(["id"=>$datos["id"]]);
     }
 
     public function cancelar_postulacion_aceptada($datos){
