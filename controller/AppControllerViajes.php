@@ -75,7 +75,7 @@ class AppControllerViajes {
             //aca va el eliminar en cascada pero por el momento elimina asi nomas...
             $this->eliminarViajeDeLaBD($idViaje);
         }
-        AppControllerUsuario::getInstance()->mostrarPerfil();
+        AppControllerUsuario::getInstance()->mostrarPerfil("futuro");
     }
 
     public function hayAceptados($idViaje){

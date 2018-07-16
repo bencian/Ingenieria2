@@ -30,7 +30,7 @@ class AppModelViaje extends PDORepository {
     public function getViajes($dato){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $fecha = date('Y-m-d');
-        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.origen_id, vj.destino_id, vj.precio, vj.hora_salida, vj.lugares FROM viaje vj WHERE vj.fecha<:fecha_futuro and vj.fecha>=:fecha_hoy order by vj.fecha", ["fecha_futuro"=>$dato, "fecha_hoy"=>$fecha]);
+        $answer = $this->queryList("SELECT vj.id, vj.fecha, vj.origen_id, vj.destino_id, vj.precio, vj.hora_salida, vj.lugares FROM viaje vj WHERE vj.fecha<:fecha_futuro and vj.fecha>=:fecha_hoy and vj.usuario_id is not null order by vj.fecha", ["fecha_futuro"=>$dato, "fecha_hoy"=>$fecha]);
         return $answer;
     }    
 
@@ -40,12 +40,12 @@ class AppModelViaje extends PDORepository {
     }
     
     public function busqueda_completa($datos){
-        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND destino_id=:destino AND fecha=:fecha", ["origen"=>$datos["origen"], "destino"=>$datos["destino"], "fecha"=>$datos["salida"]]);
+        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND destino_id=:destino AND fecha=:fecha and vj.usuario_id is not null ", ["origen"=>$datos["origen"], "destino"=>$datos["destino"], "fecha"=>$datos["salida"]]);
         return $answer;
     }
 
     public function busqueda_parcial($datos){
-        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND fecha=:fecha", ["origen"=>$datos["origen"], "fecha"=>$datos["salida"]]);
+        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND fecha=:fecha and vj.usuario_id is not null ", ["origen"=>$datos["origen"], "fecha"=>$datos["salida"]]);
         return $answer;
     }
 
@@ -112,22 +112,23 @@ class AppModelViaje extends PDORepository {
     }
 
     public function eliminarViajesFuturosEnCascada($datos){
+        //Actualiza el estado de las postulaciones
         $answer=$this->queryList("UPDATE usuario_viaje SET estado='Viaje eliminado' 
             WHERE viaje_id IN (
             SELECT id FROM viaje 
-            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //FUNCIONA
+            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); 
 
-        $answer=$this->queryList("DELETE FROM viaje 
-            WHERE id IN (
-            SELECT id FROM viaje 
-            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //REVISAR si la otra se hace antes no va a encontrar el vehiculo
-
+        //Borra los viajes que no tengan postulados
+        $answer=$this->queryList("DELETE v 
+            FROM viaje v
+            LEFT JOIN usuario_viaje uv ON v.id=uv.viaje_id
+            WHERE v.vehiculo_id=:vehiculo AND uv.estado is NULL AND ((v.fecha>CURDATE()) OR (v.fecha=CURDATE() AND v.hora_salida>CURTIME()))", ["vehiculo"=>$datos["id"]]); 
+        
+        //Para los viajes con postulados establece null para piloto y vehiculo
         $answer=$this->queryList("UPDATE viaje SET usuario_id=NULL, vehiculo_id=NULL 
- WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME()))", ["vehiculo"=>$datos["id"]]); //REVISAR
-
+        WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME()))", ["vehiculo"=>$datos["id"]]);
 
         return $answer;
-
     }
 
     public function getViaje($viaje_id){

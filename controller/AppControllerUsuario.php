@@ -172,7 +172,7 @@ class AppControllerUsuario {
                 if($this->validacionUsuario($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarUsuario($datos);
-                    $this->mostrarPerfil();
+                    $this->mostrarPerfil("futuro");
                 } else {
                     $view->camposModificarPerfil($datosUsuario[0]); //falta
                 }
