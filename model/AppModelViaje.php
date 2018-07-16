@@ -112,30 +112,24 @@ class AppModelViaje extends PDORepository {
     }
 
     public function eliminarViajesFuturosEnCascada($datos){
-        /*$answer=$this->queryList("UPDATE usuario_viaje SET estado='Viaje eliminado' WHERE viaje_id IN (
+        $answer=$this->queryList("UPDATE usuario_viaje SET estado='Viaje eliminado' 
+            WHERE viaje_id IN (
             SELECT id FROM viaje 
-            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //ESTA ESTA BIEN
+            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //FUNCIONA
 
-        $answer=$this->queryList("DELETE FROM usuario_viaje WHERE viaje_id IN (
-            SELECT id FROM viaje
-            INNER JOIN viaje_ocasional ON (viaje_ocasional.viaje_id=viaje.id) 
-            WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]);
+        $answer=$this->queryList("DELETE FROM viaje 
+            WHERE id IN (
+            SELECT id FROM viaje 
+            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //REVISAR si la otra se hace antes no va a encontrar el vehiculo
 
-        $answer=$this->queryList("DELETE FROM viaje_ocasional WHERE viaje_id IN (
-            SELECT id FROM viaje
-            INNER JOIN viaje_ocasional ON (viaje_ocasional.viaje_id=viaje.id) 
-            WHERE vehiculo_id=:vehiculo AND ((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]);
+        $answer=$this->queryList("UPDATE viaje SET usuario_id=NULL, vehiculo_id=NULL 
+            WHERE id IN (
+            SELECT id FROM viaje 
+            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //REVISAR
 
-        $answer=$this->queryList("DELETE v FROM viaje v  
-        LEFT JOIN viaje_ocasional vo ON (vo.viaje_id= v.id)
-        WHERE (vehiculo_id=:vehiculo AND vo.hora_salida is NULL)", ["vehiculo"=>$datos["id"]]);
 
-        $answer=$this->queryList("UPDATE viaje v SET v.usuario_id=-1, v.vehiculo_id=-1
-        LEFT JOIN viaje_ocasional vo ON (vo.viaje_id= v.id)
-        WHERE (vehiculo_id=:vehiculo AND vo.hora_salida is NULL)", ["vehiculo"=>$datos["id"]]);        
-        
-        return $answer;*/
-        //estamos en la Beeeeeeeeeeeeee
+        return $answer;
+
     }
 
     public function getViaje($viaje_id){
