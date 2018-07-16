@@ -123,9 +123,7 @@ class AppModelViaje extends PDORepository {
             WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //REVISAR si la otra se hace antes no va a encontrar el vehiculo
 
         $answer=$this->queryList("UPDATE viaje SET usuario_id=NULL, vehiculo_id=NULL 
-            WHERE id IN (
-            SELECT id FROM viaje 
-            WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME())))", ["vehiculo"=>$datos["id"]]); //REVISAR
+ WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME()))", ["vehiculo"=>$datos["id"]]); //REVISAR
 
 
         return $answer;
