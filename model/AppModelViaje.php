@@ -77,7 +77,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function getViajeId($datos){
-        $answer = $this->queryList("INSERT INTO viaje (fecha,precio,hora_salida,duracion,distancia,lugares,comentarios,origen_id,destino_id,usuario_id,vehiculo_id) VALUES (:fecha,:precio,:hora_salida,:duracion,:distancia,:lugares,:comentarios,:origen_id,:destino_id,:usuario_id,:vehiculo_id)", ["fecha"=>$datos["fecha"],"precio"=>$datos["precio"],"hora_salida"=>$datos["hora_salida"],"duracion"=>$datos["duracion"],"distancia"=>$datos["distancia"],"lugares"=>$datos["asientos"],"comentarios"=>$datos["comentarios"],"origen_id"=>$datos["origen"],"destino_id"=>$datos["destino"],"usuario_id"=>$_SESSION["id"],"vehiculo_id"=>$datos["vehiculo"]]);
+        $answer = $this->queryList("INSERT INTO viaje (fecha,precio,hora_salida,duracion,distancia,lugares,comentarios,origen_id,destino_id,usuario_id,vehiculo_id,pagado) VALUES (:fecha,:precio,:hora_salida,:duracion,:distancia,:lugares,:comentarios,:origen_id,:destino_id,:usuario_id,:vehiculo_id,0)", ["fecha"=>$datos["fecha"],"precio"=>$datos["precio"],"hora_salida"=>$datos["hora_salida"],"duracion"=>$datos["duracion"],"distancia"=>$datos["distancia"],"lugares"=>$datos["asientos"],"comentarios"=>$datos["comentarios"],"origen_id"=>$datos["origen"],"destino_id"=>$datos["destino"],"usuario_id"=>$_SESSION["id"],"vehiculo_id"=>$datos["vehiculo"]]);
         //$answer = $this->queryDevuelveId("INSERT INTO viaje (fecha,precio,hora_salida,duracion,distancia,lugares,comentarios,origen_id,destino_id,usuario_id,vehiculo_id) VALUES (:fecha,:precio,:duracion,:distancia,:lugares,:comentarios,:origen_id,:destino_id,:usuario_id,:vehiculo_id)", ["fecha"=>$datos["fecha"],"precio"=>$datos["precio"],"hora_salida"=>$datos["hora_salida"],"duracion"=>$datos["duracion"],"distancia"=>$datos["distancia"],"lugares"=>$datos["asientos"],"comentarios"=>$datos["comentarios"],"origen_id"=>$datos["origen"],"destino_id"=>$datos["destino"],"usuario_id"=>$_SESSION["id"],"vehiculo_id"=>$datos["vehiculo"] ]);
         return $answer;
     }
@@ -125,7 +125,7 @@ class AppModelViaje extends PDORepository {
             WHERE v.vehiculo_id=:vehiculo AND uv.estado is NULL AND ((v.fecha>CURDATE()) OR (v.fecha=CURDATE() AND v.hora_salida>CURTIME()))", ["vehiculo"=>$datos["id"]]); 
         
         //Para los viajes con postulados establece null para piloto y vehiculo
-        $answer=$this->queryList("UPDATE viaje SET usuario_id=NULL, vehiculo_id=NULL 
+        $answer=$this->queryList("UPDATE viaje SET usuario_id=NULL, vehiculo_id=NULL, pagado=NULL 
         WHERE vehiculo_id=:vehiculo AND((fecha>CURDATE()) OR (fecha=CURDATE() AND hora_salida>CURTIME()))", ["vehiculo"=>$datos["id"]]);
 
         return $answer;

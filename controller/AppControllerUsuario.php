@@ -198,4 +198,11 @@ class AppControllerUsuario {
         $view->show("calificar.html.twig");
     }
 
+    public function listarViajesAPagar(){
+        $viajes=AppModelUsuario::getInstance()->listaViajesAPagar();
+        $ciudades=AppModel::getInstance()->getCiudades();
+        var_dump($viajes);
+        $view = new Home();
+        $view->listarViajesAPagar($viajes,$ciudades);
+    }
 }

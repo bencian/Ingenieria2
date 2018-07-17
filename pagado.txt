@@ -1,0 +1,3 @@
+ejecuten esto en phpmyadmin para que tengan la columna para poder manejar los viajes pagos!
+
+ALTER TABLE `viaje` ADD `pagado` BOOLEAN NULL ;
