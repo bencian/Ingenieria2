@@ -48,3 +48,7 @@ body{
 	background-image: linear-gradient(to bottom,#FFFFFF 0,#FFFFFF 100%) !important;
 	/*background-image: linear-gradient(to bottom,#FFFFFF 0,#FF7479 100%) !important;*/
 }
+
+textarea {
+   resize: none;
+}

@@ -145,6 +145,21 @@ class AppModelUsuario extends PDORepository {
             select * from calificacion_copiloto where piloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
         return $answer;
     }
+
+    public function tengoViajesAPagar(){
+        $answer = $this->queryList("SELECT COUNT(v.id)
+            FROM viaje v
+            WHERE ((v.fecha<CURDATE()) OR (v.fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id AND pagado=0",["id" => $_SESSION["id"]]);
+        return $answer;
+    }
+
+    public function listaViajesAPagar(){
+        $answer = $this->queryList("SELECT *
+            FROM viaje v
+            INNER JOIN vehiculo vh ON vh.id=v.vehiculo_id
+            WHERE ((v.fecha<CURDATE()) OR (v.fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id AND pagado=0",["id" => $_SESSION["id"]]);
+        return $answer;
+    }
 }
 
 

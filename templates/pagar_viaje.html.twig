@@ -1,0 +1,75 @@
+{% extends "base_sin_pagar.html.twig" %}
+
+{% block title %}
+Pagando!
+{% endblock %}
+
+{% block stylesheets %}
+<script src="./templates/js/validar_tarjeta.js"></script>
+{% endblock %}
+
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 text-center well">
+        	<div class="col-sm-12 col-lg-5 text-left well">
+        		<h3>Ingrese sus datos para realizar el pago</h3>
+        		<h4>Precio a pagar ${{ viaje.precio*0.05* ((viaje.cant_copilotos+1)/viaje.lugares) }}</h4>
+        		<br>
+        		<form method="post" action="./?action=validar_pago" onsubmit="return validarTarjeta()"> {# aca deveria validar los datos de la tarjeta #}
+        			<input type="hidden" name="" value="{{ viaje.precio*0.05* ((viaje.cant_copilotos+1)/viaje.lugares) }}">
+        			<div class="form-group">
+						<label for="">Nombre</label>
+						<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
+					</div>
+        			<div class="form-group">
+						<label for="">Numero de tarjeta</label>
+						<input type="text" class="form-control" id="tarjeta" name="tarjeta" placeholder="Numero de tarjeta" required>
+					</div>
+					<div class="form-group">
+						<label for="">Codigo de seguridad</label>
+						<input type="text" class="form-control" id="codigo" name="codigo" placeholder="Codigo de seguridad" required>
+					</div>
+					<div class="form-group">
+						<label for="">Fecha de vencimiento</label>
+						<input type="date" class="form-control" id="vencimiento" name="vencimiento" placeholder="Fecha de vencimiento" required>
+					</div>
+        			<input type="submit" class="btn btn-primaryPink">
+        		</form>
+        	</div>
+        	<br>
+        	<div class="col-sm-12">
+        		<h3>Datos de viaje</h3>
+        		<table class="table table-striped">
+                    <tr> 
+                        <td><h3>Datos basicos</h3></td> 
+                        <td><h4>Origen: {{ viaje.origen }}</h4></td>
+                        <td><h4>Destino: {{ viaje.destino }}</h4></td>
+                        <td><h4>Fecha: {{ viaje.fecha }}</h4></td>
+                        <td><h4>Hora de salida: {{ viaje.hora_salida }}</h4></td>
+                    </tr>
+                    <tr>
+                        <td><h4>Datos extras</h4></td>
+                        <td><h5>Duracion: {{ viaje.duracion }} horas</h5></td>
+                        <td><h5>Distancia: {{ viaje.distancia }} kms</h5></td>
+                        <td><h5>Precio: ${{ viaje.precio }}</h5></td>
+                        <td><h5>Precio por persona: ${{ (viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</h5></td>
+                    </tr>
+                    <tr>
+                        <td><h4>Datos del vehiculo</h4></td>
+                        <td><h5>Cantidad de asientos: {{ viaje.lugares }}</h5></td>
+                        <td><h5>Marca: {{ vehiculo.marca }}</h5></td>
+                        <td><h5>Modelo: {{ vehiculo.modelo }}</h5></td>
+                        <td><h5>Patente: {{ vehiculo.patente }}</h5></td>
+                    </tr>
+                    <tr>
+                    </tr>
+                    <tr>
+                        <td></td><td></td><td></td><td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -75,7 +75,7 @@ class AppControllerViajes {
             //aca va el eliminar en cascada pero por el momento elimina asi nomas...
             $this->eliminarViajeDeLaBD($idViaje);
         }
-        AppControllerUsuario::getInstance()->mostrarPerfil();
+        AppControllerUsuario::getInstance()->mostrarPerfil("futuro");
     }
 
     public function hayAceptados($idViaje){
@@ -97,12 +97,13 @@ class AppControllerViajes {
     public function modificar_viaje_ocasional($datos){
         $view = new Home();
         $bd = AppModel::getInstance();
-        $ciudades = $bd->getCiudades();
-        $vectorFormulario["ciudades"] = $ciudades;
+        //$ciudades = $bd->getCiudades();
+        $ciudadesOrdenadas = $bd->getCiudadesOrdenadas();
+        //$vectorFormulario["ciudades"] = $ciudades;
         $vehiculosUsuario = $bd->getVehiculos();
         $vectorFormulario["vehiculos"] = $vehiculosUsuario;
         $viaje = AppModelViaje::getInstance()->getViajeOcasional($datos);        
-        $view->modificarViajeOcasional($viaje, $vectorFormulario); //falta
+        $view->modificarViajeOcasional($viaje, $vectorFormulario, $ciudadesOrdenadas); //falta
     }
 
     public function publicarViajeOcasional($datos){
@@ -392,17 +393,57 @@ class AppControllerViajes {
     }
 
     public function modificarViajeOcasional($datos){
-        $view = new Home(); //CREO QUE ESTE NO VA!
-        /*$viaje= $bd->getViajeOcasional($datos["id"]);*/
-        $valido=$this->validarViajeOcasional($datos);
-        if($valido){
-            $asientos=AppModel::getInstance()->getAsientos($datos["vehiculo"]);
-            $db = AppModelViaje::getInstance();
-            $db-> actualizarViajeOcasional($datos,$asientos);
+        if($this->validarViajeOcasionalModificado($datos)){
+            $bd = AppModelViaje::getInstance();
+            $asientos = AppModel::getInstance()->getAsientos($datos["vehiculo"]);
+            $datos["asientos"] = $asientos[0]["asientos"];
+            //var_dump($datos);
+            $bd->actualizarViajeOcasional($datos);
         }
-        //AppController::getInstance()->mostrarMenuConSesion(); 
-        $this->ver_publicacion_viaje($datos);  
+        $this->ver_publicacion_viaje(["id"=>$datos["id"]]);
     }
+
+    public function validarViajeOcasionalModificado($datos){
+        $tempArray = explode('-',$datos["fecha"]);
+        for ($i=0;$i<count($tempArray);$i++){
+            $tempArray[$i] = (int)$tempArray[$i];
+        }
+        $entra = true;
+        if(!$this->fechaMayor($tempArray)){
+            echo "Fecha ingresada invalida";
+            $entra = false;
+        }
+        if(!$this->esNumerico($datos["precio"])){
+            echo "El precio no puede tener letras";
+            $entra = false;
+        }
+        if(!$this->esNumerico($datos["duracion"])){
+            echo "La duracion no puede tener letras";
+            $entra = false;
+        }
+        if($datos["origen"]==$datos["destino"]){
+            echo "El origen y el destino no pueden ser los mismos";
+            $entra = false;
+        }
+        if(!$this->esNumerico($datos["distancia"])){
+            echo "La distancia no puede tener letras";
+            $entra = false;
+        }
+        if($this->esHoy($tempArray)){
+            if($this->masTarde($datos["hora_salida"])){
+                echo "Debe ser para mas tarde";
+                $entra = false;
+            }
+        }
+        if($entra){
+            if(!AppControllerVehiculo::getInstance()->vehiculoViajaModificado($datos)){
+                echo "El vehiculo tiene un viaje para ese horario";
+                $entra = false;
+            }
+        }
+        return $entra;
+    }
+    
 
     public function cancelar_postulacion_aceptada($datos){
         $view = new Home();

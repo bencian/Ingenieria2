@@ -51,8 +51,8 @@ class Home extends TwigView {
         echo self::getTwig()->render($html, array("vehiculo" => $datos));
     }
 
-    public function modificarViajeOcasional($viaje, $datos){
-        echo self::getTwig()->render("modificarViajeOcasional.html.twig", array("viaje" => $viaje, "vectorForm"=> $datos));
+    public function modificarViajeOcasional($viaje, $datos, $ciudadesOrdenadas){
+        echo self::getTwig()->render("modificarViajeOcasional.html.twig", array("viaje" => $viaje, "vectorForm"=> $datos, "ciudadesOrdenadas"=>$ciudadesOrdenadas));
     }
 
     public function mostrarMenuSinSesion($html,$datos,$ciudades){
@@ -88,5 +88,13 @@ class Home extends TwigView {
 
     public function pagar(){
         echo self::getTwig()->render("pagar.html.twig", array());
+    }
+
+    public function listarViajesAPagar($viajes,$ciudades){
+        echo self::getTwig()->render("lista_viajes_a_pagar.html.twig", array("viajes"=>$viajes, "ciudades"=>$ciudades));
+    }
+
+    public function pantallaParaPagar($viaje,$vehiculo){
+        echo self::getTwig()->render("pagar_viaje.html.twig", array("viaje"=>$viaje,"vehiculo"=>$vehiculo));
     }
 }

@@ -1,0 +1,51 @@
+{% extends "base_sin_pagar.html.twig" %}
+
+{% block title %}
+Debe pagar!
+{% endblock %}
+
+{% block container %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 text-center well">
+        	{% if viajes %}
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Origen</th>
+							<th scope="col">Destino</th>
+							<th scope="col">Fecha</th>
+							<th scope="col">Hora de salida</th>
+							<th scope="col">Precio</th>
+							<th scope="col">Duracion</th>
+							<th scope="col">Distancia</th>
+							<th> </th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for viaje in viajes %}
+							<tr>
+								<td>{{ ciudades[viaje.origen_id-1].nombre }}</td>
+								<td>{{ ciudades[viaje.destino_id-1].nombre }}</td>
+								<td>{{ viaje.fecha }}</td>
+								<td>{{ viaje.hora_salida }}hs</td>
+								<td>$ {{ viaje.precio }}</td>
+								<td>{{ viaje.duracion }} horas</td>
+								<td>{{ viaje.distancia }} kms</td>
+								<td>
+									<form method="post" class="" action="index.php?action=pagar_viaje">
+										<input type="hidden" name="id" value="{{ viaje.id }}">
+										<input type="submit" class="btn btn-primaryPink"  value="Pagar viaje">
+									</form>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<h1>No hay viajes para mostrar</h1>
+			{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

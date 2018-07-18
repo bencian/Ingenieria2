@@ -38,20 +38,25 @@ class AppController {
             $parametros['ciudadesOrdenadas'] = AppModel::getInstance()->getCiudadesOrdenadas();
             $view->mostrarMenuSinSesion("index.html.twig", $viajes,$parametros);
 		} else {
-			$this->mostrarMenuConSesion();  
+            $this->mostrarMenuConSesion(); 
 		}
 	}
     
     public function mostrarMenuConSesion(){
-        $bd = AppModel::getInstance();
         $view = new Home();
-        $ciudades = $bd->getCiudades();
-        $vectorFormulario["ciudades"] = $ciudades;
-        $vehiculosUsuario = $bd->getVehiculos();
-        $vectorFormulario["vehiculos"] = $vehiculosUsuario;
-        $viajes = $this->accesoAPaginaQueLista();
-        $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
-        $view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes, $ciudadesOrdenadas);
+        $cant_viajes_a_pagar= AppModelUsuario::getInstance()->tengoViajesAPagar();
+        if($cant_viajes_a_pagar[0]["COUNT(v.id)"]>0){
+            $view->pagar();
+        } else {
+            $bd = AppModel::getInstance();
+            $ciudades = $bd->getCiudades();
+            $vectorFormulario["ciudades"] = $ciudades;
+            $vehiculosUsuario = $bd->getVehiculos();
+            $vectorFormulario["vehiculos"] = $vehiculosUsuario;
+            $viajes = $this->accesoAPaginaQueLista();
+            $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
+            $view->listarCiudadesMenuPrincipal($vectorFormulario, $viajes, $ciudadesOrdenadas);
+        }
     }
 
     public function accesoAPaginaQueLista(){
@@ -80,12 +85,9 @@ class AppController {
                     $vector_usuario = AppModelUsuario::getInstance()->getId($datos['nombre_usuario']);
                     $usuario_id = (int)$vector_usuario[0][0];
                     $_SESSION["id"]= $usuario_id;
-                    $view = new Home();
-                    if($usuario_id==3){
-                        $view->pagar();
-                    } else {
-                        $this->mostrarMenuConSesion();
-                    }
+                    //$view = new Home();
+                    $this->mostrarMenuConSesion();
+                    
             }
         }
     }

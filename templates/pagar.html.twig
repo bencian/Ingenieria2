@@ -1,26 +1,15 @@
-{% extends "base_session.html.twig" %}
+{% extends "base_sin_pagar.html.twig" %}
 
 {% block title %}
 Debe pagar!
 {% endblock %}
-
-{% block navbar %}
-<nav class="nav" id="navbar">
-	<ul class="nav nav-pills">
-	  <li class="nav-item" id="register">
-	    <a class="nav-link disabled" href="index.php?action=cerrar_sesion">Cerrar Sesion</a>
-	  </li>
-	</ul>
-	</nav>
-{% endblock %}
-
 
 {% block container %}
 <div class="container">
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 text-center well">
         	<h3>Debe pagar las deudas pendientes antes de poder seguir</h3>
-        	<a class="btn btn-primaryPink" href="#">Pagar</a>
+        	<a class="btn btn-primaryPink" href="index.php?action=listar_viajes_a_pagar">Pagar</a>
         </div>
     </div>
 </div>

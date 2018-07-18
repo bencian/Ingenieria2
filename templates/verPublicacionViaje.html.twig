@@ -14,15 +14,15 @@ Detalles de viaje
                         <input type="hidden" name="origen" value="{{ busqueda.origen }}">
                         <input type="hidden" name="destino" value="{{ busqueda.destino }}">
                         <input type="hidden" name="salida" value="{{ busqueda.salida }}">
-                        <input type="submit" class="btn btn-primaryPink" value="Volver al buscador de forma fea con post">
+                        <input type="submit" class="btn btn-primaryPink" value="Volver a mi busqueda">
                     </form>
                 </div>
                 <br>
             {% else %}
               {#  {% if usuario == piloto.id %} #}
                     <div>
-                        <form id="buscador" action="index.php?action=mostrar_perfil" method="POST">
-                            <input type="submit" class="btn btn-primaryPink" value="Volver a mi perfil">
+                        <form id="" action="index.php" method="POST">
+                            <input type="submit" class="btn btn-primaryPink" value="Volver a inicio">
                         </form>
                     </div>
                     <br>
@@ -39,9 +39,9 @@ Detalles de viaje
                 <table class="table table-striped">
                     <tr> 
                         <td><h2>Datos basicos</h2></td> 
-                        <td><h3>Origen: {{ ciudades[viaje.id_origen_id -1].nombre }}</h3></td>
+                        <td><h3>Origen: {{ ciudades[viaje.origen_id -1].nombre }}</h3></td>
                         <td><h3>Destino: {{ ciudades[viaje.destino_id -1].nombre }}</h3></td>
-                        <td><h3>Fecha: {{ viaje.viaje.fecha }}</h3></td>
+                        <td><h3>Fecha: {{ viaje.fecha }}</h3></td>
                     </tr>
                     <tr>
                         <td><h4>Datos generales</h4></td>  
@@ -102,8 +102,11 @@ Detalles de viaje
                         <td></td>
                     </tr>
                 </table>
-                {% if viaje.viaje.comentarios %}
-                    <h4> Comentarios: {{ viaje.comentarios }} </h4>
+                {% if viaje.comentarios %}
+                    <div class="text-left">
+                        <h4>Comentarios: </h4>
+                        <h5>{{ viaje.comentarios }}</h5>
+                    </div>
                 {% endif %}
             </div>
             <br>

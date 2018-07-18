@@ -172,7 +172,7 @@ class AppControllerUsuario {
                 if($this->validacionUsuario($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarUsuario($datos);
-                    $this->mostrarPerfil();
+                    $this->mostrarPerfil("futuro");
                 } else {
                     $view->camposModificarPerfil($datosUsuario[0]); //falta
                 }
@@ -189,7 +189,6 @@ class AppControllerUsuario {
     }
 
     public function responder_pregunta($datos){
-        var_dump($datos);
         AppModelUsuario::getInstance()->publicarRespuesta($datos);
         AppControllerViajes::getInstance()->ver_publicacion_viaje($datos);
     }
@@ -202,5 +201,35 @@ class AppControllerUsuario {
     public function calificarCoiloto($datos){
         $view = new Home();
         $view->show("calificar.html.twig");
+    }
+
+    public function listarViajesAPagar(){
+        $viajes=AppModelUsuario::getInstance()->listaViajesAPagar();
+        $ciudades=AppModel::getInstance()->getCiudades();
+        var_dump($viajes);
+        $view = new Home();
+        $view->listarViajesAPagar($viajes,$ciudades);
+    }
+
+    public function pagarViaje($datos){
+        $model=AppModelViaje::getInstance();
+        $viaje=$model->getViaje($datos);
+        $viaje["origen"]=($model->getCiudadForId($viaje["origen_id"]))[0][0];
+        $viaje["destino"]=($model->getCiudadForId($viaje["destino_id"]))[0][0];
+        $viaje["cant_copilotos"]=($model->contarAceptados($datos))[0][0];
+        $vehiculo=AppModel::getInstance()->getVehiculo($viaje["vehiculo_id"])[0];
+        $view = new Home();
+        $view->pantallaParaPagar($viaje,$vehiculo);
+    }
+
+    public function validarPago($datos){
+        $valida=true;
+        if($valida){
+            var_dump($datos);
+            //si tiene mas viajes va a la lista, sino va a index
+        } else {
+            var_dump('hola');
+        }
+        $this->listarViajesAPagar();
     }
 }

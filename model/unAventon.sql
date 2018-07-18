@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `un_aventon1`.`viaje` (
   `destino_id` INT NOT NULL,
   `usuario_id` INT NULL,
   `vehiculo_id` INT NULL,
+  `pagado` BOOLEAN NULL ;
   PRIMARY KEY (`id`),
   INDEX `fk_viaje_usuario1_idx` (`usuario_id` ASC),
   INDEX `fk_viaje_vehiculo1_idx` (`vehiculo_id` ASC),
