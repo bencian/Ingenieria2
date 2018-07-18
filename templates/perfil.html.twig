@@ -5,7 +5,7 @@ Mi perfil
 {% endblock %}
 
 {% block stylesheets %}
-
+<script src="./templates/js/ocultarSecciones.js"></script>
 {% endblock %}
 
 {% block container %}
@@ -41,10 +41,11 @@ Mi perfil
 	</div>
 </div>
 <div class="container well">	
-	<div id="viajes_futuros">
-		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>{{ tituloDinamico }}</h2>
+	<div id="viajes_futuros" class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center">
+			<h2>{{ tituloDinamico }}</h2>
+			<button id="boton1" class="btn btn-primaryPink" onclick="toggleVisibility('viajes_futuros_table', 'boton1')">Ver detalles</button>
+			<div id="viajes_futuros_table" hidden>
 				{% if viajes %}
 					<table class="table table-striped">
 						<thead>
@@ -75,18 +76,6 @@ Mi perfil
 											<input type="submit" class="btn btn-primaryPink" value="Ver viaje">
 										</form>
 									</td>
-									<!--<td>
-										<form method="post" class="pull-left" action="index.php?action=modificar_viaje_ocasional">
-											<input type="hidden" name="id" value="{{ viaje.id }}">
-											<input type="submit" class="btn btn-primaryPink"  value="Modificar">
-										</form>
-									</td>
-									<td>
-										<form method="post" class="pull-center" action="index.php?action=eliminar_viaje&id={{ viaje.id }}">
-											<input type="hidden" name="id" value="{{ viaje.id }}">
-											<input type="submit" class="btn btn-primaryPink"  value="Eliminar">
-										</form>
-									</td>-->
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -94,16 +83,16 @@ Mi perfil
 				{% else %}
 					<h3>No hay viajes para mostrar</h3>
 				{% endif %}
-				
 			</div>
 		</div>
 	</div>
 </div>
 <div class="container well">
-	<div id="viajes_postulados">
-		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>{{ tituloDinamico2 }}</h2>
+	<div id="viajes_postulados" class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center">
+			<h2>{{ tituloDinamico2 }}</h2>
+			<button id="boton2" class="btn btn-primaryPink" onclick="toggleVisibility('viajes_postulados_table', 'boton2')">Ver detalles</button>
+			<div id="viajes_postulados_table" hidden>
 				{% if postulaciones %}
 					<table class="table table-striped">
 						<thead>
@@ -148,10 +137,11 @@ Mi perfil
 	</div>
 </div>
 <div class="container well">
-	<div id="calificacionesPendientesAPilotos">
-		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>Calificaciones pendientes a pilotos</h2>
+	<div id="calificacionesPendientesAPilotos" class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center">
+			<h2>Calificaciones pendientes a pilotos</h2>
+			<button id="boton3" class="btn btn-primaryPink" onclick="toggleVisibility('calificacionesPendientesAPilotosTable', 'boton3')">Ver detalles</button>
+			<div id="calificacionesPendientesAPilotosTable" hidden>
 				{% if calificacionesPendientesAPilotos %}
 					<table class="table table-striped">	
 						<thead>
@@ -170,7 +160,7 @@ Mi perfil
 						<tbody>
 							{% for calificacion in calificacionesPendientesAPilotos %}
 								<tr>
-									<td></td>
+									<td><a href="#">{{ calificacion.email }}</a></td>
 									<td>{{ ciudades[calificacion.origen_id - 1].nombre }}</td>
 									<td>{{ ciudades[calificacion.destino_id - 1].nombre }}</td>
 									<td>{{ calificacion.fecha }}</td>
@@ -180,7 +170,8 @@ Mi perfil
 									<td>{{ calificacion.distancia }} kms</td>
 									<td>
 										<form method="post" class="pull-left" action="index.php?action=calificarPiloto">
-											<input type="hidden" name="id" value="{{ calificacion.viaje_id }}">
+											<input type="hidden" name="viaje_id" value="{{ calificacion.id }}">	
+											<input type="hidden" name="usuario_id" value="{{ calificacion.usuario_id }}">
 											<input type="submit" class="btn btn-primaryPink" value="Calificar">
 										</form>
 									</td>
@@ -196,10 +187,11 @@ Mi perfil
 	</div>
 </div>
 <div class="container well">
-	<div id="calificacionesPendientesACopilotos">
-		<div class="row">
-			<div class="col-sm-12 col-sm-offset-0 text-center well">
-				<h2>Calificaciones pendientes a copilotos</h2>
+	<div id="calificacionesPendientesACopilotos" class="row">
+		<div class="col-sm-12 col-sm-offset-0 text-center">
+			<h2>Calificaciones pendientes a copilotos</h2>
+			<button id="boton4" class="btn btn-primaryPink" onclick="toggleVisibility('calificacionesPendientesACopilotosTable', 'boton4')">Ver detalles</button>
+			<div id="calificacionesPendientesACopilotosTable" hidden>
 				{% if calificacionesPendientesACopilotos %}
 					<table class="table table-striped">	
 						<thead>
@@ -218,7 +210,7 @@ Mi perfil
 						<tbody>
 							{% for calificacion in calificacionesPendientesACopilotos %}
 								<tr>
-									<td></td>
+									<td><a href="#">{{ calificacion.email }}</a></td>
 									<td>{{ ciudades[calificacion.origen_id - 1].nombre }}</td>
 									<td>{{ ciudades[calificacion.destino_id - 1].nombre }}</td>
 									<td>{{ calificacion.fecha }}</td>
@@ -228,7 +220,8 @@ Mi perfil
 									<td>{{ calificacion.distancia }} kms</td>
 									<td>
 										<form method="post" class="pull-left" action="index.php?action=calificarCopiloto">
-											<input type="hidden" name="id" value="{{ calificacion.viaje_id }}">
+											<input type="hidden" name="viaje_id" value="{{ calificacion.id }}">	
+											<input type="hidden" name="usuario_id" value="{{ calificacion.usuario_id }}">
 											<input type="submit" class="btn btn-primaryPink" value="Calificar">
 										</form>
 									</td>

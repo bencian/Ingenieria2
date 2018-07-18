@@ -132,15 +132,15 @@ class AppModelUsuario extends PDORepository {
 
     public function pilotosACalificar($id){
         $answer = $this->queryList("SELECT *
-            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id)
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (v.usuario_id=u.id)
             WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and uv.usuario_id=:id and uv.estado='Aceptado' and not exists (
             select * from calificacion_piloto where copiloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
         return $answer;
     }
 
     public function copilotosACalificar($id){
-        $answer = $this->queryList("SELECT *
-            FROM viaje v 
+        $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (uv.usuario_id=u.id)
             WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id and not exists (
             select * from calificacion_copiloto where piloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
         return $answer;
@@ -158,6 +158,25 @@ class AppModelUsuario extends PDORepository {
             FROM viaje v
             INNER JOIN vehiculo vh ON vh.id=v.vehiculo_id
             WHERE ((v.fecha<CURDATE()) OR (v.fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id AND pagado=0",["id" => $_SESSION["id"]]);
+        return $answer;
+    }
+
+    public function getDatosCalifcacionPiloto($datos){
+        $answer = $this->queryList("SELECT * 
+            FROM viaje v INNER JOIN ",[]);
+        return $answer;
+    }
+
+    public function getDatosCalifcacionCopiloto($datos){
+        $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (uv.usuario_id=u.id) 
+            WHERE (v.id=:viaje_id AND uv.usuario_id=:usuario_id)",["viaje_id"=>$datos["viaje_id"],"usuario_id"=>$datos["usuario_id"]]);
+        return $answer;
+    }
+
+    public function calificarCopiloto($datos){
+        $answer = $this->queryList("INSERT INTO calificacion_copiloto (puntuacion, comentarios, fecha, copiloto_calificado, viaje_id, piloto_califica) 
+            VALUES (:puntuacion, :comentarios, CURDATE(), :copiloto, :viaje_id, :piloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"copiloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"piloto"=>$_SESSION["id"]]);
         return $answer;
     }
 
