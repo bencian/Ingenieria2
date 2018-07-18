@@ -98,6 +98,8 @@ if(!isset($_GET["action"])){
 	$usuario->responder_pregunta($_POST);
 } elseif($_GET["action"] == "calificarCopiloto"){
 	$usuario->calificarCopiloto($_POST);
+} elseif($_GET["action"] == "calificar_Copiloto"){
+	$usuario->calificar_copiloto($_POST);
 } elseif($_GET["action"] == "calificarPiloto"){
 	$usuario->calificarPiloto($_POST);
 } elseif($_GET["action"] == "listar_viajes_a_pagar"){

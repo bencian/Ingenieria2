@@ -51,8 +51,10 @@ Mi perfil
 				</div>
     			<div class="form-group">
 					<label for="">Comentarios</label>
-					<textarea rows="4" cols="50" class="form-control" id="comentarios" placeholder="Comentarios"></textarea> 
+					<textarea rows="4" cols="50" class="form-control" id="comentarios" name="comentarios" placeholder="Comentarios"></textarea> 
 				</div>
+		        <input type="hidden" name="viaje_id" value="{{ datos.0.id }}">	
+				<input type="hidden" name="usuario_id" value="{{ datos.0.usuario_id }}">
 		        <input type="submit" class="btn btn-primaryPink" value='Calificar'>
 		    </form>
     	</div>

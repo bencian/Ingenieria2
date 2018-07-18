@@ -173,6 +173,12 @@ class AppModelUsuario extends PDORepository {
             WHERE (v.id=:viaje_id AND uv.usuario_id=:usuario_id)",["viaje_id"=>$datos["viaje_id"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;
     }
+
+    public function calificarCopiloto($datos){
+        $answer = $this->queryList("INSERT INTO calificacion_copiloto (puntuacion, comentarios, fecha, copiloto_calificado, viaje_id, piloto_califica) 
+            VALUES (:puntuacion, :comentarios, CURDATE(), :copiloto, :viaje_id, :piloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"copiloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"piloto"=>$_SESSION["id"]]);
+        return $answer;
+    }
 }
 
 

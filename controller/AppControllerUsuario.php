@@ -196,16 +196,24 @@ class AppControllerUsuario {
     public function calificarPiloto($datos){
         $view = new Home();
         $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionPiloto($datos);
-        $view->show("calificar.html.twig");
+        $ciudades=AppModel::getInstance()->getCiudades();
+        $rol = "Piloto";
+        $view->calificacion($datosCompletos,$ciudades,$rol);
     }
 
     public function calificarCopiloto($datos){
         $view = new Home();
         $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionCopiloto($datos);
         $ciudades=AppModel::getInstance()->getCiudades();
-        var_dump($datosCompletos);
         $rol = "Copiloto";
+        var_dump($datosCompletos);
         $view->calificacion($datosCompletos,$ciudades,$rol);
+    }
+
+    public function calificar_copiloto($datos){
+        AppModelUsuario::getInstance()->calificarCopiloto($datos);
+        echo("El copiloto fue calificado con exito");
+        $this->mostrarPerfil("futuro");
     }
 
     public function listarViajesAPagar(){
