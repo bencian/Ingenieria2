@@ -201,7 +201,6 @@ class AppControllerUsuario {
     public function listarViajesAPagar(){
         $viajes=AppModelUsuario::getInstance()->listaViajesAPagar();
         $ciudades=AppModel::getInstance()->getCiudades();
-        var_dump($viajes);
         $view = new Home();
         $view->listarViajesAPagar($viajes,$ciudades);
     }
@@ -218,13 +217,26 @@ class AppControllerUsuario {
     }
 
     public function validarPago($datos){
+        //$valida=$this->validarTarjetaDeCredito($datos);
         $valida=true;
         if($valida){
-            var_dump($datos);
-            //si tiene mas viajes va a la lista, sino va a index
+            $this->realizarPago($datos);
+            AppController::getInstance()->mostrarMenuConSesion();
         } else {
-            var_dump('hola');
+            $this->listarViajesAPagar();
+            //informar error en el pago
         }
-        $this->listarViajesAPagar();
+    }
+
+    public function validarTarjetaDeCredito($datos){
+        $val=rand(0,9);
+        if(($val % 2) == 0){
+            return true;
+        } 
+        return false;
+    }
+
+    public function realizarPago($datos){
+        echo('El pago se realizo correctamente!');
     }
 }
