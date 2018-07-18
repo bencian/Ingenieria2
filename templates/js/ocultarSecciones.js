@@ -17,4 +17,5 @@ function toggleVisibilityGeneral(nombre) {
     } else {
         seccion.style.display = "block";
     }
+    
 }
