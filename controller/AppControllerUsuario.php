@@ -223,13 +223,12 @@ class AppControllerUsuario {
 
     public function validarPago($datos){
         $valida=$this->validarTarjetaDeCredito($datos);
-        var_dump($valida);
         if($valida){
             $this->realizarPago($datos);
             AppController::getInstance()->mostrarMenuConSesion();
         } else {
-            echo('El pago no pudo realizarse!');
-            $this->listarViajesAPagar();
+            echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
+            $this->pagarViaje($datos);
             //informar error en el pago
         }
     }
@@ -242,6 +241,7 @@ class AppControllerUsuario {
 
     public function realizarPago($datos){
         //consulta para cambiar estado!
+        AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         echo('El pago se realizo correctamente!');
     }
 }

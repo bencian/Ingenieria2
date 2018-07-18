@@ -167,6 +167,11 @@ class AppModelUsuario extends PDORepository {
             WHERE nombre=:nombre AND numero=:numero AND codigo=:codigo AND vencimiento=:vencimiento",["nombre" => $datos["nombre"], "numero"=> $datos["tarjeta"], "codigo"=> $datos["codigo"], "vencimiento"=> $datos["vencimiento"]]);
         return $answer;
     }
+
+    public function setearPagado($id){
+        $answer = $this->queryList("UPDATE viaje SET pagado=1 WHERE id=:id", ["id" => $id]);
+        return $answer;
+    }
 }
 
 
