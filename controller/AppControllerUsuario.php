@@ -124,14 +124,14 @@ class AppControllerUsuario {
             $view = new Home();
             $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
             if ($guia == "futuro"){
-                $viajes = AppModelUsuario::getInstance()->getViajesPropios($_SESSION['id']);
-                $misPostulaciones = AppModelUsuario::getInstance()->getMisPostulaciones($_SESSION['id']);
+                $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
+                $misPostulaciones = $bdUsuario->getMisPostulaciones($_SESSION['id']);
                 $mostrarDatos["tituloDinamico"] = "Mis proximos viajes como piloto";
                 $mostrarDatos["tituloDinamico2"] = "Mis proximos viajes como copiloto";
             } elseif ($guia == "totales"){
-                $viajes = AppModelUsuario::getInstance()->getViajesPiloto($_SESSION['id']);
+                $viajes = $bdUsuario->getViajesPiloto($_SESSION['id']);
                 //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
-                $misPostulaciones = AppModelUsuario::getInstance()->getViajesCopiloto($_SESSION['id']);
+                $misPostulaciones = $bdUsuario->getViajesCopiloto($_SESSION['id']);
                 $mostrarDatos["tituloDinamico"] = "Mis viajes hechos como piloto";
                 $mostrarDatos["tituloDinamico2"] = "Mis viajes hechos como copiloto";
             }
@@ -195,12 +195,17 @@ class AppControllerUsuario {
 
     public function calificarPiloto($datos){
         $view = new Home();
+        $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionPiloto($datos);
         $view->show("calificar.html.twig");
     }
 
-    public function calificarCoiloto($datos){
+    public function calificarCopiloto($datos){
         $view = new Home();
-        $view->show("calificar.html.twig");
+        $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionCopiloto($datos);
+        $ciudades=AppModel::getInstance()->getCiudades();
+        var_dump($datosCompletos);
+        $rol = "Copiloto";
+        $view->calificacion($datosCompletos,$ciudades,$rol);
     }
 
     public function listarViajesAPagar(){

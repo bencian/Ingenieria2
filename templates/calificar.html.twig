@@ -9,11 +9,38 @@ Mi perfil
 {% endblock %}
 
 {% block container %}
-
+<div class="container well">
+	<table class="table table-striped">	
+		<thead>
+			<tr>
+				<th scope="col">{{rol}}</th>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Hora de salida</th>
+				<th scope="col">Precio</th>
+				<th scope="col">Duracion</th>
+				<th scope="col">Distancia</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><a href="#">{{ datos.0.email }}</a></td>
+				<td>{{ ciudades[datos.0.origen_id - 1].nombre }}</td>
+				<td>{{ ciudades[datos.0.destino_id - 1].nombre }}</td>
+				<td>{{ datos.0.fecha }}</td>
+				<td>{{ datos.0.hora_salida }}hs</td>
+				<td>$ {{ datos.0.precio }}</td>
+				<td>{{ datos.0.duracion }} horas</td>
+				<td>{{ datos.0.distancia }} kms</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div class="container">
 	<div class="row">
     	<div class="col-sm-4 col-sm-offset-4 text-center well">
-    		<form class="col-lg-12" method="post" action="./?action=calificar_{{ piloto }}">
+    		<form class="col-lg-12" method="post" action="./?action=calificar_{{ rol }}">
     			<div class="form-group">
 					<label for="">Puntaje</label>
 					<select class="form-control" id="puntaje" name="puntaje" required>

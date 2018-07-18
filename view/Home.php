@@ -97,4 +97,8 @@ class Home extends TwigView {
     public function pantallaParaPagar($viaje,$vehiculo){
         echo self::getTwig()->render("pagar_viaje.html.twig", array("viaje"=>$viaje,"vehiculo"=>$vehiculo));
     }
+
+    public function calificacion($datos,$ciudades,$rol){
+        echo self::getTwig()->render("calificar.html.twig", array("datos"=>$datos,"ciudades"=>$ciudades,"rol"=>$rol));
+    }
 }
