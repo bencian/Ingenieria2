@@ -219,7 +219,6 @@ class AppControllerUsuario {
     public function listarViajesAPagar(){
         $viajes=AppModelUsuario::getInstance()->listaViajesAPagar();
         $ciudades=AppModel::getInstance()->getCiudades();
-        var_dump($viajes);
         $view = new Home();
         $view->listarViajesAPagar($viajes,$ciudades);
     }
@@ -236,13 +235,26 @@ class AppControllerUsuario {
     }
 
     public function validarPago($datos){
-        $valida=true;
+        $valida=$this->validarTarjetaDeCredito($datos);
         if($valida){
-            var_dump($datos);
-            //si tiene mas viajes va a la lista, sino va a index
+            $this->realizarPago($datos);
+            AppController::getInstance()->mostrarMenuConSesion();
         } else {
-            var_dump('hola');
+            echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
+            $this->pagarViaje($datos);
+            //informar error en el pago
         }
-        $this->listarViajesAPagar();
+    }
+
+    public function validarTarjetaDeCredito($datos){
+        $valida=AppModelUsuario::getInstance()->validadorDeTarjetas($datos);
+        //revisar el saldo en la tarjeta!
+        return $valida;
+    }
+
+    public function realizarPago($datos){
+        //consulta para cambiar estado!
+        AppModelUsuario::getInstance()->setearPagado($datos["id"]);
+        echo('El pago se realizo correctamente!');
     }
 }

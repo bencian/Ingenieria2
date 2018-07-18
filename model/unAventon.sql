@@ -271,6 +271,15 @@ CREATE TABLE IF NOT EXISTS `un_aventon1`.`calificacion_copiloto` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE TABLE `un_aventon1`.`banco` ( 
+  `id` INT NOT NULL AUTO_INCREMENT, 
+  `nombre` VARCHAR(22) NOT NULL , 
+  `numero` VARCHAR(20) NOT NULL , 
+  `codigo` VARCHAR(4) NOT NULL ,
+  `vencimiento` VARCHAR(7) NOT NULL , 
+  PRIMARY KEY (`id`)) 
+ENGINE = InnoDB;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

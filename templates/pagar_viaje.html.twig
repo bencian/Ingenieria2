@@ -11,13 +11,15 @@ Pagando!
 {% block container %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-12 col-sm-offset-0 text-center well">
-        	<div class="col-sm-12 col-lg-5 text-left well">
+        <div class="col-sm-12 col-sm-offset-0 text-center">
+            <div class="well col-lg-12">
+        	<div class="col-sm-12 col-lg-6 col-lg-offset-3 text-left">
         		<h3>Ingrese sus datos para realizar el pago</h3>
         		<h4>Precio a pagar ${{ viaje.precio*0.05* ((viaje.cant_copilotos+1)/viaje.lugares) }}</h4>
         		<br>
         		<form method="post" action="./?action=validar_pago" onsubmit="return validarTarjeta()"> {# aca deveria validar los datos de la tarjeta #}
-        			<input type="hidden" name="" value="{{ viaje.precio*0.05* ((viaje.cant_copilotos+1)/viaje.lugares) }}">
+        			<input type="hidden" name="precio" value="{{ viaje.precio*0.05* ((viaje.cant_copilotos+1)/viaje.lugares) }}">
+                    <input type="hidden" name="id" value="{{ viaje.id }}">
         			<div class="form-group">
 						<label for="">Nombre</label>
 						<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required>
@@ -32,13 +34,14 @@ Pagando!
 					</div>
 					<div class="form-group">
 						<label for="">Fecha de vencimiento</label>
-						<input type="date" class="form-control" id="vencimiento" name="vencimiento" placeholder="Fecha de vencimiento" required>
+						<input type="month" class="form-control" id="vencimiento" name="vencimiento" placeholder="Fecha de vencimiento" required>
 					</div>
         			<input type="submit" class="btn btn-primaryPink">
         		</form>
         	</div>
+            </div>
         	<br>
-        	<div class="col-sm-12">
+        	<div class="col-sm-12 well">
         		<h3>Datos de viaje</h3>
         		<table class="table table-striped">
                     <tr> 
@@ -61,8 +64,6 @@ Pagando!
                         <td><h5>Marca: {{ vehiculo.marca }}</h5></td>
                         <td><h5>Modelo: {{ vehiculo.modelo }}</h5></td>
                         <td><h5>Patente: {{ vehiculo.patente }}</h5></td>
-                    </tr>
-                    <tr>
                     </tr>
                     <tr>
                         <td></td><td></td><td></td><td></td>

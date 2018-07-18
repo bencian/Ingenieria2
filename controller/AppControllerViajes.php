@@ -97,9 +97,7 @@ class AppControllerViajes {
     public function modificar_viaje_ocasional($datos){
         $view = new Home();
         $bd = AppModel::getInstance();
-        //$ciudades = $bd->getCiudades();
         $ciudadesOrdenadas = $bd->getCiudadesOrdenadas();
-        //$vectorFormulario["ciudades"] = $ciudades;
         $vehiculosUsuario = $bd->getVehiculos();
         $vectorFormulario["vehiculos"] = $vehiculosUsuario;
         $viaje = AppModelViaje::getInstance()->getViajeOcasional($datos);        

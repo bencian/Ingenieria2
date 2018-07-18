@@ -177,6 +177,16 @@ class AppModelUsuario extends PDORepository {
     public function calificarCopiloto($datos){
         $answer = $this->queryList("INSERT INTO calificacion_copiloto (puntuacion, comentarios, fecha, copiloto_calificado, viaje_id, piloto_califica) 
             VALUES (:puntuacion, :comentarios, CURDATE(), :copiloto, :viaje_id, :piloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"copiloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"piloto"=>$_SESSION["id"]]);
+
+    public function validadorDeTarjetas($datos){
+        $answer = $this->queryList("SELECT id
+            FROM banco
+            WHERE nombre=:nombre AND numero=:numero AND codigo=:codigo AND vencimiento=:vencimiento",["nombre" => $datos["nombre"], "numero"=> $datos["tarjeta"], "codigo"=> $datos["codigo"], "vencimiento"=> $datos["vencimiento"]]);
+        return $answer;
+    }
+
+    public function setearPagado($id){
+        $answer = $this->queryList("UPDATE viaje SET pagado=1 WHERE id=:id", ["id" => $id]);
         return $answer;
     }
 }
