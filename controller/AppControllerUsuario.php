@@ -222,26 +222,26 @@ class AppControllerUsuario {
     }
 
     public function validarPago($datos){
-        //$valida=$this->validarTarjetaDeCredito($datos);
-        $valida=true;
+        $valida=$this->validarTarjetaDeCredito($datos);
+        var_dump($valida);
         if($valida){
             $this->realizarPago($datos);
             AppController::getInstance()->mostrarMenuConSesion();
         } else {
+            echo('El pago no pudo realizarse!');
             $this->listarViajesAPagar();
             //informar error en el pago
         }
     }
 
     public function validarTarjetaDeCredito($datos){
-        $val=rand(0,9);
-        if(($val % 2) == 0){
-            return true;
-        } 
-        return false;
+        $valida=AppModelUsuario::getInstance()->validadorDeTarjetas($datos);
+        //revisar el saldo en la tarjeta!
+        return $valida;
     }
 
     public function realizarPago($datos){
+        //consulta para cambiar estado!
         echo('El pago se realizo correctamente!');
     }
 }

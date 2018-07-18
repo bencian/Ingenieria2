@@ -160,6 +160,13 @@ class AppModelUsuario extends PDORepository {
             WHERE ((v.fecha<CURDATE()) OR (v.fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id AND pagado=0",["id" => $_SESSION["id"]]);
         return $answer;
     }
+
+    public function validadorDeTarjetas($datos){
+        $answer = $this->queryList("SELECT id
+            FROM banco
+            WHERE nombre=:nombre AND numero=:numero AND codigo=:codigo AND vencimiento=:vencimiento",["nombre" => $datos["nombre"], "numero"=> $datos["tarjeta"], "codigo"=> $datos["codigo"], "vencimiento"=> $datos["vencimiento"]]);
+        return $answer;
+    }
 }
 
 

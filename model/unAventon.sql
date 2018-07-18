@@ -272,9 +272,9 @@ CREATE TABLE IF NOT EXISTS `un_aventon1`.`calificacion_copiloto` (
 ENGINE = InnoDB;
 
 CREATE TABLE `un_aventon1`.`banco` ( 
-  `id` INT NOT NULL , 
+  `id` INT NOT NULL AUTO_INCREMENT, 
   `nombre` VARCHAR(22) NOT NULL , 
-  `numero` VARCHAR(16) NOT NULL , 
+  `numero` VARCHAR(20) NOT NULL , 
   `codigo` VARCHAR(4) NOT NULL ,
   `vencimiento` VARCHAR(7) NOT NULL , 
   PRIMARY KEY (`id`)) 
