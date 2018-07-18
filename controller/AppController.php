@@ -80,7 +80,7 @@ class AppController {
                 if (count($usuario) == 0){
                     //Aviso que no existe usuario o que no corresponde con su psw
                     $view = new Home();
-                    $view->errorLogin("el usuario no corresponde con la contraseña");
+                    $view->errorLogin("El usuario no corresponde con la contraseña");
                 }else{
                     $vector_usuario = AppModelUsuario::getInstance()->getId($datos['nombre_usuario']);
                     $usuario_id = (int)$vector_usuario[0][0];
