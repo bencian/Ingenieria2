@@ -200,4 +200,10 @@ class AppModelViaje extends PDORepository {
         $answer = $this->queryList("UPDATE usuario_viaje SET estado='Rechazado' WHERE (viaje_id=:viaje and usuario_id=:usr)",["viaje"=>$idViaje, "usr"=>$postulado]);
         return $answer;
     }
+
+    public function getCiudadForId($datos){
+        $answer= $this->queryList("SELECT nombre FROM ciudad WHERE id=?",[$datos]);
+        return $answer;
+    }
+
 }

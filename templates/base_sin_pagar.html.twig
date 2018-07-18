@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" /> 
+	<title>
+	{% block title %}
+		
+	{% endblock %}
+	</title>
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap-theme.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="./templates/css/own.css">
+    {% block stylesheets %}
+        
+    {% endblock %}
+	<style type="text/css">
+		
+		
+
+	</style>
+</head>
+<body>
+<div id="cabecera">
+	<a href="index.php"><img id="logo" src="./templates/img/logo.jpg"></a>
+</div>
+<nav class="nav" id="navbar">
+	<ul class="nav nav-pills">
+	  <li class="nav-item" id="register">
+	    <a class="nav-link disabled" href="index.php?action=cerrar_sesion">Cerrar Sesion</a>
+	  </li>
+	</ul>
+</nav>
+
+{% block container %}
+	
+{% endblock %}
+<cr>
+</cr>
+
+<footer class="page-footer navbar-bottom" id="footer">
+	<ul class="nav nav-pills">
+	  <li class="nav-item">
+	    <a class="nav-link active" href="#">CONTACTO</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">FACEBOOK</a>
+	  </li>
+	  <li class="nav-item">
+	    <a class="nav-link" href="#">TWITTER</a>
+	  </li>
+	  <li id="cda" class="nav-item">
+		<h5>©CoDeAr 2018</h5>
+	</li>
+	</ul>	
+</footer>
+</body>
+</html>

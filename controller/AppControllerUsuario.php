@@ -205,4 +205,26 @@ class AppControllerUsuario {
         $view = new Home();
         $view->listarViajesAPagar($viajes,$ciudades);
     }
+
+    public function pagarViaje($datos){
+        $model=AppModelViaje::getInstance();
+        $viaje=$model->getViaje($datos);
+        $viaje["origen"]=($model->getCiudadForId($viaje["origen_id"]))[0][0];
+        $viaje["destino"]=($model->getCiudadForId($viaje["destino_id"]))[0][0];
+        $viaje["cant_copilotos"]=($model->contarAceptados($datos))[0][0];
+        $vehiculo=AppModel::getInstance()->getVehiculo($viaje["vehiculo_id"])[0];
+        $view = new Home();
+        $view->pantallaParaPagar($viaje,$vehiculo);
+    }
+
+    public function validarPago($datos){
+        $valida=true;
+        if($valida){
+            var_dump($datos);
+            //si tiene mas viajes va a la lista, sino va a index
+        } else {
+            var_dump('hola');
+        }
+        $this->listarViajesAPagar();
+    }
 }
