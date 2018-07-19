@@ -147,8 +147,6 @@ class AppControllerUsuario {
             $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($_SESSION['id']);
             $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($_SESSION['id']);
             $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($_SESSION['id']);
-            //var_dump($mostrarDatos["calificacionesPendientesAPilotos"]);
-            //var_dump($mostrarDatos["calificacionesPendientesACopilotos"]);
             $view->mostrarNombre($mostrarDatos); //falta
         }
 
@@ -198,12 +196,15 @@ class AppControllerUsuario {
         $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionPiloto($datos);
         $ciudades=AppModel::getInstance()->getCiudades();
         $rol = "Piloto";
+        var_dump($datosCompletos);
         $view->calificacion($datosCompletos,$ciudades,$rol);
     }
 
     public function calificar_piloto($datos){
-        AppModelUsuario::getInstance()->calificarPiloto($datos);
-        //falta
+        $bdUsuario = AppModelUsuario::getInstance();
+        var_dump($datos);
+        $bdUsuario->calificarPiloto($datos);
+        $bdUsuario->actualizarPuntajePiloto($datos);
         echo("El piloto fue calificado con exito");
         $this->mostrarPerfil("futuro");
     }
