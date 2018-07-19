@@ -2,6 +2,7 @@ ejecuten esto en phpmyadmin para que tengan la columna para poder manejar los vi
 
 ALTER TABLE `viaje` ADD `pagado` BOOLEAN NULL ;
 
+ejecuten esto en phpmyadmin para que tengan la tabla del banco para tener las tarjetas validas para pagar!
 
 CREATE TABLE `un_aventon1`.`banco` ( 
   `id` INT NOT NULL AUTO_INCREMENT, 
