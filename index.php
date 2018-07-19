@@ -102,6 +102,8 @@ if(!isset($_GET["action"])){
 	$usuario->calificar_copiloto($_POST);
 } elseif($_GET["action"] == "calificarPiloto"){
 	$usuario->calificarPiloto($_POST);
+} elseif($_GET["action"] == "calificar_Piloto"){
+	$usuario->calificar_piloto($_POST);
 } elseif($_GET["action"] == "listar_viajes_a_pagar"){
 	$usuario->listarViajesAPagar();
 } elseif($_GET["action"] == "pagar_viaje"){

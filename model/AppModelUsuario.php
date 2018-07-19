@@ -131,7 +131,7 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function pilotosACalificar($id){
-        $answer = $this->queryList("SELECT *
+        $answer = $this->queryList("SELECT u.email, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia, v.usuario_id, v.id
             FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (v.usuario_id=u.id)
             WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and uv.usuario_id=:id and uv.estado='Aceptado' and not exists (
             select * from calificacion_piloto where copiloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
@@ -162,8 +162,9 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function getDatosCalifcacionPiloto($datos){
-        $answer = $this->queryList("SELECT * 
-            FROM viaje v INNER JOIN ",[]);
+        $answer = $this->queryList("SELECT u.email, v.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (v.usuario_id=u.id)
+            WHERE (v.id=:viaje_id AND v.usuario_id=:usuario_id)",["viaje_id"=>$datos["viaje_id"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;
     }
 
@@ -177,6 +178,24 @@ class AppModelUsuario extends PDORepository {
     public function calificarCopiloto($datos){
         $answer = $this->queryList("INSERT INTO calificacion_copiloto (puntuacion, comentarios, fecha, copiloto_calificado, viaje_id, piloto_califica) 
             VALUES (:puntuacion, :comentarios, CURDATE(), :copiloto, :viaje_id, :piloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"copiloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"piloto"=>$_SESSION["id"]]);
+        return $answer;
+    }
+
+    public function calificarPiloto($datos){
+        $answer = $this->queryList("INSERT INTO calificacion_piloto (puntuacion, comentarios, fecha, piloto_calificado, viaje_id, copiloto_califica) 
+            VALUES (:puntuacion, :comentarios, CURDATE(), :copiloto, :viaje_id, :piloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"piloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"copiloto"=>$_SESSION["id"]]);
+        return $answer;
+    }
+
+    public function actualizarPuntajeCopiloto($datos){
+        $answer = $this->queryList("UPDATE usuario SET calificacion_copiloto = calificacion_copiloto + :puntuacion 
+            WHERE id=:usuario_id",["puntuacion"=>$datos["puntaje"],"usuario_id"=>$datos["usuario_id"]]);
+        return $answer;
+    }
+
+    public function actualizarPuntajePiloto($datos){
+        $answer = $this->queryList("UPDATE usuario SET calificacion_piloto = calificacion_piloto + :puntuacion 
+            WHERE id=:usuario_id",["puntuacion"=>$datos["puntaje"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;
     }
 
