@@ -201,17 +201,25 @@ class AppControllerUsuario {
         $view->calificacion($datosCompletos,$ciudades,$rol);
     }
 
+    public function calificar_piloto($datos){
+        AppModelUsuario::getInstance()->calificarPiloto($datos);
+        //falta
+        echo("El piloto fue calificado con exito");
+        $this->mostrarPerfil("futuro");
+    }
+
     public function calificarCopiloto($datos){
         $view = new Home();
         $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionCopiloto($datos);
         $ciudades=AppModel::getInstance()->getCiudades();
         $rol = "Copiloto";
-        var_dump($datosCompletos);
         $view->calificacion($datosCompletos,$ciudades,$rol);
     }
 
     public function calificar_copiloto($datos){
-        AppModelUsuario::getInstance()->calificarCopiloto($datos);
+        $bdUsuario = AppModelUsuario::getInstance();
+        $bdUsuario->calificarCopiloto($datos);
+        $bdUsuario->actualizarPuntajeCopiloto($datos);
         echo("El copiloto fue calificado con exito");
         $this->mostrarPerfil("futuro");
     }
