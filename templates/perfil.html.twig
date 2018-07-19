@@ -18,13 +18,6 @@ Mi perfil
 	<div class="row row-list">
 		<div id="calificaciones" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion" style="width:14em;">Ver calificaciones detalladas</a>
-			<br>
-			<br>
-			<p style="text-align: left; color:black;"> Calificacion como piloto = {{ calificacion_piloto.0 }}</p><cr>
-			<p style="text-align: left; color:black;"> Total viajes = {{ cantidadViajesPiloto.0 }}</p>
-			<p style="text-align: left; color:black;"> Calificacion como copiloto = {{ calificacion_copiloto.0 }}</p><cr>
-			<p style="text-align: left; color:black;"> Total viajes = {{ cantidadViajesCopiloto.0 }}</p>
-			<br>
 		</div>
 		<div id="historialViajes" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
 			{% if tituloDinamico == 'Mis proximos viajes como piloto' %}
@@ -54,6 +47,12 @@ Mi perfil
 		</div>
 		<div id="registrarVehiculo" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
 			<a class="btn btn-primaryPink" href="index.php?action=registrar_vehiculo" style="width:14em;">Registrar Vehiculo</a>
+		</div>
+		<div class="col-xs-12 col-md-12 col-lg-12" style="padding-left:3em;">
+			<p style="text-align: left; color:black;"> Calificacion como piloto = {{ calificacion_piloto.0 }}</p><cr>
+			<p style="text-align: left; color:black;"> Total viajes = {{ cantidadViajesPiloto.0 }}</p>
+			<p style="text-align: left; color:black;"> Calificacion como copiloto = {{ calificacion_copiloto.0 }}</p><cr>
+			<p style="text-align: left; color:black;"> Total viajes = {{ cantidadViajesCopiloto.0 }}</p>
 		</div>
 	</div>
 </div>
