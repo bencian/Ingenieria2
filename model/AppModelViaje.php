@@ -1,12 +1,5 @@
 <?php
 
-
-
-
-
-
-//NO TOCAR.
-
 require_once('model/PDORepository.php');
 
 
