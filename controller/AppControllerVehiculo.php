@@ -82,6 +82,7 @@ class AppControllerVehiculo {
 
     public function confirmar_eliminacion_en_cascada($datos){
         // REVISAR ESTA FUNCION
+        var_dump($datos);
         $bdViaje = AppModelViaje::getInstance();
         $bd = AppModel::getInstance();
         $bdViaje->eliminarViajesFuturosEnCascada($datos); //SI NO TIENEN POSTULADOS BORRADO LOGICO, SINO FISICO
@@ -91,6 +92,8 @@ class AppControllerVehiculo {
               $bd->borrarVehiculo($datos);
         }
         $bd->eliminarRelacionUsuarioVehiculo($datos);
+        $datos["usuario_id"]=$_SESSION["id"];
+        AppModelUsuario::getInstance()->actualizarPuntajePiloto($datos);
         $this->listar_vehiculos();
     }
 

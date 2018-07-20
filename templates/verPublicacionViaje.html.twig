@@ -44,8 +44,11 @@ Detalles de viaje
                         <td><h3>Fecha: {{ viaje.fecha }}</h3></td>
                     </tr>
                     <tr>
-                        <td><h4>Datos generales</h4></td>  
-                        <td>Piloto: <a href="#">{{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
+                        <td><h3>Datos generales</h3></td>  
+                        <td>
+                            <p>Piloto: <a href="#">{{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></p>
+                            <p>Calificacion: {{ piloto.calificacion_piloto }}</p>
+                        </td>
                         <td>Hora de salida: {{ viaje.hora_salida }}</td>
                         <td>Precio: ${{ (viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }} por persona</td>
                     </tr>

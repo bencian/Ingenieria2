@@ -171,8 +171,6 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
-
-
     public function getHorariosViaje($id){
         $answer = $this->queryList("SELECT vj.hora_salida,vj.duracion,vj.fecha FROM viaje vj WHERE vj.id=?",[$id]);
         return $answer;
@@ -202,7 +200,7 @@ class AppModelViaje extends PDORepository {
     }
 
     public function getCiudadForId($datos){
-        $answer= $this->queryList("SELECT nombre FROM ciudad WHERE id=?",[$datos]);
+        $answer= $this->queryList("SELECT nombre FROM ciudad WHERE id=:id",["id"=>$datos]);
         return $answer;
     }
 
