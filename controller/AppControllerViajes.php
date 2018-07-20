@@ -62,8 +62,8 @@ class AppControllerViajes {
             $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
             $view->listarViajes($viajes_hechos, $ciudades, $datos, $ciudadesOrdenadas); //falta
         } else {
-            echo "Faltan ingresar datos";
-            var_dump("necesitamos una pagina para errores");
+            echo "<h1>No juegues con la URL, hjo de una gran... de de muzzarella</h1>";
+            AppController::getInstance()->mostrarMenuConSesion();  
         }
     }
 
