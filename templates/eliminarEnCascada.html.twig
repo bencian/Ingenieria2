@@ -17,7 +17,7 @@ Confirmar eliminar
 			{% endif %}
 			
 			<form method="post" class="" action="./?action=confirmar_eliminacion_en_cascada">
-				<input type="hidden" name="puntaje" value="{{ viajes }}">
+				<input type="hidden" name="puntaje" value="-{{ viajes }}">
 				<input type="hidden" name="id" value="{{ vehiculo }}">
 				<input type="submit" class="btn btn-primaryPink"  value="Confirmar">
 				<input type="button" onclick="window.location='./index.php?action=lista_vehiculos'" class="btn btn-primaryPink"  value="Cancelar">

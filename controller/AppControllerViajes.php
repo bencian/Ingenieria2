@@ -495,6 +495,8 @@ class AppControllerViajes {
         $postulado=$datos["id_usuario"];
         $viaje=$datos["id"];
         $bdViaje->cambiarEstadoARechazado($viaje, $postulado);
+        $datos["usuario_id"]=$_SESSION["id"];
+        AppModelUsuario::getInstance()->actualizarPuntajePiloto($datos);
         $this->ver_publicacion_viaje($datos);
     }
 }

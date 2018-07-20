@@ -187,12 +187,14 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function actualizarPuntajeCopiloto($datos){
+        var_dump($datos);
         $answer = $this->queryList("UPDATE usuario SET calificacion_copiloto = calificacion_copiloto + :puntuacion 
             WHERE id=:usuario_id",["puntuacion"=>$datos["puntaje"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;
     }
 
     public function actualizarPuntajePiloto($datos){
+        var_dump($datos);
         $answer = $this->queryList("UPDATE usuario SET calificacion_piloto = calificacion_piloto + :puntuacion 
             WHERE id=:usuario_id",["puntuacion"=>$datos["puntaje"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;

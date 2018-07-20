@@ -49,7 +49,7 @@ class AppModelViaje extends PDORepository {
         return $answer;
     }
 
-    public function poseeViajesEchos($datos){
+    public function poseeViajesHechos($datos){
         $answer= $this->queryList("SELECT * FROM vehiculo vh INNER JOIN viaje vj ON vh.id=vj.vehiculo_id WHERE vh.id=:vehiculo", [ "vehiculo"=>$datos["id"]]);
         return $answer;
     }
