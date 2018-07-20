@@ -196,13 +196,11 @@ class AppControllerUsuario {
         $datosCompletos = AppModelUsuario::getInstance()->getDatosCalifcacionPiloto($datos);
         $ciudades=AppModel::getInstance()->getCiudades();
         $rol = "Piloto";
-        var_dump($datosCompletos);
         $view->calificacion($datosCompletos,$ciudades,$rol);
     }
 
     public function calificar_piloto($datos){
         $bdUsuario = AppModelUsuario::getInstance();
-        var_dump($datos);
         $bdUsuario->calificarPiloto($datos);
         $bdUsuario->actualizarPuntajePiloto($datos);
         echo("El piloto fue calificado con exito");
