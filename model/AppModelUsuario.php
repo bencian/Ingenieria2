@@ -156,7 +156,6 @@ class AppModelUsuario extends PDORepository {
     public function listaViajesAPagar(){
         $answer = $this->queryList("SELECT *
             FROM viaje v
-            INNER JOIN vehiculo vh ON vh.id=v.vehiculo_id
             WHERE ((v.fecha<CURDATE()) OR (v.fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id AND pagado=0",["id" => $_SESSION["id"]]);
         return $answer;
     }

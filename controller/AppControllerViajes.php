@@ -52,9 +52,8 @@ class AppControllerViajes {
             if(isset($datos["destino"]) && $datos["destino"]!=""){ /* podria ser -1 */
                 if($datos["destino"]!=$datos["origen"]){
                     $viajes_hechos=$viajes->busqueda_completa($datos);
-                    var_dump("aca hay que controlar que destino != origen");
                 } else {
-                    var_dump("aca hay que controlar que destino != origen");
+                    echo("No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!");
                 }
             } else {
                 $viajes_hechos=$viajes->busqueda_parcial($datos);

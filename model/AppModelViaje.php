@@ -40,12 +40,12 @@ class AppModelViaje extends PDORepository {
     }
     
     public function busqueda_completa($datos){
-        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND destino_id=:destino AND fecha=:fecha and vj.usuario_id is not null ", ["origen"=>$datos["origen"], "destino"=>$datos["destino"], "fecha"=>$datos["salida"]]);
+        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND destino_id=:destino AND fecha=:fecha and usuario_id is not null", ["origen"=>$datos["origen"], "destino"=>$datos["destino"], "fecha"=>$datos["salida"]]);
         return $answer;
     }
 
     public function busqueda_parcial($datos){
-        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND fecha=:fecha and vj.usuario_id is not null ", ["origen"=>$datos["origen"], "fecha"=>$datos["salida"]]);
+        $answer= $this->queryList("SELECT * FROM viaje WHERE origen_id=:origen AND fecha=:fecha and usuario_id is not null", ["origen"=>$datos["origen"], "fecha"=>$datos["salida"]]);
         return $answer;
     }
 
