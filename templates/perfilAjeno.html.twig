@@ -20,33 +20,30 @@ Mi perfil
 			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion" style="width:14em;">Ver calificaciones detalladas</a>
 		</div>
 		<div id="historialViajes" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
-			{% if tituloDinamico == 'Mis proximos viajes como piloto' %}
+			{% if tituloDinamico == 'Sus proximos viajes como piloto' %}
 				{% if act is defined %}
-					<a id="b1" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral1('viajes1','b1')" style="width:14em;">Ocultar mis proximos viajes</a>
+					<a id="b1" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral1('viajes1','b1')" style="width:14em;">Ocultar sus proximos viajes</a>
 				{% else %}
-					<a id="b1" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral1('viajes1','b1')" style="width:14em;">Ver mis proximos viajes</a>
+					<a id="b1" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral1('viajes1','b1')" style="width:14em;">Ver sus proximos viajes</a>
 				{% endif %}
 				
 			{% else %}
-				<a id="b2" class="btn btn-primaryPink" href="index.php?action=mostrar_perfil&act=1"  style="width:14em;">Ver proximos viajes</a>
+				<a id="b2" class="btn btn-primaryPink" href="index.php?action=ver_perfil_ajeno&email={{ emailAjeno }}&act=1"  style="width:14em;">Ver sus proximos viajes</a>
 			{% endif %}
 		</div>
 		<div id="historialViajesPiloto" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
-			{% if tituloDinamico == 'Mis viajes hechos como piloto' %}
+			{% if tituloDinamico == 'Sus viajes hechos como piloto' %}
 				{% if act is defined %}
-					<a id="b3" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral2('viajes1','b3')" style="width:14em;">Ocultar mi historial de viajes</a>
+					<a id="b3" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral2('viajes1','b3')" style="width:14em;">Ocultar su historial de viajes</a>
 				{% else %}
-					<a id="b3" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral2('viajes1','b3')" style="width:14em;">Ver mi historial de viajes</a>
+					<a id="b3" class="btn btn-primaryPink" onclick="toggleVisibilityGeneral2('viajes1','b3')" style="width:14em;">Ver su historial de viajes</a>
 				{% endif %}
 			{% else %}
-				<a id="b4" class="btn btn-primaryPink" href="index.php?action=mostrar_viajes_hechos&act=1"  style="width:14em;">Ver mi historial de viajes</a>
+				<a id="b4" class="btn btn-primaryPink" href="index.php?action=ver_viajes_hechos_ajenos&email={{ emailAjeno }}&act=1"  style="width:14em;">Ver su historial de viajes</a>
 			{% endif %}
 		</div>
 		<div id="listaVehiculos" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
 			<a class="btn btn-primaryPink" href="index.php?action=lista_vehiculos" style="width:14em;">Ver vehiculos</a>
-		</div>
-		<div id="registrarVehiculo" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
-			<a class="btn btn-primaryPink" href="index.php?action=registrar_vehiculo" style="width:14em;">Registrar Vehiculo</a>
 		</div>
 		<div class="col-xs-12 col-md-12 col-lg-12" style="padding-left:3em;">
 			<p style="text-align: left; color:black;"> Calificacion como piloto = {{ calificacion_piloto.0 }}</p><cr>
@@ -253,7 +250,7 @@ Mi perfil
 						</tbody>
 					</table>
 				{% else %}
-					<h3>No tienes calificaciones pendientes a copilotos</h3>
+					<h3>Este usuario no tiene calificaciones pendientes a copilotos</h3>
 				{% endif %}
 			</div>
 		</div>

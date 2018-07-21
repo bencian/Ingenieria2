@@ -40,7 +40,11 @@ if(!isset($_GET["action"])){
 	$usuario->mostrarPerfil("futuro");
 } elseif($_GET["action"] == "mostrar_viajes_hechos"){
 	$usuario->mostrarPerfil("totales");
-}elseif ($_GET["action"] == "crear_vehiculo"){
+} elseif($_GET["action"] == "ver_perfil_ajeno"){
+	$usuario->verPerfilAjeno($_GET, "futuro");
+} elseif($_GET["action"] == "ver_viajes_hechos_ajenos"){
+	$usuario->verPerfilAjeno($_GET, "totales");
+}  elseif ($_GET["action"] == "crear_vehiculo"){
 	$vehiculo->crear_vehiculo($_POST);
 } elseif ($_GET["action"] == "modificar_perfil"){
 	$usuario->modificar_perfil();
@@ -110,6 +114,4 @@ if(!isset($_GET["action"])){
 	$usuario->pagarViaje($_POST);
 } elseif($_GET["action"] == "validar_pago"){
 	$usuario->validarPago($_POST);
-} elseif($_GET["action"] == "ver_perfil_ageno"){
-	$usuario->verPerfilAgeno($_POST);
 }

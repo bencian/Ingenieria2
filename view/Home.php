@@ -32,6 +32,15 @@ class Home extends TwigView {
         }
     }
 
+    public function mostrarNombreAjeno($dato){
+        if(isset($_GET["act"])){
+            $dato["act"]=$_GET["act"];
+            echo self::getTwig()->render("perfilAjeno.html.twig", $dato);
+        } else {
+            echo self::getTwig()->render("perfilAjeno.html.twig", $dato, array() );
+        }
+    }    
+
     public function formularioTipoVehiculos($datos,$string){
         echo self::getTwig()->render($string, array("tipoVehiculo" => $datos));
     }

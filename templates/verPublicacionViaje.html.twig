@@ -46,7 +46,7 @@ Detalles de viaje
                     <tr>
                         <td><h3>Datos generales</h3></td>  
                         <td>
-                            <p>Piloto: <a href="index.php?action=ver_perfil_ageno">{{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></p>
+                            <p>Piloto: <a href="index.php?action=ver_perfil_ajeno&email={{ piloto.email }}">{{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></p>
                             <p>Calificacion: {{ piloto.calificacion_piloto }}</p>
                         </td>
                         <td>Hora de salida: {{ viaje.hora_salida }}</td>
@@ -128,7 +128,7 @@ Detalles de viaje
                         {% for postulado in postulados %}
                             <tr>
                                 <td>
-                                    <a href="">{{ postulado.nombre }} {{ postulado.apellido }} </a>
+                                    <a href="index.php?action=ver_perfil_ajeno&email={{ piloto.email }}">{{ postulado.nombre }} {{ postulado.apellido }} </a>
                                 </td>
                                 <td>{{ postulado.calificacion_copiloto }}</td>
                                 <td>{{ postulado.estado }}</td>

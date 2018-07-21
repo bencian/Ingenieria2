@@ -53,6 +53,11 @@ class AppModelUsuario extends PDORepository {
         return $answer;        
     }
 
+    public function getIdAjeno($email){
+        $answer = $this->queryList("SELECT id FROM usuario where email=:meil", [ "meil"=>$email ]);
+        return $answer;        
+    }
+
     public function getViajesPiloto($id){
         date_default_timezone_set("America/Argentina/Buenos_Aires");
         $fecha = date('Y-m-d');

@@ -265,9 +265,47 @@ class AppControllerUsuario {
         echo('El pago se realizo correctamente!');
     }
 
-    public function verPerfilAgeno(){
-        
+    public function verPerfilAjeno($get, $guia){
+        $bdUsuario = AppModelUsuario::getInstance();
+        $idUsr = $bdUsuario->getIdAjeno($get["email"]);
+        $mostrarDatos["emailAjeno"] = $get["email"];
+        if(isset($_SESSION)){
+            $datosUsuario = $bdUsuario->getPerfil($idUsr[0][0]);
+            $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
+            $mostrarDatos["nombre"] = $nombre;
+            $mostrarDatos["email"] = $datosUsuario[0]["email"];
+            $view = new Home();
+            $viajes = $bdUsuario->getViajesPropios($idUsr[0][0]);
+            if ($guia == "futuro"){
+                $viajes = $bdUsuario->getViajesPropios($idUsr[0][0]);
+                $misPostulaciones = $bdUsuario->getMisPostulaciones($idUsr[0][0]);
+                $mostrarDatos["tituloDinamico"] = "Mis proximos viajes como piloto";
+                $mostrarDatos["tituloDinamico2"] = "Mis proximos viajes como copiloto";
+            } elseif ($guia == "totales"){
+                $viajes = $bdUsuario->getViajesPiloto($idUsr[0][0]);
+                //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
+                $misPostulaciones = $bdUsuario->getViajesCopiloto($idUsr[0][0]);
+                $mostrarDatos["tituloDinamico"] = "Mis viajes hechos como piloto";
+                $mostrarDatos["tituloDinamico2"] = "Mis viajes hechos como copiloto";
+            }
+            $mostrarDatos["viajes"]=$viajes;
+            $mostrarDatos["postulaciones"]=$misPostulaciones;
+            $ciudades = AppModel::getInstance()->getCiudades();
+            $mostrarDatos["ciudades"]=$ciudades;
+            $misPostulaciones = $bdUsuario->getMisPostulaciones($idUsr[0][0]);
+            $mostrarDatos["postulaciones"]=$misPostulaciones;
+            $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($idUsr[0][0]);
+            $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($idUsr[0][0]);
+            $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($idUsr[0][0]);
+            $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($idUsr[0][0]);
+            $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($idUsr[0][0]);
+            $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($idUsr[0][0]);
+            $view->mostrarNombreAjeno($mostrarDatos); 
+        }
+
+        //Utilice el else if para mostrar el listado de viajes tanto de piloto como de copiloto
+        //muestra TODOS los viajes que realicé, tanto de piloto como copiloto
     }
 
-    
+
 }
