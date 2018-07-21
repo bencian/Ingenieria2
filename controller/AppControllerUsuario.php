@@ -233,9 +233,9 @@ class AppControllerUsuario {
     public function pagarViaje($datos){
         $model=AppModelViaje::getInstance();
         $viaje=$model->getViaje($datos);
-        $viaje["origen"]=($model->getCiudadForId($viaje["origen_id"]))[0][0];
-        $viaje["destino"]=($model->getCiudadForId($viaje["destino_id"]))[0][0];
-        $viaje["cant_copilotos"]=($model->contarAceptados($datos))[0][0];
+        $viaje["origen"]=$model->getCiudadForId($viaje["origen_id"])[0][0];
+        $viaje["destino"]=$model->getCiudadForId($viaje["destino_id"])[0][0];
+        $viaje["cant_copilotos"]=$model->contarAceptados($datos)[0][0];
         $vehiculo=AppModel::getInstance()->getVehiculo($viaje["vehiculo_id"])[0];
         $view = new Home();
         $view->pantallaParaPagar($viaje,$vehiculo);
@@ -264,4 +264,10 @@ class AppControllerUsuario {
         AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         echo('El pago se realizo correctamente!');
     }
+
+    public function verPerfilAgeno(){
+        
+    }
+
+    
 }
