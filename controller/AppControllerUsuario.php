@@ -265,6 +265,8 @@ class AppControllerUsuario {
         //consulta para cambiar estado!
         AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         echo('El pago se realizo correctamente!');
+        $errno[1]="El pago se realizo correctamente!";
+        $_SESSION["errno"]=$errno;
     }
 
     public function verPerfilAjeno($get, $guia){
