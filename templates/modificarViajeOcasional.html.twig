@@ -6,6 +6,7 @@ Inicio
 
 {% block stylesheets %}
 <script src="./templates/js/publicarViaje.js"></script>
+<script src="./templates/js/validarModificacionDeViaje.js"></script>
 {% endblock %}
 
 {% block container %}
@@ -14,7 +15,7 @@ Inicio
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center well">
 
-			<form method="post" action="./?action=modificarViajeOcasional"> 
+			<form method="post" action="./?action=modificarViajeOcasional" onsubmit="return validarModificacionDeViaje()"> 
 				
 				<div class="form-group">
 					<p class="text-align: center h3">Modificar viaje!</p>
