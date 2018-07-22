@@ -22,6 +22,7 @@ $controller = AppController::getInstance();
 $usuario = AppControllerUsuario::getInstance();
 $vehiculo = AppControllerVehiculo::getInstance();
 $viaje = AppControllerViajes::getInstance();
+$_SESSION["errno"]='';
 if(!isset($_GET["action"])){
 	$controller->index();
 } elseif ($_GET["action"] == "login"){

@@ -9,7 +9,9 @@ Mi perfil
 {% endblock %}
 
 {% block container %}
-
+<div class="container">
+	{% include 'errno.html.twig' %}
+</div>
 <div class="container well">
 	{% if nombre is defined %} <h3 style="text-align:center; color:black;"> {{ nombre }} </h3> {% endif %}
 	{% if email is defined %} <h4 style="text-align:center; color:black;"> {{ email }} </h4> {% endif %}

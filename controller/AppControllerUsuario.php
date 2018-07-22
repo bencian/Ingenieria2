@@ -233,9 +233,9 @@ class AppControllerUsuario {
     public function pagarViaje($datos){
         $model=AppModelViaje::getInstance();
         $viaje=$model->getViaje($datos);
-        $viaje["origen"]=$model->getCiudadForId($viaje["origen_id"])[0][0];
-        $viaje["destino"]=$model->getCiudadForId($viaje["destino_id"])[0][0];
-        $viaje["cant_copilotos"]=$model->contarAceptados($datos)[0][0];
+        $viaje["origen"]=($model->getCiudadForId($viaje["origen_id"]))[0][0];
+        $viaje["destino"]=($model->getCiudadForId($viaje["destino_id"]))[0][0];
+        $viaje["cant_copilotos"]=($model->contarAceptados($datos))[0][0];
         $vehiculo=AppModel::getInstance()->getVehiculo($viaje["vehiculo_id"])[0];
         $view = new Home();
         $view->pantallaParaPagar($viaje,$vehiculo);
@@ -247,7 +247,9 @@ class AppControllerUsuario {
             $this->realizarPago($datos);
             AppController::getInstance()->mostrarMenuConSesion();
         } else {
-            echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
+            //echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
+            $errno[1]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";
+            $_SESSION["errno"]=$errno;
             $this->pagarViaje($datos);
             //informar error en el pago
         }
@@ -263,6 +265,8 @@ class AppControllerUsuario {
         //consulta para cambiar estado!
         AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         echo('El pago se realizo correctamente!');
+        $errno[1]="El pago se realizo correctamente!";
+        $_SESSION["errno"]=$errno;
     }
 
     public function verPerfilAjeno($get, $guia){
