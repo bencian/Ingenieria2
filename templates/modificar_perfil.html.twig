@@ -14,6 +14,9 @@ Modificar perfil
 	{% include 'errno.html.twig' %}
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center well">
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil" style="width:14em;">Volver a mi perfil</a>
+			<br>
+			<br>
 			{% if campoPerfil.visibilidad != 1%}
 				<a id="toggle" class="btn btn-primaryPink" onclick="toggleForm()" style="width:14em;">Modificar contraseña</a><br><br><br>
 				<div id="datos_form" style="display:block;">
@@ -54,7 +57,8 @@ Modificar perfil
 						<label for="exampleInputPassword1">Ingresa la contraseña actual</label>
 						<input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
 					</div>
-					<input type="submit" class="btn btn-primaryPink" value='Aceptar'>
+					<input type="submit" class="btn btn-primaryPink" value='Aceptar' style="width:7em;">
+					<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil" style="width:7em;">Cancelar</a>
 				</form>
 			</div>
 			{% if campoPerfil.visibilidad != 1%}
@@ -62,7 +66,6 @@ Modificar perfil
 			{% else %}
 				<div id="password_form" style="display:block;">
 			{% endif %}
-				{{ campoPerfil.password }}
 				<form class="col-lg-12" method="post" action="./?action=actualizar_password" onsubmit="return validarCambioPassword()">
 					<div class="form-group">
 						<label for="exampleInputPassword1">Ingrese la nueva contraseña</label>
@@ -76,7 +79,8 @@ Modificar perfil
 						<label for="exampleInputPassword1">Ingresa la contraseña actual</label>
 						<input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
 					</div>
-					<input type="submit" class="btn btn-primaryPink" value='Confirmar'>
+					<input type="submit" class="btn btn-primaryPink" value='Confirmar' style="width:7em;">
+					<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil" style="width:7em;">Cancelar</a>
 				</form>
 			</div>
 		</div>

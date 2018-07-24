@@ -171,14 +171,19 @@ class AppControllerUsuario {
                 if($this->validacionActualizarUsuario($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarUsuario($datos);
+                    echo "Datos actualizados!";
                     $this->mostrarPerfil("futuro");
                 } else {
+                    $datosUsuario[0]["visibilidad"]=0;
                     $view->camposModificarPerfil($datosUsuario[0]); //falta
                 }
             } else {
                 echo "Contraseña incorrecta";
+                $datosUsuario[0]["visibilidad"]=0;
                 $view->camposModificarPerfil($datosUsuario[0]); //falta
             }
+        } else {
+            $this->mostrarPerfil("futuro");
         }
     }
 
