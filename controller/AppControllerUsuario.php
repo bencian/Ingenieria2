@@ -158,6 +158,7 @@ class AppControllerUsuario {
         $view = new Home();
         //busca los datos anteriores del perfil
         $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
+        $datosUsuario[0]["visibilidad"]=0;
         $view->camposModificarPerfil($datosUsuario[0]); //falta     
     }
 
@@ -167,7 +168,7 @@ class AppControllerUsuario {
         $view = new Home();
         if(isset($datos)){
             if(!(($datos["oldPass"])==""||($datos["oldPass"])==null)&&($datos["oldPass"]==$datosUsuario[0]["password"])){
-                if($this->validacionUsuario($datos)){
+                if($this->validacionActualizarUsuario($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarUsuario($datos);
                     $this->mostrarPerfil("futuro");
@@ -179,6 +180,66 @@ class AppControllerUsuario {
                 $view->camposModificarPerfil($datosUsuario[0]); //falta
             }
         }
+    }
+
+    public function validacionActualizarUsuario($datos){
+        //valida los datos desde servidor
+
+        //A MODIFICAR
+        $valor=true;    
+        if(!(preg_match("#^([^0-9]*)$#",$datos["nombre"]))){
+            echo "El nombre no puede tener numeros";
+            $valor= false;
+        }
+        if(!(preg_match("#^([^0-9]*)$#",$datos["apellido"]))){
+            echo "El apellido no puede tener numeros";
+            $valor= false;
+        }
+        if(!($this->mayorDeEdad($datos["nacimiento"]))){
+            echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            $valor= false;
+        }
+        return $valor;
+    }
+
+    public function actualizar_password($datos){
+        $bd = AppModelUsuario::getInstance();
+        $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION["id"]);
+        $view = new Home();
+        if(isset($datos)){
+            if(!(($datos["oldPass"])==""||($datos["oldPass"])==null)&&($datos["oldPass"]==$datosUsuario[0]["password"])){
+                if($this->validacionActualizarPassword($datos)){
+                    $datos["id"] = $_SESSION['id'];
+                    $bd->actualizarPassword($datos);
+                    echo ("Contraseña actualizada!");
+                    $this->mostrarPerfil("futuro");
+                } else {
+                    $datosUsuario[0]["visibilidad"]=1;
+                    $view->camposModificarPerfil($datosUsuario[0]); //falta
+                }
+            } else {
+                $datosUsuario[0]["visibilidad"]=1;
+                echo "Contraseña incorrecta";
+                $view->camposModificarPerfil($datosUsuario[0]); //falta
+            }
+        }
+    }
+
+    public function validacionActualizarPassword($datos){
+        $valor= true;
+        if(!($datos["pass"]==$datos["pass1"])){
+            echo "Las contraseñas no coinciden ";
+            $valor= false;
+        }
+        if(!(strlen($datos["pass"])>7)){
+            echo "La contraseña es muy corta ";
+            $valor= false;
+        }
+        if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
+            echo "La contraseña no contiene un simbolo o un numero ";
+            $valor= false;          
+        }
+        return $valor;
     }
 
     public function publicar_pregunta($datos){
