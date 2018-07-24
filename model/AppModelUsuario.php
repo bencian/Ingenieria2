@@ -112,7 +112,7 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function viajesHechosComoPiloto($id){
-        $answer = $this->queryList("SELECT count(viaje.id) FROM viaje WHERE usuario_id=:id AND ((fecha<CURDATE()) OR (fecha=CURDATE() AND hora_salida<CURTIME()))",["id"=> $id]);
+        $answer = $this->queryList("SELECT count(id) FROM calificacion_piloto WHERE piloto_calificado=:id",["id"=> $id]);
         return $answer[0];
     }
 
@@ -122,9 +122,7 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function viajesHechosComoCopiloto($id){
-        $answer = $this->queryList("SELECT count(v.id) FROM usuario_viaje uv
-        INNER JOIN viaje v ON (uv.viaje_id=v.id)
-        WHERE (uv.usuario_id=:id AND (uv.estado='Aceptado') AND ((fecha<CURDATE()) OR (fecha=CURDATE() AND hora_salida<CURTIME() )))", [ "id" => $id ]);
+        $answer = $this->queryList("SELECT count(id) FROM calificacion_copiloto WHERE copiloto_calificado=:id", [ "id" => $id ]);
         return $answer[0];
     }
 

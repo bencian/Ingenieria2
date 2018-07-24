@@ -109,7 +109,7 @@ class Home extends TwigView {
     }
 
     public function pantallaParaPagar($viaje,$vehiculo){
-        echo self::getTwig()->render("pagar_viaje.html.twig", array("viaje"=>$viaje,"vehiculo"=>$vehiculo, "errno"=>$_SESSION["errno"]));
+        echo self::getTwig()->render("pagar_viaje.html.twig", array("viaje"=>$viaje,"vehiculo"=>$vehiculo/*, "errno"=>$_SESSION["errno"]*/));
     }
 
     public function calificacion($datos,$ciudades,$rol){
