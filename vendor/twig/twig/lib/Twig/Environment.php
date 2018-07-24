@@ -289,6 +289,7 @@ class Twig_Environment
      */
     public function render($name, array $context = array())
     {
+        $context["errno"]=$_SESSION["errno"];
         return $this->loadTemplate($name)->render($context);
     }
 

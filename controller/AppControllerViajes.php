@@ -484,6 +484,9 @@ class AppControllerViajes {
         $aceptados=$bdViaje->aceptadosParaEsteViaje($datos["id"]);
         $cantidadAceptados = count($aceptados);
         if($cantidadAceptados!=0){
+            $calificacion["usuario_id"]=$_SESSION["id"];
+            $calificacion["puntaje"]=-1;
+            AppModelUsuario::getInstance()->actualizarPuntajePiloto($calificacion);
             //pierde 1 punto, llamar a funcion de calificaciones
         }
         $view->eliminarViaje($datos, $cantidadAceptados);
