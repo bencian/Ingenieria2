@@ -163,12 +163,13 @@ class AppControllerViajes {
                 $entra = false;
             }
         }
-        if(!AppControllerVehiculo::getInstance()->vehiculoViaja($datos)){
-            //echo "El vehiculo tiene un viaje para ese horario";
-            $errno["viajes"]="El vehiculo tiene un viaje para ese horario";
-            $entra = false;
+        if ($entra){
+            if(!AppControllerVehiculo::getInstance()->vehiculoViaja($datos)){
+                //echo "El vehiculo tiene un viaje para ese horario";
+                $errno["viajes"]="El vehiculo tiene un viaje para ese horario";
+                $entra = false;
+            }
         }
-    
         $_SESSION["errno"]=$errno;
         return $entra;
     }
