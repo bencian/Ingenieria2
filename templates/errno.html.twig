@@ -1,6 +1,6 @@
 {% if errno is defined %}
-	{% if errno != '' or (errno|length > 0) %} {# CONTROLAR SI LLEGA UN ARREGLO VACIO #}
-	    <div class="well text-center">
+	{% if errno != '' and (errno|length > 0) %} {# CONTROLAR SI LLEGA UN ARREGLO VACIO #}
+	    <div class="well text-center row">
     	    {% for each in errno %}
             	<h3 style="color:red;"><strong>{{ each }}</strong></h3>
         	{% endfor %}
