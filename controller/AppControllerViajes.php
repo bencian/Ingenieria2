@@ -53,7 +53,9 @@ class AppControllerViajes {
                 if($datos["destino"]!=$datos["origen"]){
                     $viajes_hechos=$viajes->busqueda_completa($datos);
                 } else {
-                    echo("No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!");
+                    $errno["distinto"]="No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!";
+                    $_SESSION["errno"]=$errno;
+                    //echo("No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!");
                 }
             } else {
                 $viajes_hechos=$viajes->busqueda_parcial($datos);
@@ -62,7 +64,9 @@ class AppControllerViajes {
             $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
             $view->listarViajes($viajes_hechos, $ciudades, $datos, $ciudadesOrdenadas); //falta
         } else {
-            echo "<h1>No juegues con la URL, hjo de una gran... de de muzzarella</h1>";
+            //echo "<h1>No juegues con la URL, hjo de una gran... de de muzzarella</h1>";
+            $errno["buscador"]="No juegues con la URL, hjo de una gran... de de muzzarella";
+            $_SESSION["errno"]=$errno;
             AppController::getInstance()->mostrarMenuConSesion();  
         }
     }
@@ -459,9 +463,13 @@ class AppControllerViajes {
         $viaje=$datos["id"];
         if($this->viajeTieneLugar($viaje)){
             $bd->cambiarEstadoParaAceptado($viaje, $postulado);
-            Echo "Se acepto al usuario correctamente";
+            $errno["aceptado"]="Se acepto al usuario correctamente";
+            $_SESSION["errno"]=$errno;
+            //Echo "Se acepto al usuario correctamente";
         } else {
-            Echo "Ya no puedes aceptar mas usuarios!";
+            $errno["rechazado"]="Ya no puedes aceptar mas usuarios!";
+            $_SESSION["errno"]=$errno;
+            //Echo "Ya no puedes aceptar mas usuarios!";
         }
         $this->ver_publicacion_viaje($datos);
     }

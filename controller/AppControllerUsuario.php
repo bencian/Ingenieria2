@@ -50,7 +50,9 @@ class AppControllerUsuario {
                 $menu->index();
             } else {
                 if ($bdUsuario->existeMail($datos["email"])){
-                    echo "Ya existe el mail en la base de datos ";
+                    //echo "Ya existe el mail en la base de datos";
+                    $errno["crear_usuario"]="Ese mail ya se encuentra registrado";
+                    $_SESSION["errno"]=$errno;
                 }
                 $view->show("registrarse.html.twig");
             }
@@ -85,31 +87,39 @@ class AppControllerUsuario {
     
     public function validacionUsuario($datos){
         //valida los datos desde servidor
-        $valor=true;    
+        $valor=true;  
+        $errno = array();  
         if(!(preg_match("#^([^0-9]*)$#",$datos["nombre"]))){
-            echo "El nombre no puede tener numeros";
+            //echo "El nombre no puede tener numeros";
+            $errno["nombre"]="El nombre no puede tener numeros";
             $valor= false;
         }
         if(!(preg_match("#^([^0-9]*)$#",$datos["apellido"]))){
-            echo "El apellido no puede tener numeros";
+            //echo "El apellido no puede tener numeros";
+            $errno["apellido"]="El apellido no puede tener numeros";
             $valor= false;
         }
         if(!($datos["pass"]==$datos["pass1"])){
-            echo "Las contraseñas no coinciden ";
+            //echo "Las contraseñas no coinciden ";
+            $errno["pass"]="Las contraseñas no coinciden";
             $valor= false;
         }
         if(!(strlen($datos["pass"])>7)){
-            echo "La contraseña es muy corta ";
+            //echo "La contraseña es muy corta ";
+            $errno["longitud"]="La contraseña es muy corta";
             $valor= false;
         }
         if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
-            echo "La contraseña no contiene un simbolo o un numero ";
+            //echo "La contraseña no contiene un simbolo o un numero ";
+            $errno["char"]="La contraseña no contiene un simbolo o un numero";
             $valor= false;          
         }
         if(!($this->mayorDeEdad($datos["nacimiento"]))){
-            echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            //echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            $errno["edad"]="Necesitas tener al menos 16 años para registrarte al sitio";
             $valor= false;
         }
+        $_SESSION["errno"]=$errno;
         return $valor;
     }
 
@@ -171,15 +181,21 @@ class AppControllerUsuario {
                 if($this->validacionActualizarUsuario($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarUsuario($datos);
-                    echo "Datos actualizados!";
+                    //echo "Datos actualizados!";
+                    $errno["modificar_perfil"]="Datos actualizados correctamente!";
+                    $_SESSION["errno"]=$errno;
                     $this->mostrarPerfil("futuro");
                 } else {
+                    ////REVISAR QUE ERROR TIENE QUE DAR
+                    //errno se esta cargando en validacion!
                     $datosUsuario[0]["visibilidad"]=0;
                     $view->camposModificarPerfil($datosUsuario[0]); //falta
                 }
             } else {
-                echo "Contraseña incorrecta";
+                //echo "Contraseña incorrecta";
                 $datosUsuario[0]["visibilidad"]=0;
+                $errno["contraseña_incorrecta"]="Contraseña incorrecta";
+                $_SESSION["errno"]=$errno;
                 $view->camposModificarPerfil($datosUsuario[0]); //falta
             }
         } else {
@@ -190,20 +206,24 @@ class AppControllerUsuario {
     public function validacionActualizarUsuario($datos){
         //valida los datos desde servidor
 
-        //A MODIFICAR
-        $valor=true;    
+        $valor=true;  
+        $errno = array();  
         if(!(preg_match("#^([^0-9]*)$#",$datos["nombre"]))){
-            echo "El nombre no puede tener numeros";
+            //echo "El nombre no puede tener numeros";
+            $errno["nombre"]="El nombre no puede tener numeros";
             $valor= false;
         }
         if(!(preg_match("#^([^0-9]*)$#",$datos["apellido"]))){
-            echo "El apellido no puede tener numeros";
+            //echo "El apellido no puede tener numeros";
+            $errno["apellido"]="El apellido no puede tener numeros";
             $valor= false;
         }
         if(!($this->mayorDeEdad($datos["nacimiento"]))){
-            echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            //echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            $errno["edad"]="Necesitas tener al menos 16 años para registrarte al sitio";
             $valor= false;
         }
+        $_SESSION["errno"]=$errno;
         return $valor;
     }
 
@@ -216,7 +236,9 @@ class AppControllerUsuario {
                 if($this->validacionActualizarPassword($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarPassword($datos);
-                    echo ("Contraseña actualizada!");
+                    //echo ("Contraseña actualizada!");
+                    $errno["contraseña_actualizada"]="Contraseña actualizada";
+                    $_SESSION["errno"]=$errno;
                     $this->mostrarPerfil("futuro");
                 } else {
                     $datosUsuario[0]["visibilidad"]=1;
@@ -224,26 +246,33 @@ class AppControllerUsuario {
                 }
             } else {
                 $datosUsuario[0]["visibilidad"]=1;
-                echo "Contraseña incorrecta";
+                //echo "Contraseña incorrecta";
+                $errno["contraseña_incorrecta"]="Contraseña incorrecta";
+                $_SESSION["errno"]=$errno;
                 $view->camposModificarPerfil($datosUsuario[0]); //falta
             }
         }
     }
 
     public function validacionActualizarPassword($datos){
-        $valor= true;
+        $valor=true;  
+        $errno = array();  
         if(!($datos["pass"]==$datos["pass1"])){
-            echo "Las contraseñas no coinciden ";
+            //echo "Las contraseñas no coinciden ";
+            $errno["pass"]="Las contraseñas no coinciden";
             $valor= false;
         }
         if(!(strlen($datos["pass"])>7)){
-            echo "La contraseña es muy corta ";
+            //echo "La contraseña es muy corta ";
+            $errno["longitud"]="La contraseña es muy corta";
             $valor= false;
         }
         if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
-            echo "La contraseña no contiene un simbolo o un numero ";
+            //echo "La contraseña no contiene un simbolo o un numero ";
+            $errno["char"]="La contraseña no contiene un simbolo o un numero";
             $valor= false;          
         }
+        $_SESSION["errno"]=$errno;
         return $valor;
     }
 
@@ -269,7 +298,9 @@ class AppControllerUsuario {
         $bdUsuario = AppModelUsuario::getInstance();
         $bdUsuario->calificarPiloto($datos);
         $bdUsuario->actualizarPuntajePiloto($datos);
-        echo("El piloto fue calificado con exito");
+        //echo("El piloto fue calificado con exito");
+        $errno["calificar_piloto"]="El piloto fue calificado con exito";
+        $_SESSION["errno"]=$errno;
         $this->mostrarPerfil("futuro");
     }
 
@@ -285,7 +316,9 @@ class AppControllerUsuario {
         $bdUsuario = AppModelUsuario::getInstance();
         $bdUsuario->calificarCopiloto($datos);
         $bdUsuario->actualizarPuntajeCopiloto($datos);
-        echo("El copiloto fue calificado con exito");
+        //echo("El copiloto fue calificado con exito");
+        $errno["calificar_copiloto"]="El copiloto fue calificado con exito";
+        $_SESSION["errno"]=$errno;
         $this->mostrarPerfil("futuro");
     }
 
@@ -314,7 +347,7 @@ class AppControllerUsuario {
             AppController::getInstance()->mostrarMenuConSesion();
         } else {
             //echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
-            $errno[1]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";
+            $errno["validarPago"]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";
             $_SESSION["errno"]=$errno;
             $this->pagarViaje($datos);
             //informar error en el pago
@@ -331,7 +364,7 @@ class AppControllerUsuario {
         //consulta para cambiar estado!
         AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         //echo('El pago se realizo correctamente!');
-        $errno[1]="El pago se realizo correctamente!";
+        $errno["realizarPago"]="El pago se realizo correctamente!";
         $_SESSION["errno"]=$errno;
     }
 
