@@ -310,6 +310,4 @@ class AppControllerUsuario {
         //Utilice el else if para mostrar el listado de viajes tanto de piloto como de copiloto
         //muestra TODOS los viajes que realicé, tanto de piloto como copiloto
     }
-
-
 }
