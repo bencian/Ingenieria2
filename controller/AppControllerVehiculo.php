@@ -59,14 +59,18 @@ class AppControllerVehiculo {
 
     public function validar_vehiculo($datos){
         $valor = true;
+        $errno=array();
         if(!preg_match("/^([A-Za-z]{2}[0-9]{3}[A-Za-z]{2}|[A-Za-z]{3}[0-9]{3})$/", $datos["patente"])){
-            echo "La patente ingresada no es valida";
+            //echo "La patente ingresada no es valida";
+            $errno["validar_patente"]="La patente ingresada no es valida";
             $valor = false;
         }
         if(!preg_match("/^[1-2][0-9]{3}$/", $datos["modelo"])){
-            echo "El modelo ingresado no es valido, ingrese el año de su vehiculo";
+            //echo "El modelo ingresado no es valido, ingrese el año de su vehiculo";
+            $errno["validar_modelo"]="El modelo ingresado no es valido, ingrese el año de su vehiculo";
             $valor = false;
         }
+        $_SESSION["errno"]=$errno;
         return $valor;
     }
 

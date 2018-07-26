@@ -115,4 +115,6 @@ if(!isset($_GET["action"])){
 	$usuario->pagarViaje($_POST);
 } elseif($_GET["action"] == "validar_pago"){
 	$usuario->validarPago($_POST);
+} elseif($_GET["action"] == "actualizar_password"){
+	$usuario->actualizar_password($_POST);
 }

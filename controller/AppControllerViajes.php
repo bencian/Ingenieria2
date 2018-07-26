@@ -53,7 +53,9 @@ class AppControllerViajes {
                 if($datos["destino"]!=$datos["origen"]){
                     $viajes_hechos=$viajes->busqueda_completa($datos);
                 } else {
-                    echo("No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!");
+                    $errno["distinto"]="No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!";
+                    $_SESSION["errno"]=$errno;
+                    //echo("No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!");
                 }
             } else {
                 $viajes_hechos=$viajes->busqueda_parcial($datos);
@@ -62,7 +64,9 @@ class AppControllerViajes {
             $ciudadesOrdenadas=AppModel::getInstance()->getCiudadesOrdenadas();
             $view->listarViajes($viajes_hechos, $ciudades, $datos, $ciudadesOrdenadas); //falta
         } else {
-            echo "<h1>No juegues con la URL, hjo de una gran... de de muzzarella</h1>";
+            //echo "<h1>No juegues con la URL, hjo de una gran... de de muzzarella</h1>";
+            $errno["buscador"]="No juegues con la URL, hjo de una gran... de de muzzarella";
+            $_SESSION["errno"]=$errno;
             AppController::getInstance()->mostrarMenuConSesion();  
         }
     }
@@ -125,38 +129,48 @@ class AppControllerViajes {
             $tempArray[$i] = (int)$tempArray[$i];
         }
         $entra = true;
+        $errno=array();
+            
         if(!$this->fechaMayor($tempArray)){
-            echo "Fecha ingresada invalida";
+            //echo "Fecha ingresada invalida";
+            $errno["fechaMayor"]="Fecha ingresada invalida";
             $entra = false;
         }
         if(!$this->esNumerico($datos["precio"])){
-            echo "El precio no puede tener letras";
+            //echo "El precio no puede tener letras";
+            $errno["precio"]="El precio no puede tener letras";
             $entra = false;
         }
         if(!$this->esNumerico($datos["duracion"])){
-            echo "La duracion no puede tener letras";
+            //echo "La duracion no puede tener letras";
+            $errno["duracion"]="La duracion no puede tener letras";
             $entra = false;
         }
         if($datos["origen"]==$datos["destino"]){
-            echo "El origen y el destino no pueden ser los mismos";
+            //echo "El origen y el destino no pueden ser los mismos";
+            $errno["origen"]="El origen y el destino no pueden ser los mismos";
             $entra = false;
         }
         if(!$this->esNumerico($datos["distancia"])){
-            echo "La distancia no puede tener letras";
+            //echo "La distancia no puede tener letras";
+            $errno["distancia"]="La distancia no puede tener letras";
             $entra = false;
         }
         if($this->esHoy($tempArray)){
             if($this->masTarde($datos["hora_salida"])){
-                echo "Debe ser para mas tarde";
+                //echo "Debe ser para mas tarde";
+                $errno["hora"]="Debe ser para mas tarde";
                 $entra = false;
             }
         }
-        if($entra){
+        if ($entra){
             if(!AppControllerVehiculo::getInstance()->vehiculoViaja($datos)){
-                echo "El vehiculo tiene un viaje para ese horario";
+                //echo "El vehiculo tiene un viaje para ese horario";
+                $errno["viajes"]="El vehiculo tiene un viaje para ese horario";
                 $entra = false;
             }
         }
+        $_SESSION["errno"]=$errno;
         return $entra;
     }
 
@@ -401,43 +415,54 @@ class AppControllerViajes {
     }
 
     public function validarViajeOcasionalModificado($datos){
+        
         $tempArray = explode('-',$datos["fecha"]);
         for ($i=0;$i<count($tempArray);$i++){
             $tempArray[$i] = (int)$tempArray[$i];
         }
         $entra = true;
+        $errno=array();
         if(!$this->fechaMayor($tempArray)){
-            echo "Fecha ingresada invalida";
+            //echo "Fecha ingresada invalida";
+            $errno["fechaMayor"]="Fecha ingresada invalida";
             $entra = false;
         }
         if(!$this->esNumerico($datos["precio"])){
-            echo "El precio no puede tener letras";
+            //echo "El precio no puede tener letras";
+            $errno["precio"]="El precio no puede tener letras";
             $entra = false;
         }
         if(!$this->esNumerico($datos["duracion"])){
-            echo "La duracion no puede tener letras";
+            //echo "La duracion no puede tener letras";
+            $errno["duracion"]="La duracion no puede tener letras";
             $entra = false;
         }
         if($datos["origen"]==$datos["destino"]){
-            echo "El origen y el destino no pueden ser los mismos";
+            //echo "El origen y el destino no pueden ser los mismos";
+            $errno["origen"]="El origen y el destino no pueden ser los mismos";
             $entra = false;
         }
         if(!$this->esNumerico($datos["distancia"])){
-            echo "La distancia no puede tener letras";
+            //echo "La distancia no puede tener letras";
+            $errno["distancia"]="La distancia no puede tener letras";
             $entra = false;
         }
         if($this->esHoy($tempArray)){
             if($this->masTarde($datos["hora_salida"])){
-                echo "Debe ser para mas tarde";
+                //echo "Debe ser para mas tarde";
+                $errno["hora"]="Debe ser para mas tarde";
                 $entra = false;
             }
         }
         if($entra){
             if(!AppControllerVehiculo::getInstance()->vehiculoViajaModificado($datos)){
-                echo "El vehiculo tiene un viaje para ese horario";
+                //echo "El vehiculo tiene un viaje para ese horario";
+                $errno["viajes"]="El vehiculo tiene un viaje para ese horario";
                 $entra = false;
             }
         }
+        $_SESSION["errno"]=$errno;
+        //$_SESSION["errno"]["g"]=0;
         return $entra;
     }
     
@@ -459,9 +484,13 @@ class AppControllerViajes {
         $viaje=$datos["id"];
         if($this->viajeTieneLugar($viaje)){
             $bd->cambiarEstadoParaAceptado($viaje, $postulado);
-            Echo "Se acepto al usuario correctamente";
+            $errno["aceptado"]="Se acepto al usuario correctamente";
+            $_SESSION["errno"]=$errno;
+            //Echo "Se acepto al usuario correctamente";
         } else {
-            Echo "Ya no puedes aceptar mas usuarios!";
+            $errno["rechazado"]="Ya no puedes aceptar mas usuarios!";
+            $_SESSION["errno"]=$errno;
+            //Echo "Ya no puedes aceptar mas usuarios!";
         }
         $this->ver_publicacion_viaje($datos);
     }

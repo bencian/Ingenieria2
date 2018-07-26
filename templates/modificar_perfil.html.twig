@@ -5,7 +5,7 @@ Modificar perfil
 {% endblock %}
 
 {% block stylesheets %}
-<script src="./templates/js/validacionRegistro.js"></script>
+<script src="./templates/js/modificar_perfil.js"></script>
 {% endblock %}
 
 {% block container %}
@@ -14,55 +14,75 @@ Modificar perfil
 	{% include 'errno.html.twig' %}
 	<div class="row">
 		<div class="col-sm-4 col-sm-offset-4 text-center well">
-			<form class="col-lg-12" method="post" action="./?action=actualizar_perfil">
-				<div class="form-group">
-					<label for="exampleInputEmail1">Email</label>
-					<input type="email"  class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Ingresa tu email!" 
-					{% if campoPerfil is defined %} 
-						value="{{ campoPerfil.email }}"
-					{% endif %}>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Nombre</label>
-					<input type="text"  class="form-control" id="nombre" name="nombre" placeholder="Nombre"
-					{% if campoPerfil is defined %} 
-						value="{{ campoPerfil.nombre }}"
-					{% endif %}>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Apellido</label>
-					<input type="text"  class="form-control" id="apellido" name="apellido" placeholder="Apellido"
-					{% if campoPerfil is defined %} 
-						value="{{ campoPerfil.apellido }}"
-					{% endif %}>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Fecha de nacimiento</label>
-					<input type="date"  class="form-control" id="nacimiento" name="nacimiento" placeholder="Fecha de nacimiento"
-					{% if campoPerfil is defined %} 
-					value="{{ campoPerfil.fecha_nacimiento }}"
-					{% endif %}>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Contraseña</label>
-					<input type="password"  class="form-control" id="pass" name="pass" placeholder="Contraseña nueva"
-					{% if campoPerfil is defined %} 
-						value="{{ campoPerfil.password }}"
-					{% endif %}>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Repita la contraseña</label>
-					<input type="password"  class="form-control" id="pass1" name="pass1" placeholder="Repita la contraseña nueva"
-					{% if campoPerfil is defined %} 
-						value="{{ campoPerfil.password }}"
-					{% endif %}>
-				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Ingresa la contraseña actual</label>
-					<input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
-				</div>
-				<input type="submit" class="btn btn-primaryPink" value='Registrarme'>
-			</form>
+			<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil" style="width:14em;">Volver a mi perfil</a>
+			<br>
+			<br>
+			{% if campoPerfil.visibilidad != 1%}
+				<a id="toggle" class="btn btn-primaryPink" onclick="toggleForm()" style="width:14em;">Modificar contraseña</a><br><br><br>
+				<div id="datos_form" style="display:block;">
+			{% else %}
+				<a id="toggle" class="btn btn-primaryPink" onclick="toggleForm()" style="width:14em;">Modificar mis datos</a><br><br><br>
+				<div id="datos_form" style="display:none;">
+			{% endif %}
+				<form class="col-lg-12" method="post" action="./?action=actualizar_perfil" onsubmit="return validarCambioDatos()">
+					<div class="form-group">
+						<label for="exampleInputEmail1">Email</label>
+						<input type="email"  class="form-control" id="email" aria-describedby="emailHelp" name="email" placeholder="Ingresa tu email!" 
+						{% if campoPerfil is defined %} 
+							value="{{ campoPerfil.email }}"
+						{% endif %} required>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Nombre</label>
+						<input type="text"  class="form-control" id="nombre" name="nombre" placeholder="Nombre"
+						{% if campoPerfil is defined %} 
+							value="{{ campoPerfil.nombre }}"
+						{% endif %} required>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Apellido</label>
+						<input type="text"  class="form-control" id="apellido" name="apellido" placeholder="Apellido"
+						{% if campoPerfil is defined %} 
+							value="{{ campoPerfil.apellido }}"
+						{% endif %} required>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Fecha de nacimiento</label>
+						<input type="date"  class="form-control" id="nacimiento" name="nacimiento" placeholder="Fecha de nacimiento"
+						{% if campoPerfil is defined %} 
+						value="{{ campoPerfil.fecha_nacimiento }}"
+						{% endif %} required>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Ingresa la contraseña actual</label>
+						<input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
+					</div>
+					<input type="submit" class="btn btn-primaryPink" value='Aceptar' style="width:7em;">
+					<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil" style="width:7em;">Cancelar</a>
+				</form>
+			</div>
+			{% if campoPerfil.visibilidad != 1%}
+				<div id="password_form" style="display:none;">
+			{% else %}
+				<div id="password_form" style="display:block;">
+			{% endif %}
+				<form class="col-lg-12" method="post" action="./?action=actualizar_password" onsubmit="return validarCambioPassword()">
+					<div class="form-group">
+						<label for="exampleInputPassword1">Ingrese la nueva contraseña</label>
+						<input type="password"  class="form-control" id="pass" name="pass" placeholder="Ingrese la nueva contraseña" required>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Repita la nueva contraseña</label>
+						<input type="password"  class="form-control" id="pass1" name="pass1" placeholder="Repita la nueva contraseña" required>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">Ingresa la contraseña actual</label>
+						<input type="password"  class="form-control" id="oldPass" name="oldPass" placeholder="Ingresa la contraseña actual" required>
+					</div>
+					<input type="submit" class="btn btn-primaryPink" value='Confirmar' style="width:7em;">
+					<a class="btn btn-primaryPink" href="index.php?action=mostrar_perfil" style="width:7em;">Cancelar</a>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

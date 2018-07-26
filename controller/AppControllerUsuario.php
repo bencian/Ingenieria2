@@ -50,7 +50,9 @@ class AppControllerUsuario {
                 $menu->index();
             } else {
                 if ($bdUsuario->existeMail($datos["email"])){
-                    echo "Ya existe el mail en la base de datos ";
+                    //echo "Ya existe el mail en la base de datos";
+                    $errno["crear_usuario"]="Ese mail ya se encuentra registrado";
+                    $_SESSION["errno"]=$errno;
                 }
                 $view->show("registrarse.html.twig");
             }
@@ -85,31 +87,39 @@ class AppControllerUsuario {
     
     public function validacionUsuario($datos){
         //valida los datos desde servidor
-        $valor=true;    
+        $valor=true;  
+        $errno = array();  
         if(!(preg_match("#^([^0-9]*)$#",$datos["nombre"]))){
-            echo "El nombre no puede tener numeros";
+            //echo "El nombre no puede tener numeros";
+            $errno["nombre"]="El nombre no puede tener numeros";
             $valor= false;
         }
         if(!(preg_match("#^([^0-9]*)$#",$datos["apellido"]))){
-            echo "El apellido no puede tener numeros";
+            //echo "El apellido no puede tener numeros";
+            $errno["apellido"]="El apellido no puede tener numeros";
             $valor= false;
         }
         if(!($datos["pass"]==$datos["pass1"])){
-            echo "Las contraseñas no coinciden ";
+            //echo "Las contraseñas no coinciden ";
+            $errno["pass"]="Las contraseñas no coinciden";
             $valor= false;
         }
         if(!(strlen($datos["pass"])>7)){
-            echo "La contraseña es muy corta ";
+            //echo "La contraseña es muy corta ";
+            $errno["longitud"]="La contraseña es muy corta";
             $valor= false;
         }
         if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
-            echo "La contraseña no contiene un simbolo o un numero ";
+            //echo "La contraseña no contiene un simbolo o un numero ";
+            $errno["char"]="La contraseña no contiene un simbolo o un numero";
             $valor= false;          
         }
         if(!($this->mayorDeEdad($datos["nacimiento"]))){
-            echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            //echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            $errno["edad"]="Necesitas tener al menos 16 años para registrarte al sitio";
             $valor= false;
         }
+        $_SESSION["errno"]=$errno;
         return $valor;
     }
 
@@ -158,6 +168,7 @@ class AppControllerUsuario {
         $view = new Home();
         //busca los datos anteriores del perfil
         $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION['id']);
+        $datosUsuario[0]["visibilidad"]=0;
         $view->camposModificarPerfil($datosUsuario[0]); //falta     
     }
 
@@ -167,18 +178,102 @@ class AppControllerUsuario {
         $view = new Home();
         if(isset($datos)){
             if(!(($datos["oldPass"])==""||($datos["oldPass"])==null)&&($datos["oldPass"]==$datosUsuario[0]["password"])){
-                if($this->validacionUsuario($datos)){
+                if($this->validacionActualizarUsuario($datos)){
                     $datos["id"] = $_SESSION['id'];
                     $bd->actualizarUsuario($datos);
+                    //echo "Datos actualizados!";
+                    $errno["modificar_perfil"]="Datos actualizados correctamente!";
+                    $_SESSION["errno"]=$errno;
                     $this->mostrarPerfil("futuro");
                 } else {
+                    ////REVISAR QUE ERROR TIENE QUE DAR
+                    //errno se esta cargando en validacion!
+                    $datosUsuario[0]["visibilidad"]=0;
                     $view->camposModificarPerfil($datosUsuario[0]); //falta
                 }
             } else {
-                echo "Contraseña incorrecta";
+                //echo "Contraseña incorrecta";
+                $datosUsuario[0]["visibilidad"]=0;
+                $errno["contraseña_incorrecta"]="Contraseña incorrecta";
+                $_SESSION["errno"]=$errno;
+                $view->camposModificarPerfil($datosUsuario[0]); //falta
+            }
+        } else {
+            $this->mostrarPerfil("futuro");
+        }
+    }
+
+    public function validacionActualizarUsuario($datos){
+        //valida los datos desde servidor
+
+        $valor=true;  
+        $errno = array();  
+        if(!(preg_match("#^([^0-9]*)$#",$datos["nombre"]))){
+            //echo "El nombre no puede tener numeros";
+            $errno["nombre"]="El nombre no puede tener numeros";
+            $valor= false;
+        }
+        if(!(preg_match("#^([^0-9]*)$#",$datos["apellido"]))){
+            //echo "El apellido no puede tener numeros";
+            $errno["apellido"]="El apellido no puede tener numeros";
+            $valor= false;
+        }
+        if(!($this->mayorDeEdad($datos["nacimiento"]))){
+            //echo "Necesitas tener al menos 16 años para registrarte al sitio ";
+            $errno["edad"]="Necesitas tener al menos 16 años para registrarte al sitio";
+            $valor= false;
+        }
+        $_SESSION["errno"]=$errno;
+        return $valor;
+    }
+
+    public function actualizar_password($datos){
+        $bd = AppModelUsuario::getInstance();
+        $datosUsuario = AppModelUsuario::getInstance()->getPerfil($_SESSION["id"]);
+        $view = new Home();
+        if(isset($datos)){
+            if(!(($datos["oldPass"])==""||($datos["oldPass"])==null)&&($datos["oldPass"]==$datosUsuario[0]["password"])){
+                if($this->validacionActualizarPassword($datos)){
+                    $datos["id"] = $_SESSION['id'];
+                    $bd->actualizarPassword($datos);
+                    //echo ("Contraseña actualizada!");
+                    $errno["contraseña_actualizada"]="Contraseña actualizada";
+                    $_SESSION["errno"]=$errno;
+                    $this->mostrarPerfil("futuro");
+                } else {
+                    $datosUsuario[0]["visibilidad"]=1;
+                    $view->camposModificarPerfil($datosUsuario[0]); //falta
+                }
+            } else {
+                $datosUsuario[0]["visibilidad"]=1;
+                //echo "Contraseña incorrecta";
+                $errno["contraseña_incorrecta"]="Contraseña incorrecta";
+                $_SESSION["errno"]=$errno;
                 $view->camposModificarPerfil($datosUsuario[0]); //falta
             }
         }
+    }
+
+    public function validacionActualizarPassword($datos){
+        $valor=true;  
+        $errno = array();  
+        if(!($datos["pass"]==$datos["pass1"])){
+            //echo "Las contraseñas no coinciden ";
+            $errno["pass"]="Las contraseñas no coinciden";
+            $valor= false;
+        }
+        if(!(strlen($datos["pass"])>7)){
+            //echo "La contraseña es muy corta ";
+            $errno["longitud"]="La contraseña es muy corta";
+            $valor= false;
+        }
+        if(!((preg_match("#\W+#", $datos["pass"]))or($this->containsNumbers($datos["pass"])))){
+            //echo "La contraseña no contiene un simbolo o un numero ";
+            $errno["char"]="La contraseña no contiene un simbolo o un numero";
+            $valor= false;          
+        }
+        $_SESSION["errno"]=$errno;
+        return $valor;
     }
 
     public function publicar_pregunta($datos){
@@ -203,7 +298,9 @@ class AppControllerUsuario {
         $bdUsuario = AppModelUsuario::getInstance();
         $bdUsuario->calificarPiloto($datos);
         $bdUsuario->actualizarPuntajePiloto($datos);
-        echo("El piloto fue calificado con exito");
+        //echo("El piloto fue calificado con exito");
+        $errno["calificar_piloto"]="El piloto fue calificado con exito";
+        $_SESSION["errno"]=$errno;
         $this->mostrarPerfil("futuro");
     }
 
@@ -219,7 +316,9 @@ class AppControllerUsuario {
         $bdUsuario = AppModelUsuario::getInstance();
         $bdUsuario->calificarCopiloto($datos);
         $bdUsuario->actualizarPuntajeCopiloto($datos);
-        echo("El copiloto fue calificado con exito");
+        //echo("El copiloto fue calificado con exito");
+        $errno["calificar_copiloto"]="El copiloto fue calificado con exito";
+        $_SESSION["errno"]=$errno;
         $this->mostrarPerfil("futuro");
     }
 
@@ -233,9 +332,9 @@ class AppControllerUsuario {
     public function pagarViaje($datos){
         $model=AppModelViaje::getInstance();
         $viaje=$model->getViaje($datos);
-        $viaje["origen"]=($model->getCiudadForId($viaje["origen_id"]))[0][0];
-        $viaje["destino"]=($model->getCiudadForId($viaje["destino_id"]))[0][0];
-        $viaje["cant_copilotos"]=($model->contarAceptados($datos))[0][0];
+        $viaje["origen"]=$model->getCiudadForId($viaje["origen_id"])[0][0];
+        $viaje["destino"]=$model->getCiudadForId($viaje["destino_id"])[0][0];
+        $viaje["cant_copilotos"]=$model->contarAceptados($datos)[0][0];
         $vehiculo=AppModel::getInstance()->getVehiculo($viaje["vehiculo_id"])[0];
         $view = new Home();
         $view->pantallaParaPagar($viaje,$vehiculo);
@@ -248,7 +347,7 @@ class AppControllerUsuario {
             AppController::getInstance()->mostrarMenuConSesion();
         } else {
             //echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
-            $errno[1]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";
+            $errno["validarPago"]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";
             $_SESSION["errno"]=$errno;
             $this->pagarViaje($datos);
             //informar error en el pago
@@ -265,49 +364,35 @@ class AppControllerUsuario {
         //consulta para cambiar estado!
         AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         //echo('El pago se realizo correctamente!');
-        $errno[1]="El pago se realizo correctamente!";
+        $errno["realizarPago"]="El pago se realizo correctamente!";
         $_SESSION["errno"]=$errno;
     }
 
-    public function verPerfilAjeno($get, $guia){
+    public function verPerfilAjeno($get){
         $bdUsuario = AppModelUsuario::getInstance();
-        $idUsr = $bdUsuario->getIdAjeno($get["email"]);
-        $mostrarDatos["emailAjeno"] = $get["email"];
-        if(isset($_SESSION)){
-            $datosUsuario = $bdUsuario->getPerfil($idUsr[0][0]);
-            $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
-            $mostrarDatos["nombre"] = $nombre;
-            $mostrarDatos["email"] = $datosUsuario[0]["email"];
-            $view = new Home();
-            $viajes = $bdUsuario->getViajesPropios($idUsr[0][0]);
-            if ($guia == "futuro"){
-                $viajes = $bdUsuario->getViajesPropios($idUsr[0][0]);
-                $misPostulaciones = $bdUsuario->getMisPostulaciones($idUsr[0][0]);
-                $mostrarDatos["tituloDinamico"] = "Mis proximos viajes como piloto";
-                $mostrarDatos["tituloDinamico2"] = "Mis proximos viajes como copiloto";
-            } elseif ($guia == "totales"){
-                $viajes = $bdUsuario->getViajesPiloto($idUsr[0][0]);
-                //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
-                $misPostulaciones = $bdUsuario->getViajesCopiloto($idUsr[0][0]);
-                $mostrarDatos["tituloDinamico"] = "Mis viajes hechos como piloto";
-                $mostrarDatos["tituloDinamico2"] = "Mis viajes hechos como copiloto";
-            }
-            $mostrarDatos["viajes"]=$viajes;
-            $mostrarDatos["postulaciones"]=$misPostulaciones;
-            $ciudades = AppModel::getInstance()->getCiudades();
-            $mostrarDatos["ciudades"]=$ciudades;
-            $misPostulaciones = $bdUsuario->getMisPostulaciones($idUsr[0][0]);
-            $mostrarDatos["postulaciones"]=$misPostulaciones;
-            $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($idUsr[0][0]);
-            $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($idUsr[0][0]);
-            $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($idUsr[0][0]);
-            $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($idUsr[0][0]);
-            $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($idUsr[0][0]);
-            $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($idUsr[0][0]);
-            $view->mostrarNombreAjeno($mostrarDatos); 
+        if (($get["email"]) == "yaTengoElID"){ //con este if diferencio si ya tengo el id desde twig.
+            $idUsr[0][0]= ($get["id"]);
+        }else{                           // Si vine por un piloto lo hago con el mail, asi que obtengo su ID.
+            $idUsr = $bdUsuario->getIdAjeno($get["email"]);
         }
-
-        //Utilice el else if para mostrar el listado de viajes tanto de piloto como de copiloto
-        //muestra TODOS los viajes que realicé, tanto de piloto como copiloto
+        if ($idUsr[0][0] == ($_SESSION['id'])){  //con este if estoy validando si soy yo mismo.
+            $this->mostrarPerfil("futuro");
+        } else {
+            if(isset($_SESSION)){
+                $datosUsuario = $bdUsuario->getPerfil($idUsr[0][0]);
+                $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
+                $mostrarDatos["nombre"] = $nombre;
+                $mostrarDatos["email"] = $datosUsuario[0]["email"];
+                $view = new Home();
+                $viajes = $bdUsuario->getViajesPropios($idUsr[0][0]);
+                $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($idUsr[0][0]);
+                $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($idUsr[0][0]);
+                $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($idUsr[0][0]);
+                $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($idUsr[0][0]);
+                $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($idUsr[0][0]);
+                $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($idUsr[0][0]);
+                $view->mostrarNombreAjeno($mostrarDatos); 
+            }
+        }
     }
 }
