@@ -4,6 +4,10 @@
 Buscando
 {% endblock %}
 
+{% block stylesheets %}
+<script src="./templates/js/validarBusqueda.js"></script>
+{% endblock %}
+
 {% block navbar %}
 	{% if usuario is defined %}
 		<nav class="nav" id="navbar">
@@ -49,7 +53,7 @@ Buscando
 	<div id="buscador" class="col-xs-12 col-md-12 col-lg-12">
 				<div class="row" >
 					<div class="col-sm-12 pull-right well">
-						<form id="buscador" action="./?action=buscando" method="POST">
+						<form id="buscador" action="./?action=buscando" method="POST" onsubmit="return validarDatosDeBusqueda()">
 							<div class="form-group col-lg-3">
 									<label for="">Origen</label>
 									<select class="form-control" id="origen" name="origen" required>

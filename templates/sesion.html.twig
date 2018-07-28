@@ -6,6 +6,7 @@ Inicio
 
 {% block stylesheets %}
 <script src="./templates/js/publicarViaje.js"></script>
+<script src="./templates/js/validarBusqueda.js"></script>
 {% endblock %}
 
 {% block container %}
@@ -236,7 +237,7 @@ Inicio
 						<form id="buscador" action="./?action=buscando" method="POST">
 							<div class="form-group col-lg-3">
 									<label for="">Origen</label>
-									<select class="form-control" id="origen" name="origen" required>
+									<select class="form-control" id="origen aaa" name="origen" required>
 										<option value="" selected></option>
 										{% for each in ciudadesOrdenadas %}
 											<option value="{{ each.id }}">{{ each.nombre }}</option>
