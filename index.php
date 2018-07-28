@@ -117,4 +117,6 @@ if(!isset($_GET["action"])){
 	$usuario->validarPago($_POST);
 } elseif($_GET["action"] == "actualizar_password"){
 	$usuario->actualizar_password($_POST);
+} elseif($_GET["action"] == "mostrar_calificacion"){
+	$usuario->mostrarCalificacionesDetalladas($_POST);
 }

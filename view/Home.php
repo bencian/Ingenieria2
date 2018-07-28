@@ -116,4 +116,7 @@ class Home extends TwigView {
         echo self::getTwig()->render("calificar.html.twig", array("datos"=>$datos,"ciudades"=>$ciudades,"rol"=>$rol));
     }
 
+    public function calificacionesDetalladas($datos){
+        echo self::getTwig()->render("verCalificacionesDetalladas.html.twig", array("datos"=>$datos));
+    }
 }

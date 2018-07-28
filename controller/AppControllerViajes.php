@@ -156,6 +156,10 @@ class AppControllerViajes {
             $errno["distancia"]="La distancia no puede tener letras";
             $entra = false;
         }
+        if(AppControllerUsuario::getInstance()->tieneCalificacionesPendientes()){
+            $errno["calificacionPendiende"]="No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
+            $entra = false;
+        }
         if($this->esHoy($tempArray)){
             if($this->masTarde($datos["hora_salida"])){
                 //echo "Debe ser para mas tarde";
@@ -266,6 +270,10 @@ class AppControllerViajes {
         }
         if(!$this->esNumerico($datos["distancia"])){
             echo "La distancia no puede tener letras";
+            $entra = false;
+        }
+        if(AppControllerUsuario::getInstance()->tieneCalificacionesPendientes()){
+            echo "No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
             $entra = false;
         }
         return $entra;

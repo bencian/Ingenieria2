@@ -131,6 +131,7 @@ class AppControllerUsuario {
             $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
             $mostrarDatos["nombre"] = $nombre;
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
+            $mostrarDatos["usuario_id"] = $_SESSION['id'];
             $view = new Home();
             $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
             if ($guia == "futuro"){
@@ -383,16 +384,36 @@ class AppControllerUsuario {
                 $nombre = $datosUsuario[0]["nombre"]." ".$datosUsuario[0]["apellido"];
                 $mostrarDatos["nombre"] = $nombre;
                 $mostrarDatos["email"] = $datosUsuario[0]["email"];
+                $mostrarDatos["usuario_id"] = $idUsr[0][0];
                 $view = new Home();
                 $viajes = $bdUsuario->getViajesPropios($idUsr[0][0]);
                 $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($idUsr[0][0]);
                 $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($idUsr[0][0]);
                 $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($idUsr[0][0]);
                 $mostrarDatos["cantidadViajesCopiloto"] = $bdUsuario->viajesHechosComoCopiloto($idUsr[0][0]);
-                $mostrarDatos["calificacionesPendientesAPilotos"] = $bdUsuario->pilotosACalificar($idUsr[0][0]);
-                $mostrarDatos["calificacionesPendientesACopilotos"] = $bdUsuario->copilotosACalificar($idUsr[0][0]);
                 $view->mostrarNombreAjeno($mostrarDatos); 
             }
         }
+    }
+
+    public function tieneCalificacionesPendientes(){
+        $bdUsuario = AppModelUsuario::getInstance();
+        $cantCalificacionesAPilotos = $bdUsuario->pilotosACalificarMayoresA30($_SESSION['id']);
+        $cantCalificacionesACopilotos = $bdUsuario->copilotosACalificarMayoresA30($_SESSION['id']);
+        $cantCalificaciones = count($cantCalificacionesAPilotos) + count($cantCalificacionesACopilotos);
+        if($cantCalificaciones == 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function mostrarCalificacionesDetalladas($datos){
+        $bdUsuario = AppModelUsuario::getInstance();
+        $bdViaje = AppModelViaje::getInstance();
+        $mostrarDatos["calificacionPiloto"] = $bdUsuario->getCalificacionesPiloto($datos["usuario_id"]);
+        $mostrarDatos["calificacionCopiloto"] = $bdUsuario->getCalificacionesCopiloto($datos["usuario_id"]);
+        $view = new Home();
+        $view->calificacionesDetalladas($mostrarDatos);
     }
 }

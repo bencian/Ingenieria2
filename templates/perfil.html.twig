@@ -19,7 +19,10 @@ Mi perfil
 <div class="container well">
 	<div class="row row-list">
 		<div id="calificaciones" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion" style="width:14em;">Ver calificaciones detalladas</a>
+			<form method="post" action="index.php?action=mostrar_calificacion">
+				<input type="hidden" name="usuario_id" value="{{ usuario_id }}">
+				<input type="submit" class="btn btn-primaryPink" style="width:14em;" value="Ver calificaciones detalladas">
+			</form>
 		</div>
 		<div id="historialViajes" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
 			{% if tituloDinamico == 'Mis proximos viajes como piloto' %}

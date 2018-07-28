@@ -1,0 +1,81 @@
+{% extends "base_session.html.twig" %}
+
+{% block title %}
+Calificaciones detalladas
+{% endblock %}
+
+{% block container %}
+<div class="container">
+    {% include 'errno.html.twig' %}
+</div> 
+<div class="container well viajes">
+    <div id="calificacionPiloto" class="row">
+        <div class="col-sm-12 col-sm-offset-0 text-center">
+            <h2>Calificaciones como Piloto</h2>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Puntuacion</th>
+                        <th scope="col">Comentario</th>
+                        <th scope="col">Fecha de calificacion</th>
+                        <th scope="col">Viaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for calificacion in calificacionPiloto %}
+                        <tr>
+                            <td>Copiloto: <a href="index.php?action=ver_perfil_ajeno&email={{ calificacion.email }}">{{ calificacion.nombre }} {{ calificacion.apellido }} {{ calificacion.email }}</a></td>
+                            <td>{{ calificacion.puntuacion }}</td>
+                            <td>{{ calificacion.comentarios }}</td>
+                            <td>{{ calificacion.fecha }}</td>
+                            <td>
+                                <form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+                                    <input type="hidden" name="id" value="{{ calificacion.viaje_id }}">
+                                    <input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container well viajes">    
+    <div id="calificacionCopiloto" class="row">
+        <div class="col-sm-12 col-sm-offset-0 text-center">
+            <h2>Calificaciones como Copiloto</h2>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Puntuacion</th>
+                        <th scope="col">Comentario</th>
+                        <th scope="col">Fecha de calificacion</th>
+                        <th scope="col">Viaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for calificacion in calificacionCopiloto %}
+                        <tr>
+                            <td>Copiloto: <a href="index.php?action=ver_perfil_ajeno&email={{ calificacion.email }}">{{ calificacion.nombre }} {{ calificacion.apellido }} {{ calificacion.email }}</a></td>
+                            <td>{{ calificacion.puntuacion }}</td>
+                            <td>{{ calificacion.comentarios }}</td>
+                            <td>{{ calificacion.fecha }}</td>
+                            <td>
+                                <form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
+                                    <input type="hidden" name="id" value="{{ calificacion.viaje_id }}">
+                                    <input type="submit" class="btn btn-primaryPink"  value="Ver viaje">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>   
+{% endblock %}

@@ -17,13 +17,16 @@ Mi perfil
 <div class="container well">
 	<div class="row row-list">
 		<div id="calificaciones" class="col-xs-2 col-md-2 col-lg-2 botones-perfil">
-			<a class="btn btn-primaryPink" href="index.php?action=mostrar_calificacion" style="text-align:center;">Ver calificaciones detalladas</a>
+			<form method="post" action="index.php?action=mostrar_calificacion">
+				<input type="hidden" name="usuario_id" value="{{ usuario_id }}">
+				<input type="submit" class="btn btn-primaryPink" style="width:14em;" value="Ver calificaciones detalladas">
+			</form>
 		</div>
 		<div class="col-xs-12 col-md-12 col-lg-12" style="text-align:center; color:black;">
 			<p style="text-align:center; color:black;"> Calificacion como piloto = {{ calificacion_piloto.0 }}</p><cr>
-			<p style="text-align:center; color:black;"> Total viajes = {{ cantidadViajesPiloto.0 }}</p>
+			<p style="text-align:center; color:black;"> Cantidad de calificaciones = {{ cantidadViajesPiloto.0 }}</p>
 			<p style="text-align:center; color:black;"> Calificacion como copiloto = {{ calificacion_copiloto.0 }}</p><cr>
-			<p style="text-align:center; color:black;"> Total viajes = {{ cantidadViajesCopiloto.0 }}</p>
+			<p style="text-align:center; color:black;"> Cantidad de calificaciones = {{ cantidadViajesCopiloto.0 }}</p>
 		</div>
 	</div>
 </div>

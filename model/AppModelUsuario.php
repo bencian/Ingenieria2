@@ -143,7 +143,7 @@ class AppModelUsuario extends PDORepository {
         $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
             FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (uv.usuario_id=u.id)
             WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id and not exists (
-            select * from calificacion_copiloto where piloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
+            select * from calificacion_copiloto where piloto_califica=:id and copiloto_calificado=uv.usuario_id and viaje_id = v.id)",["id" => $id]);
         return $answer;
     }
 
@@ -210,6 +210,36 @@ class AppModelUsuario extends PDORepository {
 
     public function setearPagado($id){
         $answer = $this->queryList("UPDATE viaje SET pagado=1 WHERE id=:id", ["id" => $id]);
+        return $answer;
+    }
+
+    public function copilotosACalificarMayoresA30($id){
+        $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (uv.usuario_id=u.id)
+            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id and fecha>DATEDIFF(NOW() - 30 days) and not exists (
+            select * from calificacion_copiloto where piloto_califica=:id  and copiloto_calificado=uv.usuario_id and viaje_id = v.id)",["id" => $id]);
+        return $answer;
+    }
+
+    public function pilotosACalificarMayoresA30($id){
+        $answer = $this->queryList("SELECT u.email, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia, v.usuario_id, v.id
+            FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (v.usuario_id=u.id)
+            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and uv.usuario_id=:id and uv.estado='Aceptado' and fecha>DATEDIFF(NOW() - 30 days) and not exists (
+            select * from calificacion_piloto where copiloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
+        return $answer;
+    }
+
+    public function getCalificacionesPiloto($id){
+        $answer = $this->queryList("SELECT u.nombre, u.apellido, u.email, cp.puntuacion, cp.comentarios, cp.fecha, cp.copiloto_califica, cp.viaje_id 
+            FROM calificacion_piloto cp INNER JOIN usuario u on (u.id = cp.copiloto_califica)
+            WHERE cp.piloto_calificado=:id",["id" => $id]);
+        return $answer;
+    }
+
+    public function getCalificacionesCopiloto($id){
+        $answer = $this->queryList("SELECT u.nombre, u.apellido, u.email, cc.puntuacion, cc.comentarios, cc.fecha, cc.piloto_califica, cc.viaje_id
+            FROM calificacion_copiloto cc INNER JOIN usuario u on (u.id = cp.piloto_califica)
+            WHERE cc.copiloto_calificado=:id",["id" => $id]);
         return $answer;
     }
 }
