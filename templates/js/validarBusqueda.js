@@ -1,8 +1,8 @@
 function validarDatosDeBusqueda(){
 
-    var destino= document.getElementById("destino").value;
-    var origen= document.getElementById("origen").value;
-    var salida= document.getElementById("salida").value;
+    var destino= document.getElementById("destino1").value;
+    var origen= document.getElementById("origen1").value;
+    var salida= document.getElementById("salida1").value;
 
     if (origen==''){
     	alert("Se debe ingresar un origen");
