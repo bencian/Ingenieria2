@@ -42,18 +42,18 @@ Detalles de viaje
                     <tr>
                         <td><h3>Datos generales</h3></td>  
                         <td><a href="#">Piloto: {{ piloto.nombre }} {{ piloto.apellido }} {{ piloto.email }}</a></td>
-                        <td>Hora: {{ viaje.hora_salida }}</td>
-                        <td>Precio: {{ (viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
+                        <td>Hora: {{ viaje.hora_salida }} horas</td>
+                        <td>Precio: ${{ (viaje.precio/(vehiculo.asientos)) | round(2, 'floor') }}</td>
                     </tr>
                     <tr>
                         <td><h3>Datos extras</h3></td>
-                        <td>Duracion: {{ viaje.duracion }}</td>
-                        <td>Distancia: {{ viaje.distancia }}</td>
+                        <td>Duracion: {{ viaje.duracion }} horas</td>
+                        <td>Distancia: {{ viaje.distancia }}km</td>
                         <td>Cantidad de postulados: {{ cantPostulados }}</td>
                     </tr>
                     <tr>
                         <td><h3>Datos del vehiculo</h3></td>
-                        <td>Cantidad de asientos: {{ vehiculo.asientos }}</td>
+                        <td>Cantidad de asientos: {{ vehiculo.asientos }} </td>
                         <td>Marca: {{ vehiculo.marca }}</td>
                         <td>Modelo: {{ vehiculo.modelo }}</td>
                     </tr>
