@@ -133,25 +133,20 @@ class AppControllerUsuario {
             $mostrarDatos["email"] = $datosUsuario[0]["email"];
             $mostrarDatos["usuario_id"] = $_SESSION['id'];
             $view = new Home();
-            $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
+            //$viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
             if ($guia == "futuro"){
-                $viajes = $bdUsuario->getViajesPropios($_SESSION['id']);
-                $misPostulaciones = $bdUsuario->getMisPostulaciones($_SESSION['id']);
+                $mostrarDatos["viajes"] = $bdUsuario->getViajesPropios($_SESSION['id']);
+                $mostrarDatos["postulaciones"] = $bdUsuario->getMisPostulaciones($_SESSION['id']);
                 $mostrarDatos["tituloDinamico"] = "Mis proximos viajes como piloto";
                 $mostrarDatos["tituloDinamico2"] = "Mis proximos viajes como copiloto";
             } elseif ($guia == "totales"){
-                $viajes = $bdUsuario->getViajesPiloto($_SESSION['id']);
-                //$misPostulaciones aca adentro son los viajes que YA REALICE como copiloto
-                $misPostulaciones = $bdUsuario->getViajesCopiloto($_SESSION['id']);
+                $mostrarDatos["viajes"] = $bdUsuario->getViajesPiloto($_SESSION['id']);
+                $mostrarDatos["postulaciones"] = $bdUsuario->getViajesCopiloto($_SESSION['id']);
                 $mostrarDatos["tituloDinamico"] = "Mis viajes hechos como piloto";
                 $mostrarDatos["tituloDinamico2"] = "Mis viajes hechos como copiloto";
             }
-            $mostrarDatos["viajes"]=$viajes;
-            $mostrarDatos["postulaciones"]=$misPostulaciones;
             $ciudades = AppModel::getInstance()->getCiudades();
             $mostrarDatos["ciudades"]=$ciudades;
-            $misPostulaciones = $bdUsuario->getMisPostulaciones($_SESSION['id']);
-            $mostrarDatos["postulaciones"]=$misPostulaciones;
             $mostrarDatos["calificacion_piloto"] = $bdUsuario->calificacionPiloto($_SESSION['id']);
             $mostrarDatos["cantidadViajesPiloto"] = $bdUsuario->viajesHechosComoPiloto($_SESSION['id']);
             $mostrarDatos["calificacion_copiloto"] = $bdUsuario->calificacionCopiloto($_SESSION['id']);

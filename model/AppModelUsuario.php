@@ -70,7 +70,7 @@ class AppModelUsuario extends PDORepository {
         //solucionado con la fecha
         $answer = $this->queryList("SELECT * FROM usuario_viaje uv
         INNER JOIN viaje v ON (uv.viaje_id=v.id)
-        WHERE (uv.usuario_id=:id AND (fecha<CURDATE()))", [ "id"=>$_SESSION["id"]]);
+        WHERE (uv.usuario_id=:id AND (v.fecha<CURDATE()))", [ "id"=>$_SESSION["id"]]);
         return $answer;      
     }
 
@@ -117,7 +117,7 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function viajesHechosComoPiloto($id){
-        $answer = $this->queryList("SELECT count(id) FROM calificacion_piloto WHERE piloto_calificado=:id",["id"=> $id]);
+        $answer = $this->queryList("SELECT count(*) FROM calificacion_piloto WHERE piloto_calificado=:id",["id"=> $id]);
         return $answer[0];
     }
 
@@ -183,19 +183,17 @@ class AppModelUsuario extends PDORepository {
 
     public function calificarPiloto($datos){
         $answer = $this->queryList("INSERT INTO calificacion_piloto (puntuacion, comentarios, fecha, piloto_calificado, viaje_id, copiloto_califica) 
-            VALUES (:puntuacion, :comentarios, CURDATE(), :copiloto, :viaje_id, :piloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"piloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"copiloto"=>$_SESSION["id"]]);
+            VALUES (:puntuacion, :comentarios, CURDATE(), :piloto, :viaje_id, :copiloto)", ["puntuacion"=>$datos["puntaje"],"comentarios"=>$datos["comentarios"],"piloto"=>$datos["usuario_id"],"viaje_id"=>$datos["viaje_id"],"copiloto"=>$_SESSION["id"]]);
         return $answer;
     }
 
     public function actualizarPuntajeCopiloto($datos){
-        var_dump($datos);
         $answer = $this->queryList("UPDATE usuario SET calificacion_copiloto = calificacion_copiloto + :puntuacion 
             WHERE id=:usuario_id",["puntuacion"=>$datos["puntaje"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;
     }
 
     public function actualizarPuntajePiloto($datos){
-        var_dump($datos);
         $answer = $this->queryList("UPDATE usuario SET calificacion_piloto = calificacion_piloto + :puntuacion 
             WHERE id=:usuario_id",["puntuacion"=>$datos["puntaje"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;

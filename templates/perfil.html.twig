@@ -188,7 +188,7 @@ Mi perfil
 						<tbody>
 							{% for calificacion in calificacionesPendientesAPilotos %}
 								<tr>
-									<td><a href="#">{{ calificacion.email }}</a></td>
+									<td><a href="index.php?action=ver_perfil_ajeno&email={{ calificacion.email }}">{{ calificacion.email }}</a></td>
 									<td>{{ ciudades[calificacion.origen_id - 1].nombre }}</td>
 									<td>{{ ciudades[calificacion.destino_id - 1].nombre }}</td>
 									<td>{{ calificacion.fecha }}</td>
@@ -238,7 +238,7 @@ Mi perfil
 						<tbody>
 							{% for calificacion in calificacionesPendientesACopilotos %}
 								<tr>
-									<td><a href="#">{{ calificacion.email }}</a></td>
+									<td><a href="index.php?action=ver_perfil_ajeno&email={{ calificacion.email }}">{{ calificacion.email }}</a></td>
 									<td>{{ ciudades[calificacion.origen_id - 1].nombre }}</td>
 									<td>{{ ciudades[calificacion.destino_id - 1].nombre }}</td>
 									<td>{{ calificacion.fecha }}</td>

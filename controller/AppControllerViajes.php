@@ -110,6 +110,7 @@ class AppControllerViajes {
     public function publicarViajeOcasional($datos){
         if($this->validarViajeOcasional($datos)){
             $this->publicar_viaje_ocasional($datos);
+            $_SESSION["errno"] = array("Viaje creado con exito");
         }
         AppController::getInstance()->mostrarMenuConSesion();       
     }
