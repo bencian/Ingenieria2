@@ -46,6 +46,8 @@ class AppControllerUsuario {
             $test = $this->validacionUsuario($datos);
             if(!($bdUsuario->existeMail($datos["email"]))&&($test)){
                 $bdUsuario->registrar($datos);
+                $errno["crear_usuario"]="Se registro con exito!";
+                $_SESSION["errno"]=$errno;
                 $menu = AppController::getInstance();
                 $menu->index();
             } else {
