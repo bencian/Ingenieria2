@@ -70,7 +70,7 @@ class AppControllerVehiculo {
             $errno["validar_modelo"]="El modelo ingresado no es valido, ingrese el año de su vehiculo";
             $valor = false;
         }
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["malo"]=$errno;
         return $valor;
     }
 

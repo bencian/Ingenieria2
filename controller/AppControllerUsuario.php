@@ -47,14 +47,14 @@ class AppControllerUsuario {
             if(!($bdUsuario->existeMail($datos["email"]))&&($test)){
                 $bdUsuario->registrar($datos);
                 $errno["crear_usuario"]="Se registro con exito!";
-                $_SESSION["errno"]=$errno;
+                $_SESSION["errno"]["bueno"]=$errno;
                 $menu = AppController::getInstance();
                 $menu->index();
             } else {
                 if ($bdUsuario->existeMail($datos["email"])){
                     //echo "Ya existe el mail en la base de datos";
                     $errno["crear_usuario"]="Ese mail ya se encuentra registrado";
-                    $_SESSION["errno"]=$errno;
+                    $_SESSION["errno"]["malo"]=$errno;
                 }
                 $view->show("registrarse.html.twig");
             }
@@ -121,7 +121,7 @@ class AppControllerUsuario {
             $errno["edad"]="Necesitas tener al menos 16 años para registrarte al sitio";
             $valor= false;
         }
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["malo"]=$errno;
         return $valor;
     }
 
@@ -181,7 +181,7 @@ class AppControllerUsuario {
                     $bd->actualizarUsuario($datos);
                     //echo "Datos actualizados!";
                     $errno["modificar_perfil"]="Datos actualizados correctamente!";
-                    $_SESSION["errno"]=$errno;
+                    $_SESSION["errno"]["bueno"]=$errno;
                     $this->mostrarPerfil("futuro");
                 } else {
                     ////REVISAR QUE ERROR TIENE QUE DAR
@@ -221,7 +221,7 @@ class AppControllerUsuario {
             $errno["edad"]="Necesitas tener al menos 16 años para registrarte al sitio";
             $valor= false;
         }
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["malo"]=$errno;
         return $valor;
     }
 
@@ -236,7 +236,7 @@ class AppControllerUsuario {
                     $bd->actualizarPassword($datos);
                     //echo ("Contraseña actualizada!");
                     $errno["contraseña_actualizada"]="Contraseña actualizada";
-                    $_SESSION["errno"]=$errno;
+                    $_SESSION["errno"]["bueno"]=$errno;
                     $this->mostrarPerfil("futuro");
                 } else {
                     $datosUsuario[0]["visibilidad"]=1;
@@ -246,7 +246,7 @@ class AppControllerUsuario {
                 $datosUsuario[0]["visibilidad"]=1;
                 //echo "Contraseña incorrecta";
                 $errno["contraseña_incorrecta"]="Contraseña incorrecta";
-                $_SESSION["errno"]=$errno;
+                $_SESSION["errno"]["malo"]=$errno;
                 $view->camposModificarPerfil($datosUsuario[0]); //falta
             }
         }
@@ -270,7 +270,7 @@ class AppControllerUsuario {
             $errno["char"]="La contraseña no contiene un simbolo o un numero";
             $valor= false;          
         }
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["malo"]=$errno;
         return $valor;
     }
 
@@ -298,7 +298,7 @@ class AppControllerUsuario {
         $bdUsuario->actualizarPuntajePiloto($datos);
         //echo("El piloto fue calificado con exito");
         $errno["calificar_piloto"]="El piloto fue calificado con exito";
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["bueno"]=$errno;
         $this->mostrarPerfil("futuro");
     }
 
@@ -316,7 +316,7 @@ class AppControllerUsuario {
         $bdUsuario->actualizarPuntajeCopiloto($datos);
         //echo("El copiloto fue calificado con exito");
         $errno["calificar_copiloto"]="El copiloto fue calificado con exito";
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["bueno"]=$errno;
         $this->mostrarPerfil("futuro");
     }
 
@@ -346,7 +346,7 @@ class AppControllerUsuario {
         } else {
             //echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
             $errno["validarPago"]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";
-            $_SESSION["errno"]=$errno;
+            $_SESSION["errno"]["malo"]=$errno;
             $this->pagarViaje($datos);
             //informar error en el pago
         }
@@ -363,7 +363,7 @@ class AppControllerUsuario {
         AppModelUsuario::getInstance()->setearPagado($datos["id"]);
         //echo('El pago se realizo correctamente!');
         $errno["realizarPago"]="El pago se realizo correctamente!";
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["bueno"]=$errno;
     }
 
     public function verPerfilAjeno($get){

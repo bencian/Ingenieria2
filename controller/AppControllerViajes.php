@@ -54,7 +54,7 @@ class AppControllerViajes {
                     $viajes_hechos=$viajes->busqueda_completa($datos);
                 } else {
                     $errno["distinto"]="No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!";
-                    $_SESSION["errno"]=$errno;
+                    $_SESSION["errno"]["malo"]=$errno;
                     //echo("No se puede publicar viajes donde el origen sea el mismo que el destino, asi que no va a haber resultados!");
                 }
             } else {
@@ -66,7 +66,7 @@ class AppControllerViajes {
         } else {
             //echo "<h1>No juegues con la URL, hjo de una gran... de de muzzarella</h1>";
             $errno["buscador"]="No juegues con la URL, hjo de una gran... de de muzzarella";
-            $_SESSION["errno"]=$errno;
+            $_SESSION["errno"]["malo"]=$errno;
             AppController::getInstance()->mostrarMenuConSesion();  
         }
     }
@@ -110,7 +110,7 @@ class AppControllerViajes {
     public function publicarViajeOcasional($datos){
         if($this->validarViajeOcasional($datos)){
             $this->publicar_viaje_ocasional($datos);
-            $_SESSION["errno"] = array("Viaje creado con exito");
+            $_SESSION["errno"]["bueno"] = array("Viaje creado con exito");
         }
         AppController::getInstance()->mostrarMenuConSesion();       
     }
@@ -130,8 +130,7 @@ class AppControllerViajes {
             $tempArray[$i] = (int)$tempArray[$i];
         }
         $entra = true;
-        $errno=array();
-            
+        $errno=array();            
         if(!$this->fechaMayor($tempArray)){
             //echo "Fecha ingresada invalida";
             $errno["fechaMayor"]="Fecha ingresada invalida";
@@ -158,7 +157,7 @@ class AppControllerViajes {
             $entra = false;
         }
         if(AppControllerUsuario::getInstance()->tieneCalificacionesPendientes()){
-            $errno["calificacionPendiende"]="No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
+            $errno["calificacionPendiende"]["malo"]="No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
             $entra = false;
         }
         if($this->esHoy($tempArray)){
@@ -175,7 +174,7 @@ class AppControllerViajes {
                 $entra = false;
             }
         }
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["malo"]=$errno;
         return $entra;
     }
 
@@ -237,7 +236,8 @@ class AppControllerViajes {
     public function publicarViajePeriodico($datos){
         if($this->validarViajePeriodico($datos)){
             if($this->diasAViajar($datos)==0){
-                echo "Debes seleccionar al menos un dia de la semana entre la fecha inicial y la final";
+                $string = "Debes poder viajar al menos un dia de la semana entre la fecha inicial y la final";
+                array_push($_SESSION["errno"]["malo"], $string);
             }
         }
         AppController::getInstance()->mostrarMenuConSesion();      
@@ -250,31 +250,38 @@ class AppControllerViajes {
         }
         $entra = true;
         if(strtotime($datos["fecha"])>strtotime($datos["fechaFinal"])){
-            echo "Fecha inicial mayor a la fecha final";
+            $string = "Fecha inicial mayor a la fecha final";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }   
         if(!$this->fechaMayor($tempArray)){
-            echo "Fecha ingresada invalida";
+            $string = "Fecha ingresada invalida";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }
         if(!$this->esNumerico($datos["precio"])){
-            echo "El precio no puede tener letras";
+            $string = "El precio no puede tener letras";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }
         if(!$this->esNumerico($datos["duracion"])){
-            echo "La duracion no puede tener letras";
+            $string = "La duracion no puede tener letras";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }
         if($datos["origen"]==$datos["destino"]){
-            echo "El origen y el destino no pueden ser los mismos";
+            $string = "El origen y el destino no pueden ser los mismos";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }
         if(!$this->esNumerico($datos["distancia"])){
-            echo "La distancia no puede tener letras";
+            $string = "La distancia no puede tener letras";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }
         if(AppControllerUsuario::getInstance()->tieneCalificacionesPendientes()){
-            echo "No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
+            $string = "No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
+            array_push($_SESSION["errno"]["malo"], $string);
             $entra = false;
         }
         return $entra;
@@ -330,18 +337,24 @@ class AppControllerViajes {
                     if(!$this->masTarde($datos["hora_salida"])){
                         //cargar viaje
                         $this->publicar_viaje_ocasional($datos);
+                        $string = "Se publico el viaje del dia ".$datos["fecha"];
+                        array_push($_SESSION["errno"]["bueno"], $string);
                         $viaja = true;
                     } else {
-                        echo "El viaje del dia ".$datos["fecha"]." debe ser para mas tarde";
+                        $string = "El viaje del dia ".$datos["fecha"]." debe ser para mas tarde";
+                        array_push($_SESSION["errno"]["malo"], $string);
                         $viaja = false;
                     }  
                 } else {
                     //cargar viaje
                     $this->publicar_viaje_ocasional($datos);
+                    $string = "Se publico el viaje del dia ".$datos["fecha"];
+                    array_push($_SESSION["errno"]["bueno"], $string);
                     $viaja = true;
                 } 
             } else {
-                echo "El vehiculo tiene un viaje programado para el dia ".$datos["fecha"]." ";
+                $string = "El vehiculo tiene un viaje programado para el dia ".$datos["fecha"].", debe elegir otro horario";
+                array_push($_SESSION["errno"]["malo"], $string);
                 $viaja = false;
             }
         }
@@ -470,7 +483,7 @@ class AppControllerViajes {
                 $entra = false;
             }
         }
-        $_SESSION["errno"]=$errno;
+        $_SESSION["errno"]["malo"]=$errno;
         //$_SESSION["errno"]["g"]=0;
         return $entra;
     }
@@ -494,11 +507,11 @@ class AppControllerViajes {
         if($this->viajeTieneLugar($viaje)){
             $bd->cambiarEstadoParaAceptado($viaje, $postulado);
             $errno["aceptado"]="Se acepto al usuario correctamente";
-            $_SESSION["errno"]=$errno;
+            $_SESSION["errno"]["bueno"]=$errno;
             //Echo "Se acepto al usuario correctamente";
         } else {
             $errno["rechazado"]="Ya no puedes aceptar mas usuarios!";
-            $_SESSION["errno"]=$errno;
+            $_SESSION["errno"]["malo"]=$errno;
             //Echo "Ya no puedes aceptar mas usuarios!";
         }
         $this->ver_publicacion_viaje($datos);
