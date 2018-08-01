@@ -140,7 +140,7 @@ class AppControllerUsuario {
                 $mostrarDatos["viajes"] = $bdUsuario->getViajesPropios($_SESSION['id']);
                 $mostrarDatos["postulaciones"] = $bdUsuario->getMisPostulaciones($_SESSION['id']);
                 $mostrarDatos["tituloDinamico"] = "Mis proximos viajes como piloto";
-                $mostrarDatos["tituloDinamico2"] = "Mis proximos viajes como copiloto";
+                $mostrarDatos["tituloDinamico2"] = "Mis solicitudes como copiloto";
             } elseif ($guia == "totales"){
                 $mostrarDatos["viajes"] = $bdUsuario->getViajesPiloto($_SESSION['id']);
                 $mostrarDatos["postulaciones"] = $bdUsuario->getViajesCopiloto($_SESSION['id']);
@@ -342,7 +342,12 @@ class AppControllerUsuario {
         $valida=$this->validarTarjetaDeCredito($datos);
         if($valida){
             $this->realizarPago($datos);
-            AppController::getInstance()->mostrarMenuConSesion();
+            $cant_viajes_a_pagar= AppModelUsuario::getInstance()->tengoViajesAPagar();
+            if($cant_viajes_a_pagar[0]["COUNT(v.id)"]>0){
+                $this->listarViajesAPagar();
+            } else {
+                AppController::getInstance()->mostrarMenuConSesion();
+            }
         } else {
             //echo('El pago no pudo realizarse, los datos ingresados no coinciden!');
             $errno["validarPago"]="El pago no pudo realizarse, los datos ingresados no coinciden! Vuelva a intentarlo";

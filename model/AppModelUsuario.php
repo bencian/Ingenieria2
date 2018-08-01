@@ -70,7 +70,7 @@ class AppModelUsuario extends PDORepository {
         //solucionado con la fecha
         $answer = $this->queryList("SELECT * FROM usuario_viaje uv
         INNER JOIN viaje v ON (uv.viaje_id=v.id)
-        WHERE (uv.usuario_id=:id AND (v.fecha<CURDATE()))", [ "id"=>$_SESSION["id"]]);
+        WHERE (uv.usuario_id=:id AND (v.fecha<CURDATE())) and uv.estado='Aceptado'", [ "id"=>$_SESSION["id"]]);
         return $answer;      
     }
 
@@ -162,14 +162,14 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function getDatosCalifcacionPiloto($datos){
-        $answer = $this->queryList("SELECT u.email, v.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
+        $answer = $this->queryList("SELECT u.email, v.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia, v.lugares
             FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (v.usuario_id=u.id)
             WHERE (v.id=:viaje_id AND v.usuario_id=:usuario_id)",["viaje_id"=>$datos["viaje_id"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;
     }
 
     public function getDatosCalifcacionCopiloto($datos){
-        $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
+        $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia, v.lugares
             FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (uv.usuario_id=u.id) 
             WHERE (v.id=:viaje_id AND uv.usuario_id=:usuario_id)",["viaje_id"=>$datos["viaje_id"],"usuario_id"=>$datos["usuario_id"]]);
         return $answer;

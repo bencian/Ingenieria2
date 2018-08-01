@@ -31,7 +31,7 @@ Mi perfil
 				<td>{{ ciudades[datos.0.destino_id - 1].nombre }}</td>
 				<td>{{ datos.0.fecha }}</td>
 				<td>{{ datos.0.hora_salida }}hs</td>
-				<td>$ {{ datos.0.precio }}</td>
+				<td>${{ (datos.0.precio/(datos.0.lugares)) | round(2, 'floor') }} por persona</td>
 				<td>{{ datos.0.duracion }} horas</td>
 				<td>{{ datos.0.distancia }} kms</td>
 			</tr>

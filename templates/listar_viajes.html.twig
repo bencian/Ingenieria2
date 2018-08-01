@@ -114,7 +114,7 @@ Buscando
 					<td>{{ ciudades[viaje.destino_id-1].nombre }}</td>
 					<td>{{ viaje.fecha }}</td>
 					<td>{{ viaje.hora_salida }}hs</td>
-					<td>$ {{ viaje.precio }}</td>
+					<td>${{ (viaje.precio/(viaje.lugares)) | round(2, 'floor') }} por persona</td>
 					<td>{{ viaje.duracion }} horas</td>
 					<td>{{ viaje.distancia }} kms</td>
 					<td>
