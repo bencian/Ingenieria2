@@ -66,7 +66,7 @@ Calificaciones detalladas
                     <tbody>
                         {% for calificacion in datos.calificacionCopiloto %}
                             <tr>
-                                <td>Copiloto: <a href="index.php?action=ver_perfil_ajeno&email={{ calificacion.email }}">{{ calificacion.nombre }} {{ calificacion.apellido }} {{ calificacion.email }}</a></td>
+                                <td>Piloto: <a href="index.php?action=ver_perfil_ajeno&email={{ calificacion.email }}">{{ calificacion.nombre }} {{ calificacion.apellido }} {{ calificacion.email }}</a></td>
                                 <td>{{ calificacion.puntuacion }}</td>
                                 <td>{{ calificacion.comentarios }}</td>
                                 <td>{{ calificacion.fecha }}</td>

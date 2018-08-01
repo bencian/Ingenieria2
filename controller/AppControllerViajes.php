@@ -416,12 +416,9 @@ class AppControllerViajes {
 
     public function cancelar_postulacion($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
-
-        /* 
-
-        ACA SE TIENE QUE DESCONTAR PUNTOS!!! 
-
-        */
+        $calificacion["usuario_id"]=$_SESSION["id"];
+        $calificacion["puntaje"]=-1;
+        AppModelUsuario::getInstance()->actualizarPuntajePiloto($calificacion);
         $this->ver_publicacion_viaje($datos);
     }
 
@@ -496,7 +493,9 @@ class AppControllerViajes {
 
     public function borrar_postulacion_aceptada($datos){
         AppModelViaje::getInstance()->cancelarPostulacion($datos);
-        // ACA HAY QUE DESCONTAR LOS PUNTOS PERO NO ESTA LA PUNTUACION
+        $calificacion["usuario_id"]=$_SESSION["id"];
+        $calificacion["puntaje"]=-1;
+        AppModelUsuario::getInstance()->actualizarPuntajePiloto($calificacion);
         $this->ver_publicacion_viaje($datos);
     }
 

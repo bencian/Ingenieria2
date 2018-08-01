@@ -415,6 +415,7 @@ class AppControllerUsuario {
         $bdViaje = AppModelViaje::getInstance();
         $mostrarDatos["calificacionPiloto"] = $bdUsuario->getCalificacionesPiloto($datos["usuario_id"]);
         $mostrarDatos["calificacionCopiloto"] = $bdUsuario->getCalificacionesCopiloto($datos["usuario_id"]);
+        var_dump($mostrarDatos);
         $view = new Home();
         $view->calificacionesDetalladas($mostrarDatos);
     }

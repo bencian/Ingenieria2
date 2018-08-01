@@ -59,9 +59,7 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function getViajesPiloto($id){
-        date_default_timezone_set("America/Argentina/Buenos_Aires");
-        $fecha = date('Y-m-d');
-        $answer = $this->queryList("SELECT * FROM viaje vj WHERE usuario_id=:id and vj.fecha<:fecha", ["id"=>$_SESSION["id"],"fecha"=>$fecha]);
+        $answer = $this->queryList("SELECT * FROM viaje vj WHERE usuario_id=:id and ((vj.fecha<CURDATE()) OR (vj.fecha=CURDATE() AND date_add(CONCAT(vj.fecha,' ',vj.hora_salida),interval vj.duracion HOUR)<NOW()))", ["id"=>$_SESSION["id"]]);
         return $answer;        
     }
 
@@ -70,7 +68,7 @@ class AppModelUsuario extends PDORepository {
         //solucionado con la fecha
         $answer = $this->queryList("SELECT * FROM usuario_viaje uv
         INNER JOIN viaje v ON (uv.viaje_id=v.id)
-        WHERE (uv.usuario_id=:id AND (v.fecha<CURDATE())) and uv.estado='Aceptado'", [ "id"=>$_SESSION["id"]]);
+        WHERE (uv.usuario_id=:id AND ((vj.fecha<CURDATE()) OR (vj.fecha=CURDATE() AND date_add(CONCAT(vj.fecha,' ',vj.hora_salida),interval vj.duracion HOUR)<NOW())) and uv.estado='Aceptado')", [ "id"=>$_SESSION["id"]]);
         return $answer;      
     }
 
@@ -236,7 +234,7 @@ class AppModelUsuario extends PDORepository {
 
     public function getCalificacionesCopiloto($id){
         $answer = $this->queryList("SELECT u.nombre, u.apellido, u.email, cc.puntuacion, cc.comentarios, cc.fecha, cc.piloto_califica, cc.viaje_id
-            FROM calificacion_copiloto cc INNER JOIN usuario u on (u.id = cp.piloto_califica)
+            FROM calificacion_copiloto cc INNER JOIN usuario u on (u.id = cc.piloto_califica)
             WHERE cc.copiloto_calificado=:id",["id" => $id]);
         return $answer;
     }
