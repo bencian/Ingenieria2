@@ -50,8 +50,12 @@ class AppControllerVehiculo {
             if(($bd->existeTipo($datos["tipo"]))&&($test)&&preg_match("#[1-9][0-9]?#",$datos["asientos"])){
                 $datos["id_usuario"] = $_SESSION['id'];
                 $bd->registrar_vehiculo($datos);
+                $errno["crear_vehiculo"]="El vehiculo se registro con exito!";
+                $_SESSION["errno"]["bueno"]=$errno;
                 AppController::getInstance()->mostrarMenuConSesion();
             } else {
+                $errno["crear_vehiculo"]="El vehiculo no pudo registrarse";
+                $_SESSION["errno"]["malo"]=$errno;
                 $this->registrar_vehiculo();
             }
         }
