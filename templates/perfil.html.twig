@@ -147,10 +147,12 @@ Mi perfil
 										<td>{{ postulacion.distancia }} kms</td>
 										<td>{{ postulacion.estado }}</td>
 										<td>
+											{% if postulacion.estado != 'Viaje eliminado' %}
 											<form method="post" class="pull-left" action="index.php?action=ver_publicacion_viaje">
 												<input type="hidden" name="id" value="{{ postulacion.viaje_id }}">
 												<input type="submit" class="btn btn-primaryPink" value="Ver viaje">
 											</form>
+											{% endif %}
 										</td>
 									</tr>
 								{% endfor %}
