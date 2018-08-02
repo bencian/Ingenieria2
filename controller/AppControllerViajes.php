@@ -157,7 +157,7 @@ class AppControllerViajes {
             $entra = false;
         }
         if(AppControllerUsuario::getInstance()->tieneCalificacionesPendientes()){
-            $errno["calificacionPendiende"]["malo"]="No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
+            $errno["calificacionPendiende"]="No puedes publicar un viaje teniendo calificaciones pendientes de hace mas de 30 dias";
             $entra = false;
         }
         if($this->esHoy($tempArray)){
@@ -236,7 +236,7 @@ class AppControllerViajes {
     public function publicarViajePeriodico($datos){
         if($this->validarViajePeriodico($datos)){
             if($this->diasAViajar($datos)==0){
-                $string = "Debes poder viajar al menos un dia de la semana entre la fecha inicial y la final";
+                $string = "Debe poder viajar al menos un dia de la semana entre la fecha inicial y la final";
                 array_push($_SESSION["errno"]["malo"], $string);
             }
         }

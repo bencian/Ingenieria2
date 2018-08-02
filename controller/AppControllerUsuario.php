@@ -403,6 +403,9 @@ class AppControllerUsuario {
         $cantCalificacionesAPilotos = $bdUsuario->pilotosACalificarMayoresA30($_SESSION['id']);
         $cantCalificacionesACopilotos = $bdUsuario->copilotosACalificarMayoresA30($_SESSION['id']);
         $cantCalificaciones = count($cantCalificacionesAPilotos) + count($cantCalificacionesACopilotos);
+        var_dump($cantCalificacionesAPilotos);
+        var_dump($cantCalificacionesACopilotos);
+        var_dump($cantCalificaciones);
         if($cantCalificaciones == 0){
             return false;
         } else {
@@ -415,7 +418,6 @@ class AppControllerUsuario {
         $bdViaje = AppModelViaje::getInstance();
         $mostrarDatos["calificacionPiloto"] = $bdUsuario->getCalificacionesPiloto($datos["usuario_id"]);
         $mostrarDatos["calificacionCopiloto"] = $bdUsuario->getCalificacionesCopiloto($datos["usuario_id"]);
-        var_dump($mostrarDatos);
         $view = new Home();
         $view->calificacionesDetalladas($mostrarDatos);
     }

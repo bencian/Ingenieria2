@@ -210,18 +210,23 @@ class AppModelUsuario extends PDORepository {
     }
 
     public function copilotosACalificarMayoresA30($id){
+        $fecha = new DateTime();
+        date_modify($fecha, '-30 day');
+        
         $answer = $this->queryList("SELECT u.email, uv.usuario_id, v.id, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia
             FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (uv.usuario_id=u.id)
-            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id and fecha>DATEDIFF(NOW() - 30 days) and not exists (
-            select * from calificacion_copiloto where piloto_califica=:id  and copiloto_calificado=uv.usuario_id and viaje_id = v.id)",["id" => $id]);
+            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and v.usuario_id=:id and fecha>:fecha and not exists (
+            select * from calificacion_copiloto where piloto_califica=:id  and copiloto_calificado=uv.usuario_id and viaje_id = v.id)",["id" => $id, "fecha" => date_format($fecha, "Y-m-d")]);
         return $answer;
     }
 
     public function pilotosACalificarMayoresA30($id){
+        $fecha = new DateTime();
+        date_modify($fecha, '-30 day');
         $answer = $this->queryList("SELECT u.email, v.origen_id, v.destino_id, v.fecha, v.hora_salida, v.precio, v.duracion, v.distancia, v.usuario_id, v.id
             FROM viaje v INNER JOIN usuario_viaje uv on (uv.viaje_id=v.id) INNER JOIN usuario u on (v.usuario_id=u.id)
-            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and uv.usuario_id=:id and uv.estado='Aceptado' and fecha>DATEDIFF(NOW() - 30 days) and not exists (
-            select * from calificacion_piloto where copiloto_califica=:id  and viaje_id = v.id)",["id" => $id]);
+            WHERE ((fecha<CURDATE()) OR (fecha=CURDATE() AND date_add(CONCAT(fecha,' ',hora_salida),interval duracion HOUR)<NOW())) and uv.usuario_id=:id and uv.estado='Aceptado' and fecha>:fecha and not exists (
+            select * from calificacion_piloto where copiloto_califica=:id  and viaje_id = v.id)",["id" => $id, "fecha" => date_format($fecha, "Y-m-d")]);
         return $answer;
     }
 
